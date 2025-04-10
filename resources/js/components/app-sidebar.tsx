@@ -4,33 +4,101 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    BoxesIcon,
+    BusIcon,
+    Computer,
+    CreditCardIcon,
+    Github,
+    HomeIcon,
+    IdCardIcon,
+    LucideFolderCheck,
+    LucideGrape,
+    LucideShoppingCart,
+    Users2Icon,
+} from 'lucide-react';
 import AppLogo from './app-logo';
+import { SearchForm } from './extras/search-form';
 
 const mainNavItems: NavItem[] = [
+    // Caja Principal
     {
-        title: 'Dashboard',
+        title: 'Caja Principal',
         href: '/dashboard',
-        icon: LayoutGrid,
+        icon: Computer,
+    },
+    // Logistica
+    {
+        title: 'Logistica',
+        href: '/logistica',
+        icon: LucideGrape,
+    },
+    // Categorias
+    {
+        title: 'Categorias',
+        href: '/categorias',
+        icon: LucideFolderCheck,
+    },
+    // Productos
+    {
+        title: 'Productos',
+        href: '/productos',
+        icon: BoxesIcon,
+    },
+    // Alamcenes
+    {
+        title: 'Almacenes',
+        href: '/almacenes',
+        icon: HomeIcon,
+    },
+    // Movimientos
+    {
+        title: 'Movimientos',
+        href: '/movimientos',
+        icon: BusIcon,
+    },
+    // Cuentas
+    {
+        title: 'Cuentas',
+        href: '/cuentas',
+        icon: CreditCardIcon,
+    },
+    // Proveedores
+    {
+        title: 'Proveedores',
+        href: '/proveedores',
+        icon: LucideShoppingCart,
+    },
+    // Clientes
+    {
+        title: 'Clientes',
+        href: '/clientes',
+        icon: IdCardIcon,
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
+        title: 'Usuarios',
+        href: '/usuarios',
+        icon: Users2Icon,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
+        title: 'Repositorio',
+        href: 'https://github.com/PushoDev',
+        icon: Github,
+    },
+    {
+        title: 'Documentación',
+        href: '#',
         icon: BookOpen,
     },
 ];
 
 export function AppSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="floating">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -39,6 +107,7 @@ export function AppSidebar() {
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
+                        <SearchForm />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>

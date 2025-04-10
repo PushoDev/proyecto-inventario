@@ -41,3 +41,12 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface CategoriasProps {
+    id: number;
+    nombre_categoria: string;
+    descripcion_categoria: string;
+    activar_categoria: boolean;
+    created_at: string;
+    updated_at: string;
+}
