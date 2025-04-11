@@ -13,8 +13,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     // Routes Projects
-//    Categorias
+    // Categorias
     require __DIR__ . '/routes-project/categorias.php';
+    // Clientes
+    require __DIR__ . '/routes-project/clientes.php';
+    // Proveedores
+    require __DIR__ . '/routes-project/proveedores.php';
 });
 
 require __DIR__ . '/settings.php';
