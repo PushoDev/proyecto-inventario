@@ -9,16 +9,15 @@ import { BookCheck, FolderCheck } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Proveedores',
-        href: '/proveedores',
+        title: 'Clientes',
+        href: '/clientes',
     },
 ];
 
-export default function proveedoresPage() {
+export default function CrearClientesPage() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Proveedores" />
-
+            <Head title="Crear Categoría" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Barra de Menús */}
                 <div>
@@ -34,19 +33,19 @@ export default function proveedoresPage() {
                         />
                     </div>
                     <Separator className="my-4" />
-                    <div className="flex justify-end p-4">
+                    <div className="flex justify-normal p-4">
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <Link href={route('categorias.create')}>
-                                        <Button className="cursor-pointer bg-blue-400 text-blue-950 hover:bg-blue-900 hover:text-white">
+                                    <Link href={route('clientes.index')}>
+                                        <Button className="cursor-pointer bg-red-400 text-red-950 hover:bg-red-900 hover:text-white">
                                             <BookCheck />
-                                            Nueva Proveedor
+                                            Cancelar
                                         </Button>
                                     </Link>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>Agregar Proveedor</p>
+                                    <p>Cancelar y regresar</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>

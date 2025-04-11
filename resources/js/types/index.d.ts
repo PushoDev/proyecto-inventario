@@ -50,3 +50,26 @@ export interface CategoriasProps {
     created_at: string;
     updated_at: string;
 }
+
+// Interface para Clientes
+export interface ClienteProps {
+    id: number;
+    nombre_cliente: string;
+    telefono_cliente: string;
+    direccion_cliente?: string | null; // Opcional
+    ciudad_cliente?: string | null; // Opcional
+    created_at: string;
+    updated_at: string;
+}
+
+// Interface para Proveedores
+export interface ProveedorProps {
+    id: number;
+    nombre_proveedor: string;
+    telefono_proveedor: string;
+    correo_proveedor?: string | null;
+    localidad_proveedor: string;
+    notas_proveedor?: string | null;
+    created_at: string;
+    updated_at: string;
+}
