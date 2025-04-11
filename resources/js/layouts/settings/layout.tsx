@@ -15,13 +15,13 @@ const sidebarNavItems: NavItem[] = [
     },
     // contraseña y seguridad
     {
-        title: 'Contraseña',
+        title: 'Seguridad',
         href: '/settings/password',
         icon: null,
     },
     // usuarios
     {
-        title: 'Usuarios',
+        title: 'Copia Backup',
         href: '#',
         icon: null,
     },

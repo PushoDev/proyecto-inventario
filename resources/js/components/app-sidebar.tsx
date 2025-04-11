@@ -16,7 +16,6 @@ import {
     LucideFolderCheck,
     LucideGrape,
     LucideShoppingCart,
-    Users2Icon,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 import { SearchForm } from './extras/search-form';
@@ -79,11 +78,6 @@ const mainNavItems: NavItem[] = [
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Usuarios',
-        href: '/usuarios',
-        icon: Users2Icon,
-    },
     {
         title: 'Repositorio',
         href: 'https://github.com/PushoDev',
