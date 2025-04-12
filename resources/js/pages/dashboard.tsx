@@ -2,11 +2,13 @@ import WidgetCompra from '@/components/extras/home/WidgetCompra';
 import WidgetInventario from '@/components/extras/home/WidgetInventario';
 import WidgetTransacciones from '@/components/extras/home/WidgetTransacciones';
 import WidgetVenta from '@/components/extras/home/WidgetVenta';
+import HeadingSmall from '@/components/heading-small';
+import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { CreditCardIcon, LucideCalculator } from 'lucide-react';
+import { MonitorIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,12 +22,24 @@ export default function CajaGeneral() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Caja Principal" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
+                    {/* Contenido principal */}
+                    <HeadingSmall
+                        title="Opciones Generales del Sistema"
+                        description="Gestión del Negocio. Utilice las opciones requeridas para su funcionamineto"
+                    />
+                    {/* Ícono semitransparente */}
+                    <MonitorIcon
+                        size={70}
+                        color="#000"
+                        className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                    />
+                </div>
+
                 <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                     {/* Tabla de la disponibilidad de las Cuentas */}
                     <Table className="mt-4">
-                        <TableCaption className="text-white rounded-2xl bg-amber-800">
-                            <CreditCardIcon />
-                            Capitales Generales del Negocio</TableCaption>
+                        <TableCaption className="rounded-2xl bg-amber-800 text-white">Capitales Generales del Negocio</TableCaption>
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="bg-amber-950 text-center font-bold text-white">DESCRIPCIÓN</TableHead>
@@ -56,9 +70,7 @@ export default function CajaGeneral() {
 
                     {/* Tabla de Acciones del Mes */}
                     <Table className="mt-4">
-                        <TableCaption className="text-white rounded-2xl bg-emerald-800">
-                            <LucideCalculator />
-                            Movimieneto del Mes</TableCaption>
+                        <TableCaption className="rounded-2xl bg-emerald-800 text-white">Movimieneto del Mes</TableCaption>
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="bg-emerald-900">TOTAL</TableHead>
@@ -91,9 +103,7 @@ export default function CajaGeneral() {
                         </TableFooter>
                     </Table>
                 </div>
-                <br />
-                <hr />
-                <br />
+                <Separator className="mt-2" />
                 <div className="grid auto-rows-min gap-4 md:grid-cols-4">
                     <WidgetCompra />
                     <WidgetVenta />

@@ -48,7 +48,7 @@ class ClienteController extends Controller
             'ciudad_cliente' => $request->ciudad_cliente,
         ]);
 
-        return redirect()->route('clientes.create')->with('success', 'Cliente creado exitosamente.');
+        return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente.');
     }
 
     /**

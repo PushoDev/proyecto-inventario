@@ -17,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { ClienteProps, type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { BookCheck, Edit3, FolderCheck, Trash2 } from 'lucide-react';
+import { BookCheck, Edit3, ShoppingBasketIcon, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -50,10 +50,10 @@ export default function ClientesPage({ clientes }: { clientes: ClienteProps[] })
                         {/* Contenido principal */}
                         <HeadingSmall title="Clientes" description="Gestión de los Clientes del Negocio" />
                         {/* Ícono semitransparente */}
-                        <FolderCheck
-                            size={75}
-                            color="white"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform opacity-40"
+                        <ShoppingBasketIcon
+                            size={70}
+                            color="yellow"
+                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
                         />
                     </div>
                     <Separator className="my-4" />

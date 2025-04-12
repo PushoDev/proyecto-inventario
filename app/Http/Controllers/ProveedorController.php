@@ -50,7 +50,7 @@ class ProveedorController extends Controller
             'notas_proveedor' => $request->notas_proveedor,
         ]);
 
-        return redirect()->route('proveedores.create')->with('success', 'Proveedor creado exitosamente.');
+        return redirect()->route('proveedores.index')->with('success', 'Proveedor creado exitosamente.');
     }
 
     /**
