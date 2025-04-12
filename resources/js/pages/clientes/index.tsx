@@ -98,14 +98,20 @@ export default function ClientesPage({ clientes }: { clientes: ClienteProps[] })
                                 <TableCell className="text-right">
                                     {/* Botón Editar */}
                                     <Link href={route('clientes.edit', { cliente: cliente.id })}>
-                                        <Button variant="outline" className="cursor-pointer hover:bg-blue-900 hover:text-white">
+                                        <Button
+                                            variant="outline"
+                                            className="cursor-pointer hover:bg-blue-900 hover:text-white dark:hover:bg-blue-700"
+                                        >
                                             <Edit3 />
                                         </Button>
                                     </Link>
                                     {/* Diálogo de Confirmación para Eliminar */}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
-                                            <Button variant="ghost" className="hover:bg-destructive cursor-pointer hover:text-white">
+                                            <Button
+                                                variant="ghost"
+                                                className="hover:bg-destructive dark:hover:bg-destructive cursor-pointer hover:text-white"
+                                            >
                                                 <Trash2 />
                                             </Button>
                                         </AlertDialogTrigger>

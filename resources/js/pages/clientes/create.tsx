@@ -101,6 +101,7 @@ export default function CrearClientesPage() {
                             className="mt-1 block w-1/3 focus:border-emerald-500"
                             value={data.telefono_cliente}
                             onChange={(e) => setData('telefono_cliente', e.target.value)}
+                            type="tel"
                             autoComplete="telefono_cliente"
                             placeholder="Telefono del Cliente"
                         />

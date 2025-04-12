@@ -10,14 +10,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
-import { CategoriasProps, type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, CategoriasProps } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { BookCheck, Edit3, FolderCheck, Trash2 } from 'lucide-react';
+import { BookCheck, CheckIcon, Edit3, FolderCheck, MessageCircleWarningIcon, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -54,7 +55,7 @@ export default function CategoriasPage({ categorias }: { categorias: CategoriasP
                         <FolderCheck
                             size={75}
                             color="white"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform opacity-40"
+                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
                         />
                     </div>
                     <Separator className="my-4" />
@@ -95,15 +96,24 @@ export default function CategoriasPage({ categorias }: { categorias: CategoriasP
                                 <TableCell>{categoria.descripcion_categoria || 'Sin descripción'}</TableCell>
                                 <TableCell>
                                     {categoria.activar_categoria ? (
-                                        <span className="text-emerald-500">Activo</span>
+                                        <Badge variant="outline" className="text-emerald-500">
+                                            <CheckIcon />
+                                            Categoria Activa
+                                        </Badge>
                                     ) : (
-                                        <span className="text-red-500">Inactivo</span>
+                                        <Badge variant="outline" className="text-red-700">
+                                            <MessageCircleWarningIcon />
+                                            Categoria Inactiva
+                                        </Badge>
                                     )}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     {/* Botón Editar */}
                                     <Link href={route('categorias.edit', { categoria: categoria.id })}>
-                                        <Button variant="outline" className="cursor-pointer hover:bg-blue-900 hover:text-white">
+                                        <Button
+                                            variant="outline"
+                                            className="cursor-pointer hover:bg-blue-900 hover:text-white dark:hover:bg-blue-700"
+                                        >
                                             <Edit3 />
                                         </Button>
                                     </Link>
@@ -111,7 +121,10 @@ export default function CategoriasPage({ categorias }: { categorias: CategoriasP
                                     {/* Diálogo de Confirmación para Eliminar */}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
-                                            <Button variant="ghost" className="hover:bg-destructive cursor-pointer hover:text-white">
+                                            <Button
+                                                variant="ghost"
+                                                className="hover:bg-destructive dark:hover:bg-destructive cursor-pointer hover:text-white"
+                                            >
                                                 <Trash2 />
                                             </Button>
                                         </AlertDialogTrigger>

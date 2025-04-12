@@ -38,7 +38,7 @@ export default function CajaGeneral() {
 
                 <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                     {/* Tabla de la disponibilidad de las Cuentas */}
-                    <Table className="mt-4">
+                    <Table className="animate__animated animate__backInDown mt-4">
                         <TableCaption className="rounded-2xl bg-amber-800 text-white">Capitales Generales del Negocio</TableCaption>
                         <TableHeader>
                             <TableRow>
@@ -69,7 +69,7 @@ export default function CajaGeneral() {
                     </Table>
 
                     {/* Tabla de Acciones del Mes */}
-                    <Table className="mt-4">
+                    <Table className="animate__animated animate__backInDown mt-4">
                         <TableCaption className="rounded-2xl bg-emerald-800 text-white">Movimieneto del Mes</TableCaption>
                         <TableHeader>
                             <TableRow>
@@ -104,7 +104,7 @@ export default function CajaGeneral() {
                     </Table>
                 </div>
                 <Separator className="mt-2" />
-                <div className="grid auto-rows-min gap-4 md:grid-cols-4">
+                <div className="animate__animated animate__backInUp grid auto-rows-min gap-4 md:grid-cols-4">
                     <WidgetCompra />
                     <WidgetVenta />
                     <WidgetTransacciones />

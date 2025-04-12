@@ -153,7 +153,7 @@ export default function CrearProveedoresPage() {
                     {/* Boton Enviar */}
                     <div>
                         <Button type="submit" disabled={processing}>
-                            Crear Cliente
+                            Agregar Proveedor
                         </Button>
                     </div>
                 </form>

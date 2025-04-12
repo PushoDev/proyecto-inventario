@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { ChartNetworkIcon } from 'lucide-react';
+import { FolderCheck } from 'lucide-react';
 import * as React from 'react';
 
 // Section Card
@@ -15,7 +15,7 @@ import { Calendar } from '@/components/ui/calendar';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Logistica del Negocio',
+        title: 'Logistica',
         href: '/logistica',
     },
 ];
@@ -25,47 +25,26 @@ export default function logisticaPage() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Logistica" />
+            <Head title="Proveedores" />
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Barra de Menús */}
                 <div>
                     <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
                         {/* Contenido principal */}
-                        <HeadingSmall title="Logistica" description="Logistica del Negocio" />
+                        <HeadingSmall title="Categorías" description="Clasificación de los Productos" />
 
                         {/* Ícono semitransparente */}
-                        <ChartNetworkIcon
-                            size={70}
-                            color="#a3e635"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
+                        <FolderCheck
+                            size={75}
+                            color="white"
+                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform opacity-40"
                         />
                     </div>
                     <Separator className="my-4" />
                     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-                        <Card className="@container/card col-span-3">
-                            <CardHeader className="relative">
-                                <CardDescription>New Customers</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">1,234</CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingDownIcon className="size-3" />
-                                        -20%
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Down 20% this period <TrendingDownIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Acquisition needs attention</div>
-                            </CardFooter>
-                        </Card>
                         <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow" />
-                    </div>
-                    <Separator className="my-2" />
-                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-                        <Card className="@container/card">
+                        {/* <Card className="@container/card">
                             <CardHeader className="relative">
                                 <CardDescription>Total Revenue</CardDescription>
                                 <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">$1,250.00</CardTitle>
@@ -82,7 +61,7 @@ export default function logisticaPage() {
                                 </div>
                                 <div className="text-muted-foreground">Visitors for the last 6 months</div>
                             </CardFooter>
-                        </Card>
+                        </Card> */}
                         <Card className="@container/card">
                             <CardHeader className="relative">
                                 <CardDescription>New Customers</CardDescription>

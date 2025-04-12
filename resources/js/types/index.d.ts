@@ -42,6 +42,15 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
+// Calendario
+interface CalendarProps {
+    mode: 'single' | 'multiple';
+    selected: Date | undefined;
+    onSelect: (date: Date | undefined) => void;
+    className?: string;
+}
+
+// Interface para Categorias
 export interface CategoriasProps {
     id: number;
     nombre_categoria: string;

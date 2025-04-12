@@ -99,15 +99,22 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
                                 <TableCell>{proveedor.notas_proveedor || 'Sin notas'}</TableCell>
                                 <TableCell className="text-right">
                                     {/* Botón Editar */}
-                                    <Link href={route('proveedores.edit', { proveedor: proveedor.id })}>
-                                        <Button variant="outline" className="cursor-pointer hover:bg-blue-900 hover:text-white">
+                                    {/* {route('proveedores.edit', { proveedor: proveedor.id })} */}
+                                    <Link href={route('proveedores.edit', { proveedore: proveedor.id })}>
+                                        <Button
+                                            variant="outline"
+                                            className="cursor-pointer hover:bg-blue-700 hover:text-white dark:hover:bg-blue-900"
+                                        >
                                             <Edit3 />
                                         </Button>
                                     </Link>
                                     {/* Diálogo de Confirmación para Eliminar */}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
-                                            <Button variant="ghost" className="hover:bg-destructive cursor-pointer hover:text-white">
+                                            <Button
+                                                variant="ghost"
+                                                className="hover:bg-destructive dark:hover:bg-destructive cursor-pointer hover:text-white"
+                                            >
                                                 <Trash2 />
                                             </Button>
                                         </AlertDialogTrigger>
@@ -125,7 +132,7 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
                                                 >
                                                     Aceptar
                                                 </AlertDialogAction>
-                                                <AlertDialogCancel className="cursor-pointer hover:bg-emerald-300 hover:text-emerald-950">
+                                                <AlertDialogCancel className="cursor-pointer hover:bg-emerald-300 hover:text-emerald-950 dark:hover:bg-emerald-300 dark:hover:text-emerald-950">
                                                     Cancelar
                                                 </AlertDialogCancel>
                                             </AlertDialogFooter>
