@@ -19,6 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     require __DIR__ . '/routes-project/clientes.php';
     // Proveedores
     require __DIR__ . '/routes-project/proveedores.php';
+    // Almacenes
+    require __DIR__ . '/routes-project/almacenes.php';
 });
 
 require __DIR__ . '/settings.php';
