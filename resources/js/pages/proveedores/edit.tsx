@@ -5,7 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { BookCheck, FolderCheck } from 'lucide-react';
+import { BookCheck, ShoppingBagIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,19 +17,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function EditarProveedoresPage() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Editar Categoría" />
+            <Head title="Editar Proveedor" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Barra de Menús */}
                 <div>
                     <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
                         {/* Contenido principal */}
-                        <HeadingSmall title="Categorías" description="Clasificación de los Productos" />
-
+                        <HeadingSmall title="Proveedores" description="Gestión de los Proveedores del Negocio" />
                         {/* Ícono semitransparente */}
-                        <FolderCheck
-                            size={75}
-                            color="white"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform opacity-40"
+                        <ShoppingBagIcon
+                            size={70}
+                            color="blue"
+                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
                         />
                     </div>
                     <Separator className="my-4" />
