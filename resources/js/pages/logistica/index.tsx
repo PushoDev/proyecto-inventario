@@ -1,9 +1,9 @@
 import HeadingSmall from '@/components/heading-small';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { LogisticaProps, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { ChartNetworkIcon } from 'lucide-react';
+import { ChartBarIncreasingIcon } from 'lucide-react';
 import * as React from 'react';
 
 // Section Card
@@ -20,7 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function logisticaPage() {
+export default function logisticaPage({ totalCategorias, categoriasActivas, totalProveedores }: LogisticaProps) {
     // Calendario
     const [date, setDate] = React.useState<Date | undefined>(new Date());
     return (
@@ -30,18 +30,21 @@ export default function logisticaPage() {
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Barra de Menús */}
                 <div>
-                    <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
-                        {/* Contenido principal */}
-                        <HeadingSmall title="Logistica" description="Logistica del Negocio" />
+                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                        <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
+                            {/* Contenido principal */}
+                            <HeadingSmall title="Logistica" description="Logistica del Negocio, resumenes interáctivos e información general" />
 
-                        {/* Ícono semitransparente */}
-                        <ChartNetworkIcon
-                            size={70}
-                            color="#a3e635"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
-                        />
+                            {/* Ícono semitransparente */}
+                            <ChartBarIncreasingIcon
+                                size={70}
+                                color="white"
+                                className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
+                            />
+                        </div>
+                        <Separator className="my-4" />
                     </div>
-                    <Separator className="my-4" />
+
                     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                         <Card className="@container/card col-span-3">
                             <CardHeader className="relative">
@@ -83,14 +86,15 @@ export default function logisticaPage() {
                                 <div className="text-muted-foreground">Visitors for the last 6 months</div>
                             </CardFooter>
                         </Card>
+                        {/* Proveedores */}
                         <Card className="@container/card">
                             <CardHeader className="relative">
-                                <CardDescription>New Customers</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">1,234</CardTitle>
+                                <CardDescription>Proveedores</CardDescription>
+                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalProveedores}</CardTitle>
                                 <div className="absolute top-4 right-4">
                                     <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
                                         <TrendingDownIcon className="size-3" />
-                                        -20%
+                                        {totalProveedores}
                                     </Badge>
                                 </div>
                             </CardHeader>
@@ -101,6 +105,7 @@ export default function logisticaPage() {
                                 <div className="text-muted-foreground">Acquisition needs attention</div>
                             </CardFooter>
                         </Card>
+                        {/* Clientes */}
                         <Card className="@container/card">
                             <CardHeader className="relative">
                                 <CardDescription>Active Accounts</CardDescription>
@@ -119,14 +124,15 @@ export default function logisticaPage() {
                                 <div className="text-muted-foreground">Engagement exceed targets</div>
                             </CardFooter>
                         </Card>
+                        {/* Categorias */}
                         <Card className="@container/card">
                             <CardHeader className="relative">
-                                <CardDescription>Growth Rate</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">4.5%</CardTitle>
+                                <CardDescription>Categorias</CardDescription>
+                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalCategorias}</CardTitle>
                                 <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs text-emerald-500">
                                         <TrendingUpIcon className="size-3" />
-                                        +4.5%
+                                        {categoriasActivas}
                                     </Badge>
                                 </div>
                             </CardHeader>

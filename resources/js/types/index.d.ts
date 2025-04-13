@@ -95,3 +95,11 @@ export interface AlmacenProps {
     created_at: string;
     updated_at: string;
 }
+
+export interface LogisticaProps {
+    totalCategorias: number;
+    categoriasActivas: number;
+    totalProveedores: number;
+    totalClientes: number;
+    totalAlmacenes: number;
+}
