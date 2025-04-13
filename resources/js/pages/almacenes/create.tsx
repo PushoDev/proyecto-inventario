@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { BookCheck, WarehouseIcon } from 'lucide-react';
+import { BookCheck, LucideWarehouse } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -26,6 +27,7 @@ export default function CrearAlmacenesPage() {
         correo_almacen: '',
         provincia_almacen: '',
         ciudad_almacen: '',
+        notas_almacen: '',
     });
 
     // Función para enviar el formulario
@@ -47,19 +49,21 @@ export default function CrearAlmacenesPage() {
             <Head title="Agregar nuevo Almacén" />
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                {/* Barra de Menús */}
-                <div>
-                    <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
                         {/* Contenido principal */}
                         <HeadingSmall title="Almacenes" description="Tiendas o almacén para guardar los Productos" />
 
                         {/* Ícono semitransparente */}
-                        <WarehouseIcon
+                        <LucideWarehouse
                             size={70}
-                            color="black"
+                            color="#22d3ee"
                             className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
                         />
                     </div>
+                </div>
+                {/* Barra de Menús */}
+                <div>
                     <Separator className="my-4" />
                     <div className="flex justify-normal p-4">
                         <TooltipProvider>
@@ -102,6 +106,7 @@ export default function CrearAlmacenesPage() {
                         <Input
                             id="telefono_almacen"
                             className="mt-1 block w-1/3"
+                            type="tel"
                             value={data.telefono_almacen}
                             onChange={(e) => setData('telefono_almacen', e.target.value)}
                             autoComplete="telefono_almacen"
@@ -116,6 +121,7 @@ export default function CrearAlmacenesPage() {
                         <Input
                             id="correo_almacen"
                             className="mt-1 block w-1/3"
+                            type="email"
                             value={data.correo_almacen}
                             onChange={(e) => setData('correo_almacen', e.target.value)}
                             autoComplete="correo_almacen"
@@ -150,6 +156,19 @@ export default function CrearAlmacenesPage() {
                             placeholder="Ciudad del Almacén"
                         />
                         <InputError className="mt-2" message={errors.ciudad_almacen} />
+                    </div>
+                    {/* Campo Notas del Almacen */}
+                    <div className="grid gap-2">
+                        <Label htmlFor="notas_almacen">Notas del Almacén:</Label>
+                        <Textarea
+                            id="notas_almacen"
+                            className="mt-1 block w-1/3"
+                            value={data.notas_almacen}
+                            onChange={(e) => setData('notas_almacen', e.target.value)}
+                            autoComplete="notas_almacen"
+                            placeholder="Notas del Almacén"
+                        />
+                        <InputError className="mt-2" message={errors.notas_almacen} />
                     </div>
 
                     {/* Botón Enviar */}

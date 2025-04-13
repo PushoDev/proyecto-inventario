@@ -32,7 +32,7 @@ export default function CajaGeneral() {
                         {/* Ícono semitransparente */}
                         <MonitorIcon
                             size={70}
-                            color="#000"
+                            color="#f43f5e"
                             className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
                         />
                     </div>

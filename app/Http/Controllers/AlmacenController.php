@@ -52,7 +52,7 @@ class AlmacenController extends Controller
             'notas_almacen' => $request->notas_almacen,
         ]);
 
-        return redirect()->route('almacenes.create')->with('success', 'Almacén creado exitosamente.');
+        return redirect()->route('almacenes.index')->with('success', 'Almacén creado exitosamente.');
     }
 
     /**
