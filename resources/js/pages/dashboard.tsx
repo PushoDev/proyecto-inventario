@@ -22,18 +22,20 @@ export default function CajaGeneral() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Caja Principal" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
-                    {/* Contenido principal */}
-                    <HeadingSmall
-                        title="Opciones Generales del Sistema"
-                        description="Gestión del Negocio. Utilice las opciones requeridas para su funcionamineto"
-                    />
-                    {/* Ícono semitransparente */}
-                    <MonitorIcon
-                        size={70}
-                        color="#000"
-                        className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
-                    />
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
+                        {/* Contenido principal */}
+                        <HeadingSmall
+                            title="Opciones Generales del Sistema"
+                            description="Gestión del Negocio. Utilice las opciones requeridas para su funcionamineto"
+                        />
+                        {/* Ícono semitransparente */}
+                        <MonitorIcon
+                            size={70}
+                            color="#000"
+                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                        />
+                    </div>
                 </div>
 
                 <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -103,13 +105,14 @@ export default function CajaGeneral() {
                         </TableFooter>
                     </Table>
                 </div>
-                <Separator className="mt-2" />
+                <Separator className="mt-4" />
                 <div className="animate__animated animate__backInUp grid auto-rows-min gap-4 md:grid-cols-4">
                     <WidgetCompra />
                     <WidgetVenta />
                     <WidgetTransacciones />
                     <WidgetInventario />
                 </div>
+                <Separator className="mt-4" />
             </div>
         </AppLayout>
     );

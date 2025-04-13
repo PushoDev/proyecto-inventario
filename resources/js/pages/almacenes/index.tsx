@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { AlmacenProps, type BreadcrumbItem } from '@/types';
@@ -101,14 +101,20 @@ export default function AlmacenesPage({ almacenes }: { almacenes: AlmacenProps[]
                                 <TableCell className="text-right">
                                     {/* Botón Editar */}
                                     <Link href={route('almacenes.edit', { almacene: almacen.id })}>
-                                        <Button variant="outline" className="cursor-pointer hover:bg-blue-900 hover:text-white">
+                                        <Button
+                                            variant="outline"
+                                            className="cursor-pointer hover:bg-blue-900 hover:text-white dark:hover:bg-blue-700"
+                                        >
                                             <Edit3 />
                                         </Button>
                                     </Link>
                                     {/* Diálogo de Confirmación para Eliminar */}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
-                                            <Button variant="ghost" className="hover:bg-destructive cursor-pointer hover:text-white">
+                                            <Button
+                                                variant="ghost"
+                                                className="hover:bg-destructive dark:hover:bg-destructive cursor-pointer hover:text-white"
+                                            >
                                                 <Trash2 />
                                             </Button>
                                         </AlertDialogTrigger>
@@ -126,7 +132,7 @@ export default function AlmacenesPage({ almacenes }: { almacenes: AlmacenProps[]
                                                 >
                                                     Aceptar
                                                 </AlertDialogAction>
-                                                <AlertDialogCancel className="cursor-pointer hover:bg-emerald-300 hover:text-emerald-950">
+                                                <AlertDialogCancel className="cursor-pointer text-white hover:bg-emerald-300 hover:text-emerald-950 dark:hover:bg-emerald-300 dark:hover:text-emerald-950">
                                                     Cancelar
                                                 </AlertDialogCancel>
                                             </AlertDialogFooter>
@@ -136,6 +142,14 @@ export default function AlmacenesPage({ almacenes }: { almacenes: AlmacenProps[]
                             </TableRow>
                         ))}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={5} className="bg-gray-700">
+                                Total de Almacenes
+                            </TableCell>
+                            <TableCell className="bg-gray-500 text-center">{almacenes.length}</TableCell>
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </div>
         </AppLayout>

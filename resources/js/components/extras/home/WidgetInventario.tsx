@@ -1,6 +1,6 @@
 // Widget Inventario
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { LucideBoomBox, LucideBoxes } from 'lucide-react';
+import { LucideBoomBox, MonitorCog } from 'lucide-react';
 
 const WidgetInventario = () => {
     return (
@@ -15,7 +15,7 @@ const WidgetInventario = () => {
                 <div className="relative z-10 h-full p-6">
                     {/* Ícono en la esquina superior izquierda */}
                     <div className="absolute top-4 left-4">
-                        <LucideBoxes className="h-8 w-8 text-white" />
+                        <MonitorCog className="h-8 w-8 text-white" />
                     </div>
 
                     {/* Textos alineados a la derecha */}
@@ -25,7 +25,7 @@ const WidgetInventario = () => {
                     </div>
 
                     {/* Botón pequeño */}
-                    <button className="absolute right-4 bottom-4 rounded-md bg-amber-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:cursor-pointer hover:bg-white hover:text-amber-800">
+                    <button className="absolute right-4 bottom-4 rounded-md bg-amber-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:animate-pulse hover:cursor-pointer hover:bg-white hover:text-amber-800">
                         Cuadre / Inventario
                     </button>
                 </div>

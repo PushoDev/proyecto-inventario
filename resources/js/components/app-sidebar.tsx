@@ -5,16 +5,16 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
+    ArrowRightLeftIcon,
     BookOpen,
     BoxesIcon,
-    BusIcon,
+    ChartNoAxesCombinedIcon,
+    CheckCircleIcon,
     Computer,
     CreditCardIcon,
     Github,
     HomeIcon,
     IdCardIcon,
-    LucideFolderCheck,
-    LucideGrape,
     LucideShoppingCart,
 } from 'lucide-react';
 import AppLogo from './app-logo';
@@ -29,25 +29,25 @@ const mainNavItems: NavItem[] = [
     },
     // Logistica
     {
-        title: 'Logistica',
+        title: 'Logistica General',
         href: '/logistica',
-        icon: LucideGrape,
+        icon: ChartNoAxesCombinedIcon,
     },
     // Categorias
     {
         title: 'Categorias',
         href: '/categorias',
-        icon: LucideFolderCheck,
+        icon: CheckCircleIcon,
     },
     // Productos
     {
-        title: 'Productos',
+        title: 'Productos Disponibles',
         href: '/productos',
         icon: BoxesIcon,
     },
     // Alamcenes
     {
-        title: 'Almacenes',
+        title: 'Almacenes o Tiendas',
         href: '/almacenes',
         icon: HomeIcon,
     },
@@ -55,13 +55,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Movimientos',
         href: '/movimientos',
-        icon: BusIcon,
-    },
-    // Cuentas
-    {
-        title: 'Cuentas',
-        href: '/cuentas',
-        icon: CreditCardIcon,
+        icon: ArrowRightLeftIcon,
     },
     // Proveedores
     {
@@ -75,11 +69,17 @@ const mainNavItems: NavItem[] = [
         href: '/clientes',
         icon: IdCardIcon,
     },
+    // Cuentas
+    {
+        title: 'Cuentas',
+        href: '/cuentas',
+        icon: CreditCardIcon,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repositorio',
+        title: 'Repositorio (Privado)',
         href: 'https://github.com/PushoDev',
         icon: Github,
     },
