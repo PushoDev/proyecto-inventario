@@ -17,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { ProveedorProps, type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { BookCheck, Edit3, ShoppingBagIcon, Trash2 } from 'lucide-react';
+import { BusIcon, Download, Edit3, Trash2, Upload, UserCog2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -46,25 +46,28 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Barra de Menús */}
                 <div>
-                    <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
-                        {/* Contenido principal */}
-                        <HeadingSmall title="Proveedores" description="Gestión de los Proveedores del Negocio" />
-                        {/* Ícono semitransparente */}
-                        <ShoppingBagIcon
-                            size={70}
-                            color="blue"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
-                        />
+                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                        <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
+                            {/* Contenido principal */}
+                            <HeadingSmall title="Proveedores" description="Gestión de los Proveedores del Negocio" />
+                            {/* Ícono semitransparente */}
+                            <BusIcon
+                                size={70}
+                                color="#34d399"
+                                className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                            />
+                        </div>
+                        <Separator className="my-2" />
                     </div>
-                    <Separator className="my-4" />
+
                     <div className="flex justify-end p-4">
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger>
                                     <Link href={route('proveedores.create')}>
                                         <Button className="cursor-pointer bg-blue-400 text-blue-950 hover:bg-blue-900 hover:text-white">
-                                            <BookCheck />
-                                            Nuevo Proveedor
+                                            <UserCog2Icon />
+                                            Agregar Proveedor
                                         </Button>
                                     </Link>
                                 </TooltipTrigger>
@@ -73,13 +76,43 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
+                        <Separator orientation="vertical" />
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Link href={route('proveedores.create')}>
+                                        <Button className="ms-2 cursor-pointer bg-emerald-700 text-white hover:bg-emerald-600">
+                                            <Download />
+                                        </Button>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Importar Proveedores</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                        <Separator orientation="vertical" />
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Link href={route('proveedores.create')}>
+                                        <Button className="ms-2 cursor-pointer bg-rose-900 text-white hover:bg-rose-700">
+                                            <Upload />
+                                        </Button>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Exportar Proveedores</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                     </div>
                 </div>
 
                 {/* Tabla de Proveedores */}
-                <Table className="mt-4">
+                <Table className="mt-2">
                     <TableCaption>Lista de Proveedores del Negocio</TableCaption>
-                    <TableHeader className="bg-sidebar">
+                    <TableHeader className="bg-sidebar rounded-2xl">
                         <TableRow>
                             <TableHead>Nombre</TableHead>
                             <TableHead>Teléfono</TableHead>
@@ -113,7 +146,7 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
                                         <AlertDialogTrigger asChild>
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-destructive dark:hover:bg-destructive cursor-pointer hover:text-white"
+                                                className="hover:bg-destructive dark:hover:bg-destructive ms-2 cursor-pointer hover:text-white"
                                             >
                                                 <Trash2 />
                                             </Button>

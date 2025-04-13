@@ -19,6 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function EditarClientesPage({ cliente }: { cliente: ClienteProps }) {
+    alert(cliente);
     // Manejo del formulario con useForm
     const { data, setData, put, errors, processing } = useForm({
         nombre_cliente: cliente.nombre_cliente,
