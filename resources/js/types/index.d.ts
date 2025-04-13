@@ -91,6 +91,7 @@ export interface AlmacenProps {
     correo_almacen: string;
     provincia_almacen: string;
     ciudad_almacen: string;
+    notas_almacen: string;
     created_at: string;
     updated_at: string;
 }

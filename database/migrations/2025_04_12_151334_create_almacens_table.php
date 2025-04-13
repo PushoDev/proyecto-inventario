@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('correo_almacen')->nullable();
             $table->string('provincia_almacen')->nullable();
             $table->string('ciudad_almacen')->nullable();
+            $table->text('notas_almacen')->nullable();
             $table->timestamps();
         });
     }

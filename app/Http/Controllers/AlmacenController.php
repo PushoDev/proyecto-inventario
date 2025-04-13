@@ -40,6 +40,7 @@ class AlmacenController extends Controller
             'correo_almacen' => ['nullable', 'string', 'unique:almacens,correo_almacen'],
             'provincia_almacen' => ['nullable', 'string'],
             'ciudad_almacen' => ['nullable', 'string'],
+            'notas_almacen' => ['nullable', 'string'],
         ]);
 
         Almacen::create([
@@ -48,6 +49,7 @@ class AlmacenController extends Controller
             'correo_almacen' => $request->correo_almacen,
             'provincia_almacen' => $request->provincia_almacen,
             'ciudad_almacen' => $request->ciudad_almacen,
+            'notas_almacen' => $request->notas_almacen,
         ]);
 
         return redirect()->route('almacenes.create')->with('success', 'Almacén creado exitosamente.');
@@ -84,6 +86,7 @@ class AlmacenController extends Controller
             'correo_almacen' => ['nullable', 'string', 'unique:almacens,correo_almacen,' . $almacen->id],
             'provincia_almacen' => ['nullable', 'string'],
             'ciudad_almacen' => ['nullable', 'string'],
+            'notas_almacen' => ['nullable', 'string'],
         ]);
 
         $almacen->update([
@@ -92,6 +95,7 @@ class AlmacenController extends Controller
             'correo_almacen' => $request->correo_almacen,
             'provincia_almacen' => $request->provincia_almacen,
             'ciudad_almacen' => $request->ciudad_almacen,
+            'notas_almacen' => $request->notas_almacen,
         ]);
 
         return redirect()->route('almacenes.index')->with('success', 'Almacén actualizado exitosamente.');

@@ -129,7 +129,7 @@ export default function ClientesPage({ clientes }: { clientes: ClienteProps[] })
                                                 >
                                                     Aceptar
                                                 </AlertDialogAction>
-                                                <AlertDialogCancel className="cursor-pointer hover:bg-emerald-300 hover:text-emerald-950">
+                                                <AlertDialogCancel className="cursor-pointer text-white hover:bg-emerald-300 hover:text-emerald-950 dark:hover:bg-emerald-300 dark:hover:text-emerald-950">
                                                     Cancelar
                                                 </AlertDialogCancel>
                                             </AlertDialogFooter>

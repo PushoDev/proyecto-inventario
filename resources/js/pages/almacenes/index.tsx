@@ -100,7 +100,7 @@ export default function AlmacenesPage({ almacenes }: { almacenes: AlmacenProps[]
                                 <TableCell>{almacen.ciudad_almacen || 'N/A'}</TableCell>
                                 <TableCell className="text-right">
                                     {/* Botón Editar */}
-                                    <Link href={route('almacenes.edit', { almacen: almacen.id })}>
+                                    <Link href={route('almacenes.edit', { almacene: almacen.id })}>
                                         <Button variant="outline" className="cursor-pointer hover:bg-blue-900 hover:text-white">
                                             <Edit3 />
                                         </Button>
