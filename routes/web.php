@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     require __DIR__ . '/routes-project/almacenes.php';
     // Logistica
     require __DIR__ . '/routes-project/logistica.php';
+    // cuentas
+    require __DIR__ . '/routes-project/cuentas.php';
 });
 
 require __DIR__ . '/settings.php';

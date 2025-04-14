@@ -117,7 +117,7 @@ export default function Password() {
                                 leave="transition ease-in-out"
                                 leaveTo="opacity-0"
                             >
-                                <p className="text-sm text-neutral-600">Saved</p>
+                                <p className="text-sm text-neutral-600 dark:text-emerald-300">Cambios Realizados con Éxitos</p>
                             </Transition>
                         </div>
                     </form>
