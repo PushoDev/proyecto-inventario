@@ -8,7 +8,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { MonitorIcon } from 'lucide-react';
+import { ComputerIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,7 +30,7 @@ export default function CajaGeneral() {
                             description="Gestión del Negocio. Utilice las opciones requeridas para su funcionamineto"
                         />
                         {/* Ícono semitransparente */}
-                        <MonitorIcon
+                        <ComputerIcon
                             size={70}
                             color="#f43f5e"
                             className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"

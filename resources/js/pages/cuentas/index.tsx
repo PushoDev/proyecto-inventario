@@ -4,7 +4,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { CreditCardIcon } from 'lucide-react';
+import { HandCoins } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,7 +26,7 @@ export default function Cuentas() {
                             description="Gestión de Cuentas fiscales, monetarias y deudas pendientes a Proveedores"
                         />
                         {/* Ícono semitransparente */}
-                        <CreditCardIcon
+                        <HandCoins
                             size={70}
                             color="green"
                             className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"

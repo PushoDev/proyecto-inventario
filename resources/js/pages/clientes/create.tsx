@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { BookCheck, ShoppingBasketIcon } from 'lucide-react';
+import { BookCheck, Handshake } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -48,15 +48,17 @@ export default function CrearClientesPage() {
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Barra de Menús */}
                 <div>
-                    <div className="relative space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-400 bg-gray-500 p-4">
-                        {/* Contenido principal */}
-                        <HeadingSmall title="Clientes" description="Gestión de los Clientes del Negocio" />
-                        {/* Ícono semitransparente */}
-                        <ShoppingBasketIcon
-                            size={70}
-                            color="yellow"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"
-                        />
+                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                        <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
+                            {/* Contenido principal */}
+                            <HeadingSmall title="Clientes" description="Gestión de los Clientes del Negocio" />
+                            {/* Ícono semitransparente */}
+                            <Handshake
+                                size={70}
+                                color="#34d399"
+                                className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                            />
+                        </div>
                     </div>
                     <Separator className="my-4" />
                     <div className="flex justify-normal p-4">

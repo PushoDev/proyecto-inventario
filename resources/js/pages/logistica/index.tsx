@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { LogisticaProps, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { ChartBarIncreasingIcon } from 'lucide-react';
+import { ChartColumnBigIcon } from 'lucide-react';
 import * as React from 'react';
 
 // Section Card
@@ -36,7 +36,7 @@ export default function logisticaPage({ totalCategorias, categoriasActivas, tota
                             <HeadingSmall title="Logistica" description="Logistica del Negocio, resumenes interáctivos e información general" />
 
                             {/* Ícono semitransparente */}
-                            <ChartBarIncreasingIcon
+                            <ChartColumnBigIcon
                                 size={70}
                                 color="white"
                                 className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-0 transform animate-pulse opacity-40"

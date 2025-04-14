@@ -17,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { ProveedorProps, type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { BusIcon, Download, Edit3, Trash2, Upload, UserCog2Icon } from 'lucide-react';
+import { Download, Edit3, PlaneIcon, Trash2, Upload, UserCog2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -51,7 +51,7 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
                             {/* Contenido principal */}
                             <HeadingSmall title="Proveedores" description="Gestión de los Proveedores del Negocio" />
                             {/* Ícono semitransparente */}
-                            <BusIcon
+                            <PlaneIcon
                                 size={70}
                                 color="#34d399"
                                 className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"

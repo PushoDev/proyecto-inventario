@@ -6,16 +6,17 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
     ArrowRightLeftIcon,
-    BookOpen,
+    BookOpenText,
     BoxesIcon,
     ChartNoAxesCombinedIcon,
     CheckCircleIcon,
     Computer,
-    CreditCardIcon,
     Github,
-    HomeIcon,
     IdCardIcon,
+    Landmark,
     LucideShoppingCart,
+    NotebookText,
+    StoreIcon,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 import { SearchForm } from './extras/search-form';
@@ -49,7 +50,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Almacenes o Tiendas',
         href: '/almacenes',
-        icon: HomeIcon,
+        icon: StoreIcon,
     },
     // Movimientos
     {
@@ -71,9 +72,15 @@ const mainNavItems: NavItem[] = [
     },
     // Cuentas
     {
-        title: 'Cuentas',
+        title: 'Cuentas Monetarias',
         href: '/cuentas',
-        icon: CreditCardIcon,
+        icon: Landmark,
+    },
+    // Reportes
+    {
+        title: 'Reportes',
+        href: '/reportes',
+        icon: NotebookText,
     },
 ];
 
@@ -86,7 +93,7 @@ const footerNavItems: NavItem[] = [
     {
         title: 'Documentación',
         href: '#',
-        icon: BookOpen,
+        icon: BookOpenText,
     },
 ];
 
