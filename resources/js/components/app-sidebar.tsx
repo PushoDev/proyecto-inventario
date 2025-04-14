@@ -5,7 +5,6 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
-    ArrowRightLeftIcon,
     BookOpenText,
     BoxesIcon,
     ChartNoAxesCombinedIcon,
@@ -16,6 +15,7 @@ import {
     Landmark,
     LucideShoppingCart,
     NotebookText,
+    Repeat,
     StoreIcon,
 } from 'lucide-react';
 import AppLogo from './app-logo';
@@ -56,7 +56,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Movimientos',
         href: '/movimientos',
-        icon: ArrowRightLeftIcon,
+        icon: Repeat,
     },
     // Proveedores
     {

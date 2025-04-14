@@ -1,10 +1,11 @@
 import HeadingSmall from '@/components/heading-small';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { HandCoins } from 'lucide-react';
+import { CircleDollarSignIcon, HandCoins, Wallet2Icon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,6 +38,12 @@ export default function Cuentas() {
                 <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                     {/* Deudas a Proveedores */}
                     <div className="mt-4 rounded-xl border-1 border-red-900">
+                        <div className="flex justify-end">
+                            <Button variant="outline" className="cursor-pointer hover:dark:bg-amber-700">
+                                <CircleDollarSignIcon />
+                                Pagar Deuda
+                            </Button>
+                        </div>
                         <Table className="mt-4">
                             <TableCaption className="bg-destructive rounded-2xl text-white">Montos Pendientes a Pagar</TableCaption>
                             <TableHeader>
@@ -62,6 +69,12 @@ export default function Cuentas() {
 
                     {/* Cuentas al Negocio */}
                     <div className="mt-4 rounded-xl border-2 border-emerald-600">
+                        <div className="flex justify-end">
+                            <Button variant="outline" className="cursor-pointer hover:animate-pulse hover:dark:bg-emerald-700">
+                                <Wallet2Icon />
+                                Agregar Cuenta
+                            </Button>
+                        </div>
                         <Table className="mt-4">
                             <TableCaption className="rounded-2xl bg-emerald-800 text-white">Cuentas del Negocio</TableCaption>
                             <TableHeader>

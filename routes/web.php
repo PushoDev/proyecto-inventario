@@ -21,10 +21,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     require __DIR__ . '/routes-project/proveedores.php';
     // Almacenes
     require __DIR__ . '/routes-project/almacenes.php';
+    // Movimientos
+    require __DIR__ . '/api/movimientos.php';
     // Logistica
     require __DIR__ . '/routes-project/logistica.php';
     // cuentas
     require __DIR__ . '/routes-project/cuentas.php';
+    // Productos
+    require __DIR__ . '/routes-project/productos.php';
+    // Reportes
+    require __DIR__ . '/routes-project/reportes.php';
 });
 
 require __DIR__ . '/settings.php';
