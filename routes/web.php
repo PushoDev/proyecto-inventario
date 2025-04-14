@@ -31,6 +31,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     require __DIR__ . '/routes-project/productos.php';
     // Reportes
     require __DIR__ . '/routes-project/reportes.php';
+
+    // Comprar
+    require __DIR__ . '/acciones/comprar.php';
+    // Seleccionar
+    require __DIR__ . '/acciones/seleccionarcomprar.php';
 });
 
 require __DIR__ . '/settings.php';
