@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cuentas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_cuenta')->unique();
-            $table->string('saldo_cuenta', 80);
+            $table->double('saldo_cuenta', 15, 8)->nullable()->default(123.4567);
             $table->text('notas_cuenta')->nullable();
             $table->timestamps();
         });

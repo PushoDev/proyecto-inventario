@@ -1,14 +1,17 @@
 import HeadingSmall from '@/components/heading-small';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { Table } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
-import { AlmacenProps, ProveedorProps, type BreadcrumbItem } from '@/types';
+import { AlmacenProps, CategoriasProps, ProveedorProps, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { CalendarIcon, ShoppingBasket } from 'lucide-react';
@@ -25,10 +28,12 @@ export default function ComprarPage() {
     // Estados para almacenar los datos
     const [almacens, setAlmacens] = useState<AlmacenProps[]>([]);
     const [proveedors, setProveedors] = useState<ProveedorProps[]>([]);
+    const [categorias, setCategorias] = useState<CategoriasProps[]>([]);
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [formData, setFormData] = useState({
         almacen: '',
         proveedor: '',
+        categorias: '',
     });
 
     // Cargar datos al inicializar el componente
@@ -50,6 +55,15 @@ export default function ComprarPage() {
             })
             .then((data) => setProveedors(data))
             .catch((error) => console.error(error));
+
+        // Cargar Categorias
+        fetch('/compras/categorias')
+            .then((response) => {
+                if (!response.ok) throw new Error('Error al cargar las categorias');
+                return response.json();
+            })
+            .then((data) => setCategorias(data))
+            .catch((error) => console.error(error));
     }, []);
 
     return (
@@ -65,6 +79,7 @@ export default function ComprarPage() {
                         className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
                     />
                 </div>
+
                 <Separator className="col-span-4" />
 
                 {/* Formulario */}
@@ -93,7 +108,7 @@ export default function ComprarPage() {
                                                     {date ? format(date, 'PPP') : <span>Seleccione Fecha</span>}
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0" align="start">
+                                            <PopoverContent className="mt-2 w-auto p-0" align="start">
                                                 <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
                                             </PopoverContent>
                                         </Popover>
@@ -107,7 +122,7 @@ export default function ComprarPage() {
                                             value={formData.almacen}
                                             onValueChange={(value) => setFormData({ ...formData, almacen: value })}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger className="mt-2 w-full">
                                                 <SelectValue placeholder="Seleccione Almacén" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -128,7 +143,7 @@ export default function ComprarPage() {
                                             value={formData.proveedor}
                                             onValueChange={(value) => setFormData({ ...formData, proveedor: value })}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger className="mt-2 w-full">
                                                 <SelectValue placeholder="Seleccione Proveedor" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -143,10 +158,59 @@ export default function ComprarPage() {
                                 </div>
                             </form>
                         </CardContent>
-                        <CardFooter>
-                            <p>Card Footer</p>
-                        </CardFooter>
                     </Card>
+                    <div className="mt-2">
+                        <Card>
+                            <CardHeader>
+                                <CardDescription className="text-center dark:text-emerald-400">Ingrese Datos del Producto a Comprar</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-4 gap-4">
+                                    {/* Nombre del Producto */}
+                                    <div className="grid w-full max-w-sm items-center gap-1">
+                                        <Label htmlFor="nombre_producto">Nombre del Producto</Label>
+                                        <Input className="mt-2" />
+                                        <InputError />
+                                    </div>
+                                    {/* Categoria del Producto */}
+                                    <div className="grid w-full max-w-sm items-center gap-1">
+                                        <Label htmlFor="nombre_producto">Categoria del Producto</Label>
+                                        <Select
+                                            name="categorias"
+                                            value={formData.categorias}
+                                            onValueChange={(value) => setFormData({ ...formData, categorias: value })}
+                                        >
+                                            <SelectTrigger className="mt-2 w-full">
+                                                <SelectValue placeholder="Seleccione Categoria" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {categorias.map((categoria) => (
+                                                    <SelectItem key={categoria.id} value={categoria.nombre_categoria}>
+                                                        {categoria.nombre_categoria}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError />
+                                    </div>
+                                    {/* Precio de Compra */}
+                                    <div className="grid w-full max-w-sm items-center gap-1">
+                                        <Label htmlFor="precio_producto">Precio del Producto</Label>
+                                        <Input className="mt-2" type="number" />
+                                        <InputError />
+                                    </div>
+                                    {/* Cantidad de Productos */}
+                                    <div className="grid w-full max-w-sm items-center gap-1">
+                                        <Label htmlFor="cantidad_producto">Cantidad Comprada</Label>
+                                        <Input className="mt-2" type="number" />
+                                        <InputError />
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <Separator className="mt-3" />
+                    <Table></Table>
                 </div>
             </div>
         </AppLayout>
