@@ -9,12 +9,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { AlmacenProps, CategoriasProps, ProductoComprarProps, ProveedorProps, type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { CalendarIcon, Edit2, PlusIcon, ShoppingBasket, Trash2Icon } from 'lucide-react';
+import { BookCheck, CalendarIcon, Edit2, PlusIcon, ShoppingBasket, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -112,11 +113,17 @@ export default function ComprarPage() {
 
     // Editar un producto existente
     const editarProducto = (id: number) => {
-        const productoToEdit = producto.find((p) => p.id === id);
-        if (productoToEdit) {
-            setFormData(productoToEdit);
+        const productoParaEditar = producto.find((p) => p.id === id);
+        if (productoParaEditar) {
+            setFormData(productoParaEditar);
             eliminarProducto(id); // Elimina el producto original antes de editar
         }
+    };
+
+    // Proceder Compra
+    const procederCompra = () => {
+        // Aui va la accion para hacer la compra agregar los productos
+        alert('Proceder Compra');
     };
 
     // Limpiar Formulario
@@ -238,7 +245,7 @@ export default function ComprarPage() {
                                     <div className="grid w-full max-w-sm items-center gap-1">
                                         <Label htmlFor="nombre_producto">Categoria del Producto</Label>
                                         <Select
-                                            name="categoria"
+                                            name="categorias"
                                             value={formData.categorias}
                                             onValueChange={(value) => setFormData({ ...formData, categorias: value })}
                                         >
@@ -331,16 +338,16 @@ export default function ComprarPage() {
                                     <TableCell className="text-right">
                                         {/* Btn Acciones */}
                                         <Button
-                                            variant="ghost"
+                                            variant="link"
                                             onClick={() => editarProducto(producto.id)}
-                                            className="cursor-pointer bg-blue-300 text-blue-950 hover:bg-blue-600 hover:text-white"
+                                            className="cursor-pointer text-blue-600 hover:bg-blue-600 hover:text-white"
                                         >
                                             <Edit2 />
                                         </Button>
                                         <Button
-                                            variant="ghost"
+                                            variant="link"
                                             onClick={() => eliminarProducto(producto.id)}
-                                            className="hover:bg-destructive cursor-pointer bg-red-300 text-red-950 hover:text-white"
+                                            className="hover:bg-destructive text-destructive ms-2 cursor-pointer hover:text-white"
                                         >
                                             <Trash2Icon />
                                         </Button>
@@ -350,13 +357,52 @@ export default function ComprarPage() {
                         </TableBody>
                         <TableFooter>
                             <TableRow>
-                                <TableCell colSpan={3}>Total de la Compra</TableCell>
-                                <TableCell className="bg-amber-500 text-center text-amber-950">50</TableCell>
-                                <TableCell className="bg-emerald-700 text-center text-emerald-950">$ 250.950</TableCell>
+                                <TableCell colSpan={2}>Total de la Compra</TableCell>
+                                <TableCell className="bg-amber-300 text-amber-950">{producto.length} Productos</TableCell>
+                                <TableCell className="bg-amber-800 text-amber-300">
+                                    {producto.reduce((total, item) => total + item.cantidad, 0)} Unidades
+                                </TableCell>
+                                <TableCell className="bg-emerald-700 text-emerald-950">
+                                    $ {producto.reduce((total, producto) => total + producto.precio * producto.cantidad, 0).toFixed(2)}
+                                </TableCell>
                                 <TableCell className="text-sidebar-accent text-right">Acciones</TableCell>
                             </TableRow>
                         </TableFooter>
                     </Table>
+                </div>
+                <Separator />
+                <div className="flex justify-center p-4">
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Button
+                                    className="cursor-pointer bg-emerald-400 text-emerald-950 hover:bg-emerald-900 hover:text-white"
+                                    onClick={procederCompra}
+                                >
+                                    <BookCheck />
+                                    Proceder a la Compra
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Continuar con la Compra de los Productos</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Link href="/dashboard">
+                                    <Button className="ms-2 cursor-pointer bg-red-400 text-red-950 hover:bg-red-900 hover:text-white">
+                                        <BookCheck />
+                                        Cancelar Compra
+                                    </Button>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Cancelar y regresar</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
             </div>
         </AppLayout>

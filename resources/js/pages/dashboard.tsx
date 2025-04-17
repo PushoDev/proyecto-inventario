@@ -106,39 +106,43 @@ export default function CajaGeneral() {
                     </Table>
                 </div>
                 <Separator className="mt-4" />
-                <div className="animate__animated animate__backInUp grid auto-rows-min gap-4 md:grid-cols-4">
-                    {/* Comprar Nuevos Productos */}
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border bg-gradient-to-br from-red-800 to-red-400">
-                        {/* Ícono de fondo transparente */}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                            <ShoppingBagIcon className="h-48 w-48 text-white" />
-                        </div>
-                        {/* Contenido principal */}
-                        <div className="relative z-10 h-full p-6">
-                            {/* Ícono en la esquina superior izquierda */}
-                            <div className="absolute top-4 left-4">
-                                <LucideBaggageClaim className="h-8 w-8 text-white" />
+
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    <div className="animate__animated animate__backInUp grid auto-rows-min gap-4 md:grid-cols-4">
+                        {/* Comprar Nuevos Productos */}
+                        <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border bg-gradient-to-br from-red-800 to-red-400">
+                            {/* Ícono de fondo transparente */}
+                            <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                                <ShoppingBagIcon className="h-48 w-48 text-white" />
                             </div>
-                            {/* Textos alineados a la derecha */}
-                            <div className="flex h-full flex-col items-end justify-center space-y-2">
-                                <h3 className="font-sans text-4xl font-bold text-white">Compra</h3>
-                                <span className="text-lg text-white">Adquirir Nuevos Productos</span>
+                            {/* Contenido principal */}
+                            <div className="relative z-10 h-full p-6">
+                                {/* Ícono en la esquina superior izquierda */}
+                                <div className="absolute top-4 left-4">
+                                    <LucideBaggageClaim className="h-8 w-8 text-white" />
+                                </div>
+                                {/* Textos alineados a la derecha */}
+                                <div className="flex h-full flex-col items-end justify-center space-y-2">
+                                    <h3 className="font-sans text-4xl font-bold text-white">Compra</h3>
+                                    <span className="text-lg text-white">Adquirir Nuevos Productos</span>
+                                </div>
+                                {/* Link */}
+                                <Link href={route('comprar.index')}>
+                                    <button className="absolute right-4 bottom-4 rounded-md bg-red-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:animate-pulse hover:cursor-pointer hover:bg-white hover:text-red-800">
+                                        Comprar
+                                    </button>
+                                </Link>
                             </div>
-                            {/* Link */}
-                            <Link href={route('comprar.index')}>
-                                <button className="absolute right-4 bottom-4 rounded-md bg-red-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:animate-pulse hover:cursor-pointer hover:bg-white hover:text-red-800">
-                                    Comprar
-                                </button>
-                            </Link>
+                            {/* Patrón de fondo adicional */}
+                            <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                         </div>
-                        {/* Patrón de fondo adicional */}
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                        {/* <WidgetCompra /> */}
+                        <WidgetVenta />
+                        <WidgetTransacciones />
+                        <WidgetInventario />
                     </div>
-                    {/* <WidgetCompra /> */}
-                    <WidgetVenta />
-                    <WidgetTransacciones />
-                    <WidgetInventario />
                 </div>
+
                 <Separator className="mt-4" />
             </div>
         </AppLayout>

@@ -37,7 +37,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     return (
         <AuthLayout title="Inicie sesión en su cuenta" description="Ingrese su correo electrónico y contraseña a continuación para iniciar sesión">
-            <Head title="©" />
+            <Head title="🏪🛒" />
 
             <form className="animate__animated animate__fadeInUp flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
@@ -92,7 +92,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                     <Button
                         type="submit"
-                        className="hover:bg-destructive mt-4 w-full cursor-pointer bg-red-400 text-white hover:text-white"
+                        className="hover:bg-destructive mt-4 w-full cursor-pointer bg-red-400 text-white hover:animate-pulse hover:text-white"
                         tabIndex={4}
                         disabled={processing}
                     >
