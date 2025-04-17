@@ -16,14 +16,14 @@ import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlmacenProps, Categoria, Proveedor } from '@/types';
+import { AlmacenProps, CategoriasProps, ProveedorProps } from '@/types';
 import { Edit2, LucideBaggageClaim, ShoppingBagIcon, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const WidgetCompra = () => {
     const [almacens, setAlmacens] = useState<AlmacenProps[]>([]);
-    const [proveedors, setProveedors] = useState<Proveedor[]>([]);
-    const [categorias, setCategorias] = useState<Categoria[]>([]);
+    const [proveedors, setProveedors] = useState<ProveedorProps[]>([]);
+    const [categorias, setCategorias] = useState<CategoriasProps[]>([]);
 
     // Estado para los productos en la tabla
     const [productos, setProductos] = useState<
@@ -206,9 +206,9 @@ const WidgetCompra = () => {
                                                 <SelectValue placeholder="Seleccione Categoría" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {categorias.map((categoria: Categoria) => (
-                                                    <SelectItem key={categoria.id} value={categoria.name_categoria}>
-                                                        {categoria.name_categoria}
+                                                {categorias.map((categoria: CategoriasProps) => (
+                                                    <SelectItem key={categoria.id} value={categoria.nombre_categoria}>
+                                                        {categoria.nombre_categoria}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>

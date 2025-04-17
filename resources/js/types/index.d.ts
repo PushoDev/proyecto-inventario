@@ -96,10 +96,26 @@ export interface AlmacenProps {
     updated_at: string;
 }
 
+// Interface para la Logistica
 export interface LogisticaProps {
     totalCategorias: number;
     categoriasActivas: number;
     totalProveedores: number;
     totalClientes: number;
     totalAlmacenes: number;
+}
+
+// Interface para el formulario de Comprar Productos
+export interface ProductoComprarProps {
+    id: number;
+    producto: string;
+    categoria: string;
+    codigo: string;
+    cantidad: number;
+    precio: number;
+}
+
+// Interface para los Productos
+export interface ProductosProps {
+    id: number;
 }
