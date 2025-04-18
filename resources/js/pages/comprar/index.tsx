@@ -97,13 +97,25 @@ export default function ComprarPage() {
             return;
         }
 
-        const nuevoProducto = {
-            id: Date.now(),
-            ...formData,
+        const nuevoProducto: ProductoComprarProps = {
+            id: editingProductId || Date.now(), // Usar el ID existente o generar uno nuevo
+            producto: formData.producto,
+            categoria: formData.categorias,
+            codigo: formData.codigo,
+            cantidad: formData.cantidad,
+            precio: formData.precio,
         };
 
-        setProductos((prevProductos) => [...prevProductos, nuevoProducto]);
-        clearForm();
+        if (editingProductId) {
+            // Actualizar el producto existente
+            setProductos((prevProductos) => prevProductos.map((p) => (p.id === editingProductId ? nuevoProducto : p)));
+            setEditingProductId(null); // Limpiar el estado de edición
+        } else {
+            // Agregar un nuevo producto
+            setProductos((prevProductos) => [...prevProductos, nuevoProducto]);
+        }
+
+        limpiarForm();
     };
 
     // Eliminar un producto de la tabla
@@ -111,13 +123,36 @@ export default function ComprarPage() {
         setProductos((prevProductos) => prevProductos.filter((p) => p.id !== id));
     };
 
+    const [editingProductId, setEditingProductId] = useState<number | null>(null);
     // Editar un producto existente
     const editarProducto = (id: number) => {
         const productoParaEditar = producto.find((p) => p.id === id);
         if (productoParaEditar) {
-            setFormData(productoParaEditar);
-            eliminarProducto(id); // Elimina el producto original antes de editar
+            setFormData({
+                almacen: '', // Estos campos no se usan en la edición
+                proveedor: '', // Estos campos no se usan en la edición
+                producto: productoParaEditar.producto,
+                categorias: productoParaEditar.categoria,
+                codigo: productoParaEditar.codigo,
+                cantidad: productoParaEditar.cantidad,
+                precio: productoParaEditar.precio,
+            });
+            setEditingProductId(id); // Establecer el ID del producto en edición
         }
+    };
+
+    // Limpiar Formulario
+    const limpiarForm = () => {
+        setFormData({
+            almacen: '',
+            proveedor: '',
+            producto: '',
+            categorias: '',
+            codigo: '',
+            cantidad: 0,
+            precio: 0,
+        });
+        setEditingProductId(null);
     };
 
     // Proceder Compra
@@ -125,8 +160,6 @@ export default function ComprarPage() {
         // Aui va la accion para hacer la compra agregar los productos
         alert('Proceder Compra');
     };
-
-    // Limpiar Formulario
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -392,7 +425,10 @@ export default function ComprarPage() {
                         <Tooltip>
                             <TooltipTrigger>
                                 <Link href="/dashboard">
-                                    <Button className="ms-2 cursor-pointer bg-red-400 text-red-950 hover:bg-red-900 hover:text-white">
+                                    <Button
+                                        onClick={limpiarForm}
+                                        className="ms-2 cursor-pointer bg-red-400 text-red-950 hover:bg-red-900 hover:text-white"
+                                    >
                                         <BookCheck />
                                         Cancelar Compra
                                     </Button>
