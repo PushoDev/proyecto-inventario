@@ -103,6 +103,7 @@ export interface LogisticaProps {
     totalProveedores: number;
     totalClientes: number;
     totalAlmacenes: number;
+    totalProductos: number;
 }
 
 // Interface para los Productos

@@ -22,6 +22,6 @@ class Producto extends Model
     // Accesor para obtener la URl de la imagen
     public function getImagenUrkAtribute()
     {
-        return $this->imagen_producto ? asset('storage/app/private/products/' . $this->imagen_producto) : null;
+        return $this->imagen_producto ? asset('storage/' . $this->imagen_producto) : null;
     }
 }

@@ -60,9 +60,11 @@ class ProductoController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * Dar de baja a Producto
      */
     public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+        return redirect()->route('productos.index');
     }
 }

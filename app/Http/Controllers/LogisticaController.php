@@ -15,14 +15,17 @@ class LogisticaController extends Controller
     {
         // Llamar y Contar valores
         $totalCategorias = DB::table('categorias')->count();
-        $categoriasActivas = DB::table('categorias')->select('activar_categoria')->value('');
+        $categoriasActivas = DB::table('categorias')->select('activar_categoria')->value('1');
         $totalProveedores = DB::table('proveedors')->count();
         $totalClientes = DB::table('clientes')->count();
+        $totalProductos = DB::table('productos')->count();
         return Inertia::render('logistica/index', [
             'totalCategorias' => $totalCategorias,
             'categoriasActivas' => $categoriasActivas,
             'totalProveedores' => $totalProveedores,
             'totalClientes' => $totalClientes,
+
+            'totalProductos' => $totalProductos,
 
         ]);
     }

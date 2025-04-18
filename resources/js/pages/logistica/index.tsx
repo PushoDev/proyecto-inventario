@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { LogisticaProps, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { ChartColumnBigIcon } from 'lucide-react';
+import { ChartColumnBigIcon, Handshake, Package, PackageOpen, PlaneIcon, PlaneTakeoffIcon, SquareCheckBig, SquareCheckIcon } from 'lucide-react';
 import * as React from 'react';
 
 // Section Card
@@ -20,7 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function logisticaPage({ totalCategorias, categoriasActivas, totalProveedores }: LogisticaProps) {
+export default function logisticaPage({ totalCategorias, categoriasActivas, totalClientes, totalProveedores, totalProductos }: LogisticaProps) {
     // Calendario
     const [date, setDate] = React.useState<Date | undefined>(new Date());
     return (
@@ -66,84 +66,7 @@ export default function logisticaPage({ totalCategorias, categoriasActivas, tota
                         </Card>
                         <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow" />
                     </div>
-                    <Separator className="my-2" />
-                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-                        <Card className="@container/card">
-                            <CardHeader className="relative">
-                                <CardDescription>Total Revenue</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">$1,250.00</CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingUpIcon className="size-3" />
-                                        +12.5%
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Trending up this month <TrendingUpIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Visitors for the last 6 months</div>
-                            </CardFooter>
-                        </Card>
-                        {/* Proveedores */}
-                        <Card className="@container/card">
-                            <CardHeader className="relative">
-                                <CardDescription>Proveedores</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalProveedores}</CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingDownIcon className="size-3" />
-                                        {totalProveedores}
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Down 20% this period <TrendingDownIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Acquisition needs attention</div>
-                            </CardFooter>
-                        </Card>
-                        {/* Clientes */}
-                        <Card className="@container/card">
-                            <CardHeader className="relative">
-                                <CardDescription>Active Accounts</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">45,678</CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingUpIcon className="size-3" />
-                                        +12.5%
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Strong user retention <TrendingUpIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Engagement exceed targets</div>
-                            </CardFooter>
-                        </Card>
-                        {/* Categorias */}
-                        <Card className="@container/card">
-                            <CardHeader className="relative">
-                                <CardDescription>Categorias</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalCategorias}</CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs text-emerald-500">
-                                        <TrendingUpIcon className="size-3" />
-                                        {categoriasActivas}
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Steady performance <TrendingUpIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Meets growth projections</div>
-                            </CardFooter>
-                        </Card>
-                    </div>
+
                     <Separator className="my-2" />
                     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                         <Card className="@container/card">
@@ -214,6 +137,86 @@ export default function logisticaPage({ totalCategorias, categoriasActivas, tota
                             <CardFooter className="flex-col items-start gap-1 text-sm">
                                 <div className="line-clamp-1 flex gap-2 font-medium">
                                     Steady performance <TrendingUpIcon className="size-4" />
+                                </div>
+                                <div className="text-muted-foreground">Meets growth projections</div>
+                            </CardFooter>
+                        </Card>
+                    </div>
+
+                    <Separator className="my-2" />
+                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                        {/* Productos */}
+                        <Card className="@container/card">
+                            <CardHeader className="relative">
+                                <CardDescription>Productos</CardDescription>
+                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalProductos}</CardTitle>
+                                <div className="absolute top-4 right-4">
+                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+                                        <PackageOpen className="size-3" />
+                                        +12.5%
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardFooter className="flex-col items-start gap-1 text-sm">
+                                <div className="line-clamp-1 flex gap-2 font-medium">
+                                    Todos los Producto <Package className="size-4" />
+                                </div>
+                                <div className="text-muted-foreground">Todos distribuidos en los almacenes</div>
+                            </CardFooter>
+                        </Card>
+                        {/* Proveedores */}
+                        <Card className="@container/card">
+                            <CardHeader className="relative">
+                                <CardDescription>Proveedores</CardDescription>
+                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalProveedores}</CardTitle>
+                                <div className="absolute top-4 right-4">
+                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+                                        <PlaneTakeoffIcon className="size-3" />
+                                        {totalProveedores}
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardFooter className="flex-col items-start gap-1 text-sm">
+                                <div className="line-clamp-1 flex gap-2 font-medium">
+                                    Todos Adquiridos <PlaneIcon className="size-4" />
+                                </div>
+                                <div className="text-muted-foreground">Adquirir Productos</div>
+                            </CardFooter>
+                        </Card>
+                        {/* Clientes */}
+                        <Card className="@container/card">
+                            <CardHeader className="relative">
+                                <CardDescription>Clientes</CardDescription>
+                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalClientes}</CardTitle>
+                                <div className="absolute top-4 right-4">
+                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+                                        <Handshake className="size-3" />
+                                        +12.5%
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardFooter className="flex-col items-start gap-1 text-sm">
+                                <div className="line-clamp-1 flex gap-2 font-medium">
+                                    Strong user retention <Handshake className="size-4" />
+                                </div>
+                                <div className="text-muted-foreground">Engagement exceed targets</div>
+                            </CardFooter>
+                        </Card>
+                        {/* Categorias */}
+                        <Card className="@container/card">
+                            <CardHeader className="relative">
+                                <CardDescription>Categorias</CardDescription>
+                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{totalCategorias}</CardTitle>
+                                <div className="absolute top-4 right-4">
+                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs text-emerald-500">
+                                        <SquareCheckBig className="size-3" />
+                                        {categoriasActivas}
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardFooter className="flex-col items-start gap-1 text-sm">
+                                <div className="line-clamp-1 flex gap-2 font-medium">
+                                    Steady performance <SquareCheckIcon className="size-4" />
                                 </div>
                                 <div className="text-muted-foreground">Meets growth projections</div>
                             </CardFooter>

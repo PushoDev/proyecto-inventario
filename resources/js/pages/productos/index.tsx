@@ -1,10 +1,23 @@
 import HeadingSmall from '@/components/heading-small';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Table, TableCaption, TableHead, TableHeader } from '@/components/ui/table';
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import { PackageOpen } from 'lucide-react';
+import { ProductosProps, type BreadcrumbItem } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
+import { Edit3, PackageOpen, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +26,18 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ProductosPage() {
+export default function ProductosPage({ productos }: { productos: ProductosProps[] }) {
+    // Eliminar o dar de Baja Producto
+    const eliminarProducto = (id: number) => {
+        router.delete(route('productos.destroy', { producto: id }), {
+            onSuccess: () => {
+                toast.success('Producto eliminado correctamente');
+            },
+            onError: () => {
+                toast.error('Error al eliminar el Producto');
+            },
+        });
+    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Productos en la Glorieta.Shop" />
@@ -37,12 +61,86 @@ export default function ProductosPage() {
                         <TableCaption>Productos Disponibles en el Negocio</TableCaption>
                         <TableHeader className="bg-sidebar rounded-2xl">
                             <TableHead>Producto</TableHead>
-                            <TableHead>Categoria</TableHead>
-                            <TableHead>Precio Invertido</TableHead>
-                            <TableHead>Cantidad</TableHead>
                             <TableHead>Imagen</TableHead>
+                            <TableHead>Categoria</TableHead>
+                            <TableHead>Unidades</TableHead>
+                            <TableHead className="text-right">Precio Invertido</TableHead>
                             <TableHead className="text-right text-blue-600 dark:text-amber-600">Opciones</TableHead>
                         </TableHeader>
+                        <TableBody>
+                            {productos.map((producto) => (
+                                <TableRow key={producto.id}>
+                                    <TableCell>{producto.nombre_producto}</TableCell>
+                                    <TableCell>
+                                        {producto.imagen_producto} {'Sin Imagen'}
+                                    </TableCell>
+                                    <TableCell>{producto.categoria_id}</TableCell>
+                                    <TableCell>{producto.cantidad_producto}</TableCell>
+                                    <TableCell className="text-right">{producto.precio_compra_producto}</TableCell>
+
+                                    {/* Opciones de los Productos */}
+                                    <TableCell className="text-right">
+                                        {/* Botón Editar */}
+                                        <Link href={route('productos.edit', { producto: producto.id })}>
+                                            <Button
+                                                variant="outline"
+                                                className="cursor-pointer hover:bg-blue-900 hover:text-white dark:hover:bg-blue-700"
+                                            >
+                                                <Edit3 />
+                                            </Button>
+                                        </Link>
+
+                                        {/* Diálogo de Confirmación para Eliminar */}
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="hover:bg-destructive dark:hover:bg-destructive ms-2 cursor-pointer hover:text-white"
+                                                >
+                                                    <Trash2 />
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle className="text-center">Atención</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        ¿Estás seguro de eliminar la categoría? Esta acción es irreversible.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogAction
+                                                        onClick={() => eliminarProducto(producto.id)}
+                                                        className="bg-destructive cursor-pointer hover:bg-red-300"
+                                                    >
+                                                        Aceptar
+                                                    </AlertDialogAction>
+                                                    <AlertDialogCancel className="cursor-pointer text-white hover:bg-emerald-300 hover:text-emerald-950 dark:hover:bg-emerald-300 dark:hover:text-emerald-950">
+                                                        Cancelar
+                                                    </AlertDialogCancel>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell colSpan={2}>Total de Productos</TableCell>
+                                <TableCell className="bg-amber-300 text-amber-950">{productos.length} Productos</TableCell>
+                                <TableCell className="bg-emerald-700 text-emerald-950">
+                                    {''}
+                                    {productos.reduce((total, item) => total + item.cantidad_producto, 0)} Unidades
+                                </TableCell>
+                                <TableCell className="bg-amber-800 text-right text-amber-300">
+                                    ${' '}
+                                    {productos
+                                        .reduce((total, productos) => total + productos.precio_compra_producto * productos.cantidad_producto, 0)
+                                        .toFixed(2)}
+                                </TableCell>
+                                <TableCell className="text-sidebar-accent text-right">Acciones</TableCell>
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </div>
             </div>
