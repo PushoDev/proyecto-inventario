@@ -38,7 +38,7 @@ export default function Cuentas() {
                 <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                     {/* Deudas a Proveedores */}
                     <div className="mt-4 rounded-xl border-1 border-red-900">
-                        <div className="flex justify-end">
+                        <div className="flex justify-center">
                             <Button variant="outline" className="cursor-pointer hover:dark:bg-amber-700">
                                 <CircleDollarSignIcon />
                                 Pagar Deuda
@@ -69,7 +69,7 @@ export default function Cuentas() {
 
                     {/* Cuentas al Negocio */}
                     <div className="mt-4 rounded-xl border-2 border-emerald-600">
-                        <div className="flex justify-end">
+                        <div className="flex justify-center">
                             <Button variant="outline" className="cursor-pointer hover:animate-pulse hover:dark:bg-emerald-700">
                                 <Wallet2Icon />
                                 Agregar Cuenta
