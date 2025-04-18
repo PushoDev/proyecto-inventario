@@ -105,6 +105,16 @@ export interface LogisticaProps {
     totalAlmacenes: number;
 }
 
+// Interface para los Productos
+export interface ProductosProps {
+    id: number;
+    nombre_producto: string;
+    categoria_id: string;
+    precio_compra_producto: number;
+    cantidad_producto: string;
+    imagen_producto: string;
+}
+
 // Interface para el formulario de Comprar Productos
 export interface ProductoComprarProps {
     id: number;
@@ -115,7 +125,4 @@ export interface ProductoComprarProps {
     precio: number;
 }
 
-// Interface para los Productos
-export interface ProductosProps {
-    id: number;
-}
+

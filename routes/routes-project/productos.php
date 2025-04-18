@@ -1,14 +1,10 @@
 <?php
 
+use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('productos', function () {
-    return Inertia::render('productos/index');
-})->name('productos');
-
-// Route::middleware(['auth', 'verified'])->group(
-//     function () {
-//         Route::resource('proveedores', ProveedorController::class);
-//     }
-// );
+Route::middleware(['auth', 'verified'])->group(
+    function () {
+        Route::resource('productos', ProductoController::class);
+    }
+);
