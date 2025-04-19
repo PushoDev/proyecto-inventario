@@ -110,10 +110,12 @@ export interface LogisticaProps {
 export interface ProductosProps {
     id: number;
     nombre_producto: string;
-    categoria_id: string;
+    marca_producto: string | null;
+    codigo_producto: string | null;
+    categoria: string | null; // Nombre de la categoría
     precio_compra_producto: number;
-    cantidad_producto: string;
-    imagen_producto: string;
+    cantidad_producto: number;
+    imagen_url: string | null;
 }
 
 // Interface para el formulario de Comprar Productos

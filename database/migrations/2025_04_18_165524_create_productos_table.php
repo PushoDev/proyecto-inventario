@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_producto');
+            $table->string('marca_producto')->nullable();
+            $table->string('codigo_producto')->nullable(); // Este es para code barra
             $table->unsignedBigInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
-            $table->double('precio_compra_producto');
+            $table->decimal('precio_compra_producto', 8, 2);
             $table->integer('cantidad_producto');
             $table->string('imagen_producto')->nullable();
             $table->timestamps();

@@ -38,6 +38,7 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
             },
         });
     };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Productos en la Glorieta.Shop" />
@@ -61,8 +62,10 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                         <TableCaption>Productos Disponibles en el Negocio</TableCaption>
                         <TableHeader className="bg-sidebar rounded-2xl">
                             <TableHead>Producto</TableHead>
-                            <TableHead>Imagen</TableHead>
+                            <TableHead className="text-center">Imagen</TableHead>
                             <TableHead>Categoria</TableHead>
+                            <TableHead>Modelo</TableHead>
+                            <TableHead>Código</TableHead>
                             <TableHead>Unidades</TableHead>
                             <TableHead className="text-right">Precio Invertido</TableHead>
                             <TableHead className="text-right text-blue-600 dark:text-amber-600">Opciones</TableHead>
@@ -71,12 +74,22 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                             {productos.map((producto) => (
                                 <TableRow key={producto.id}>
                                     <TableCell>{producto.nombre_producto}</TableCell>
-                                    <TableCell>
-                                        {producto.imagen_producto} {'Sin Imagen'}
+                                    <TableCell className="text-center">
+                                        {producto.imagen_url ? (
+                                            <img
+                                                src={producto.imagen_url}
+                                                alt={`Imagen de ${producto.nombre_producto}`}
+                                                className="mx-auto h-16 w-16 rounded-md object-cover"
+                                            />
+                                        ) : (
+                                            <span className="text-sm text-gray-500">Sin Imagen</span>
+                                        )}
                                     </TableCell>
-                                    <TableCell>{producto.categoria_id}</TableCell>
+                                    <TableCell>{producto.categoria || 'Sin Categoría'}</TableCell>
+                                    <TableCell>{producto.marca_producto || 'Sin Marca'}</TableCell>
+                                    <TableCell>{producto.codigo_producto || 'Sin Código'}</TableCell>
                                     <TableCell>{producto.cantidad_producto}</TableCell>
-                                    <TableCell className="text-right">{producto.precio_compra_producto}</TableCell>
+                                    <TableCell className="text-right">$ {producto.precio_compra_producto.toFixed(2)}</TableCell>
 
                                     {/* Opciones de los Productos */}
                                     <TableCell className="text-right">
@@ -104,7 +117,7 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle className="text-center">Atención</AlertDialogTitle>
                                                     <AlertDialogDescription>
-                                                        ¿Estás seguro de eliminar la categoría? Esta acción es irreversible.
+                                                        ¿Estás seguro de eliminar este producto? Esta acción es irreversible.
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
                                                 <AlertDialogFooter>
@@ -126,16 +139,15 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                         </TableBody>
                         <TableFooter>
                             <TableRow>
-                                <TableCell colSpan={2}>Total de Productos</TableCell>
+                                <TableCell colSpan={4}>Total de Productos</TableCell>
                                 <TableCell className="bg-amber-300 text-amber-950">{productos.length} Productos</TableCell>
                                 <TableCell className="bg-emerald-700 text-emerald-950">
-                                    {''}
                                     {productos.reduce((total, item) => total + item.cantidad_producto, 0)} Unidades
                                 </TableCell>
                                 <TableCell className="bg-amber-800 text-right text-amber-300">
-                                    ${' '}
+                                    $
                                     {productos
-                                        .reduce((total, productos) => total + productos.precio_compra_producto * productos.cantidad_producto, 0)
+                                        .reduce((total, producto) => total + producto.precio_compra_producto * producto.cantidad_producto, 0)
                                         .toFixed(2)}
                                 </TableCell>
                                 <TableCell className="text-sidebar-accent text-right">Acciones</TableCell>
