@@ -40,13 +40,7 @@ class Producto extends Model
         if ($this->imagen_producto) {
             return asset('storage/' . $this->imagen_producto);
         }
-        return null; // Retorna null si no hay imagen
+        // Retorna null si no hay imagen
+        return null;
     }
-    // public function getImagenUrlAttribute()
-    // {
-    //     if ($this->imagen_producto) {
-    //         return Storage::disk('public')->url($this->imagen_producto);
-    //     }
-    //     return null; // Retorna null si no hay imagen
-    // }
 }

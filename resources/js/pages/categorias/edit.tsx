@@ -17,6 +17,10 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Categorías',
         href: '/categorias',
     },
+    {
+        title: 'Editar Categoria',
+        href: '#',
+    },
 ];
 
 export default function EditarCategoriasPage({ categoria }: { categoria: CategoriasProps }) {

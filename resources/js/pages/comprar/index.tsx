@@ -20,6 +20,14 @@ import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
+        title: 'Caja Principal',
+        href: '/',
+    },
+    {
+        title: 'Productos',
+        href: '/productos',
+    },
+    {
         title: 'Adquirir Nuevos Productos',
         href: '/comprar',
     },

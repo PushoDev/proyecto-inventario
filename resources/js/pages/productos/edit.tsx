@@ -17,11 +17,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function EditProductoPage({ producto, categorias }: { producto: ProductosProps; categorias: CategoriasProps[] }) {
-    const { put, processing, errors } = useForm({
+    const { data, put, processing, errors, setData } = useForm({
         nombre_producto: producto.nombre_producto,
         marca_producto: producto.marca_producto || '',
         codigo_producto: producto.codigo_producto || '',
-        categoria_id: producto.categoria_id?.toString() || '', // Asegúrate de que sea un string
+        categoria_id: '', // Inicializamos como cadena vacía
         precio_compra_producto: producto.precio_compra_producto.toString(),
         cantidad_producto: producto.cantidad_producto.toString(),
         imagen_producto: null as File | null,
@@ -33,7 +33,7 @@ export default function EditProductoPage({ producto, categorias }: { producto: P
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            putData.imagen_producto = file;
+            setData('imagen_producto', file); // Actualizar el estado del formulario
             setPreviewImage(URL.createObjectURL(file));
         }
     };
@@ -75,28 +75,52 @@ export default function EditProductoPage({ producto, categorias }: { producto: P
                         {/* Nombre del Producto */}
                         <div>
                             <Label htmlFor="nombre_producto">Nombre del Producto</Label>
-                            <Input id="nombre_producto" name="nombre_producto" defaultValue={producto.nombre_producto} required className="mt-1" />
+                            <Input
+                                id="nombre_producto"
+                                name="nombre_producto"
+                                value={data.nombre_producto}
+                                onChange={(e) => setData('nombre_producto', e.target.value)}
+                                required
+                                className="mt-1"
+                            />
                             {errors.nombre_producto && <p className="text-red-500">{errors.nombre_producto}</p>}
                         </div>
 
                         {/* Marca del Producto */}
                         <div>
                             <Label htmlFor="marca_producto">Marca del Producto</Label>
-                            <Input id="marca_producto" name="marca_producto" defaultValue={producto.marca_producto || ''} className="mt-1" />
+                            <Input
+                                id="marca_producto"
+                                name="marca_producto"
+                                value={data.marca_producto}
+                                onChange={(e) => setData('marca_producto', e.target.value)}
+                                className="mt-1"
+                            />
                             {errors.marca_producto && <p className="text-red-500">{errors.marca_producto}</p>}
                         </div>
 
                         {/* Código del Producto */}
                         <div>
                             <Label htmlFor="codigo_producto">Código del Producto</Label>
-                            <Input id="codigo_producto" name="codigo_producto" defaultValue={producto.codigo_producto || ''} className="mt-1" />
+                            <Input
+                                id="codigo_producto"
+                                name="codigo_producto"
+                                value={data.codigo_producto}
+                                onChange={(e) => setData('codigo_producto', e.target.value)}
+                                className="mt-1"
+                            />
                             {errors.codigo_producto && <p className="text-red-500">{errors.codigo_producto}</p>}
                         </div>
 
                         {/* Categoría del Producto */}
                         <div>
                             <Label htmlFor="categoria_id">Categoría</Label>
-                            <Select name="categoria_id" defaultValue={producto.categoria_id?.toString()} required>
+                            <Select
+                                name="categoria_id"
+                                value={data.categoria_id}
+                                onValueChange={(value) => setData('categoria_id', value)} // Actualizar el estado del formulario
+                                required
+                            >
                                 <SelectTrigger className="mt-1">
                                     <SelectValue placeholder="Selecciona una categoría" />
                                 </SelectTrigger>
@@ -119,7 +143,8 @@ export default function EditProductoPage({ producto, categorias }: { producto: P
                                 name="precio_compra_producto"
                                 type="number"
                                 step="0.01"
-                                defaultValue={producto.precio_compra_producto.toString()}
+                                value={data.precio_compra_producto}
+                                onChange={(e) => setData('precio_compra_producto', e.target.value)}
                                 required
                                 className="mt-1"
                             />
@@ -133,7 +158,8 @@ export default function EditProductoPage({ producto, categorias }: { producto: P
                                 id="cantidad_producto"
                                 name="cantidad_producto"
                                 type="number"
-                                defaultValue={producto.cantidad_producto.toString()}
+                                value={data.cantidad_producto}
+                                onChange={(e) => setData('cantidad_producto', e.target.value)}
                                 required
                                 className="mt-1"
                             />
