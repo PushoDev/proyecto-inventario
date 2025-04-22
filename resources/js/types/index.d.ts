@@ -104,6 +104,8 @@ export interface LogisticaProps {
     totalClientes: number;
     totalAlmacenes: number;
     totalProductos: number;
+    totalUnidades: number;
+    inversionTotal: number;
 }
 
 // Interface para los Productos
@@ -113,6 +115,7 @@ export interface ProductosProps {
     marca_producto: string | null;
     codigo_producto: string | null;
     categoria: string | null; // Nombre de la categoría
+    categoria_id: number;
     precio_compra_producto: number;
     cantidad_producto: number;
     imagen_url: string | null;
