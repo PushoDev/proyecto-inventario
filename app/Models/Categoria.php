@@ -20,4 +20,10 @@ class Categoria extends Model
     protected $casts = [
         'activar_categoria' => 'boolean',
     ];
+
+    // Relación: Una categoría puede tener muchos productos
+    public function productos()
+    {
+        return $this->hasMany(Producto::class);
+    }
 }

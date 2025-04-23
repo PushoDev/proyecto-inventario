@@ -16,18 +16,22 @@ class Compra extends Model
         'total_compra',
     ];
 
+    // Relación: Una compra pertenece a un almacén
     public function almacen()
     {
         return $this->belongsTo(Almacen::class);
     }
 
+    // Relación: Una compra pertenece a un proveedor
     public function proveedor()
     {
         return $this->belongsTo(Proveedor::class);
     }
 
-    public function detalles()
+    // Relación: Una compra puede tener muchos productos
+    public function productos()
     {
-        return $this->hasMany(CompraDetalle::class);
+        return $this->belongsToMany(Producto::class, 'compra_producto')
+            ->withPivot('cantidad', 'precio');
     }
 }

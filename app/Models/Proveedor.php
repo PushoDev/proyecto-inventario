@@ -18,4 +18,10 @@ class Proveedor extends Model
     ];
 
     protected $primaryKey = 'id';
+
+    // Relación: Un proveedor puede tener muchas compras
+    public function compras()
+    {
+        return $this->hasMany(Compra::class);
+    }
 }

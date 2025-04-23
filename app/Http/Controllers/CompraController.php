@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Almacen;
+use App\Models\Categoria;
 use App\Models\Compra;
 use Illuminate\Http\Request;
-use App\Models\CompraDetalle;
 use App\Models\Producto;
+use App\Models\Proveedor;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use Inertia\Inertia;
 
@@ -20,74 +23,87 @@ class CompraController extends Controller
         return Inertia::render('comprar/index');
     }
 
-    // Cargar datos iniciales como ApiRest
-    public function cargarDatos(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $tipo = $request->input('tipo');
-
-        if ($tipo === 'almacenes') {
-            return response()->json(\App\Models\Almacen::all(['id', 'nombre_almacen']));
-        } elseif ($tipo === 'proveedores') {
-            return response()->json(\App\Models\Proveedor::all(['id', 'nombre_proveedor']));
-        } elseif ($tipo === 'categorias') {
-            return response()->json(\App\Models\Categoria::all(['id', 'nombre_categoria']));
-        }
-    }
-
-    // Registrar compra
-    public function registrarCompra(Request $request)
-    {
-        $request->validate([
-            'almacen_id' => 'required|exists:almacens,id',
-            'proveedor_id' => 'required|exists:proveedors,id',
-            'fecha_compra' => 'required|date',
+        // Validar los datos recibidos
+        $validator = Validator::make($request->all(), [
+            'almacen' => 'required|string|max:255',
+            'proveedor' => 'required|string|max:255',
+            'fecha' => 'required|date',
             'productos' => 'required|array',
-            'productos.*.producto_id' => 'required|exists:productos,id',
+            'productos.*.producto' => 'required|string|max:255',
+            'productos.*.categoria' => 'required|string|max:255',
+            'productos.*.codigo' => 'required|string|max:255',
             'productos.*.cantidad' => 'required|integer|min:1',
-            'productos.*.precio_unitario' => 'required|numeric|min:0',
+            'productos.*.precio' => 'required|numeric|min:0',
         ]);
 
-        DB::beginTransaction();
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         try {
+            // Iniciar una transacción para asegurar la integridad de los datos
+            DB::beginTransaction();
+
+            // Buscar o crear el almacén y el proveedor
+            $almacen = Almacen::firstOrCreate(['nombre_almacen' => $request->almacen]);
+            $proveedor = Proveedor::firstOrCreate(['nombre_proveedor' => $request->proveedor]);
+
             // Crear la compra
             $compra = Compra::create([
-                'almacen_id' => $request->almacen_id,
-                'proveedor_id' => $request->proveedor_id,
-                'fecha_compra' => $request->fecha_compra,
-                'total_compra' => 0,
+                'almacen_id' => $almacen->id,
+                'proveedor_id' => $proveedor->id,
+                'fecha_compra' => $request->fecha,
+                'total_compra' => collect($request->productos)->sum(function ($producto) {
+                    return $producto['cantidad'] * $producto['precio'];
+                }),
             ]);
 
-            $totalCompra = 0;
-
+            // Asociar productos con la compra
             foreach ($request->productos as $item) {
-                $subtotal = $item['cantidad'] * $item['precio_unitario'];
+                $categoria = Categoria::firstOrCreate(['nombre_categoria' => $item['categoria']]);
+                $producto = Producto::firstOrCreate(
+                    ['codigo_producto' => $item['codigo']],
+                    [
+                        'nombre_producto' => $item['producto'],
+                        'categoria_id' => $categoria->id,
+                        'precio_compra_producto' => $item['precio'],
+                        'cantidad_producto' => $item['cantidad'],
+                    ]
+                );
 
-                // Crear el detalle de la compra
-                CompraDetalle::create([
-                    'compra_id' => $compra->id,
-                    'producto_id' => $item['producto_id'],
+                // Adjuntar el producto a la compra con cantidad y precio
+                $compra->productos()->attach($producto->id, [
                     'cantidad' => $item['cantidad'],
-                    'precio_unitario' => $item['precio_unitario'],
-                    'subtotal' => $subtotal,
+                    'precio' => $item['precio'],
                 ]);
-
-                // Actualizar el stock del producto
-                $producto = Producto::find($item['producto_id']);
-                $producto->cantidad_producto += $item['cantidad'];
-                $producto->save();
-
-                $totalCompra += $subtotal;
             }
 
-            // Actualizar el total de la compra
-            $compra->update(['total_compra' => $totalCompra]);
-
+            // Confirmar la transacción
             DB::commit();
-            return response()->json(['message' => 'Compra registrada exitosamente'], 200);
+
+            // Respuesta exitosa
+            return response()->json([
+                'message' => 'Compra registrada correctamente',
+                'data' => [
+                    'id' => $compra->id, // ID de la compra
+                    'almacen' => $almacen->nombre_almacen,
+                    'proveedor' => $proveedor->nombre_proveedor,
+                    'fecha' => $compra->fecha_compra,
+                    'total' => $compra->total_compra,
+                    'productos' => $request->productos,
+                ],
+            ], 201);
         } catch (\Exception $e) {
+            // Revertir la transacción en caso de error
             DB::rollBack();
-            return response()->json(['error' => 'Error al registrar la compra'], 500);
+
+            // Devolver un mensaje de error
+            return response()->json(['error' => 'Error al registrar la compra: ' . $e->getMessage()], 500);
         }
     }
 }

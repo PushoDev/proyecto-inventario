@@ -21,4 +21,10 @@ class Almacen extends Model
     ];
 
     protected $primaryKey = 'id';
+
+    // Relación: Un almacén puede tener muchas compras
+    public function compras()
+    {
+        return $this->hasMany(Compra::class);
+    }
 }

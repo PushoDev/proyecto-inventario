@@ -164,9 +164,46 @@ export default function ComprarPage() {
     };
 
     // Proceder Compra
-    const procederCompra = () => {
-        // Aui va la accion para hacer la compra agregar los productos
-        alert('Proceder Compra');
+    const procederCompra = async () => {
+        try {
+            // Obtener el token CSRF
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            if (!csrfToken) {
+                throw new Error('CSRF token no encontrado');
+            }
+
+            // Validar la fecha
+            if (!date) {
+                alert('Por favor, selecciona una fecha.');
+                return;
+            }
+
+            const formattedDate = date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+            // Realizar la solicitud POST
+            const response = await fetch('/comprar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    almacen: formData.almacen,
+                    proveedor: formData.proveedor,
+                    fecha: formattedDate,
+                    productos: producto, // Array de productos
+                }),
+            });
+
+            if (!response.ok) throw new Error('Error al registrar la compra');
+
+            const data = await response.json();
+            console.log(data); // Manejar la respuesta
+            alert('Compra registrada correctamente');
+        } catch (error) {
+            console.error(error);
+            alert('Ocurrió un error al registrar la compra');
+        }
     };
 
     return (
