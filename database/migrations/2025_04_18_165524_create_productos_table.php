@@ -22,6 +22,9 @@ return new class extends Migration
             $table->integer('cantidad_producto');
             $table->string('imagen_producto')->nullable();
             $table->timestamps();
+
+            // Indice de los Productos
+            $table->index(['codigo_producto']);
         });
     }
 

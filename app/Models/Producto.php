@@ -34,6 +34,12 @@ class Producto extends Model
         return $this->belongsTo(Categoria::class, 'categoria_id');
     }
 
+    public function detallesCompra()
+    {
+        return $this->hasMany(CompraDetalle::class);
+    }
+
+
     // Accesor para obtener la URL completa de la imagen
     public function getImagenUrlAttribute(): ?string
     {

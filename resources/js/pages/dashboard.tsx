@@ -12,6 +12,10 @@ import { ComputerIcon, LucideBaggageClaim, ShoppingBagIcon } from 'lucide-react'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
+        title: 'ClorietaShop',
+        href: '#',
+    },
+    {
         title: 'Caja Principal',
         href: '/dashboard',
     },
@@ -124,11 +128,11 @@ export default function CajaGeneral() {
                                 {/* Textos alineados a la derecha */}
                                 <div className="flex h-full flex-col items-end justify-center space-y-2">
                                     <h3 className="font-sans text-4xl font-bold text-white">Compra</h3>
-                                    <span className="text-lg text-white">Adquirir Nuevos Productos</span>
+                                    <span className="text-lg text-white">Adquirir Productos</span>
                                 </div>
                                 {/* Link */}
                                 <Link href={route('comprar.index')}>
-                                    <button className="absolute right-4 bottom-4 rounded-md bg-red-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:animate-pulse hover:cursor-pointer hover:bg-white hover:text-red-800">
+                                    <button className="absolute right-4 bottom-4 ms-2 rounded-md bg-red-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:animate-pulse hover:cursor-pointer hover:bg-white hover:text-red-800">
                                         Comprar
                                     </button>
                                 </Link>
