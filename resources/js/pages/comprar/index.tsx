@@ -402,6 +402,7 @@ export default function ComprarPage() {
                                 <TableHead>Código</TableHead>
                                 <TableHead>Cantidad</TableHead>
                                 <TableHead>Precio</TableHead>
+                                <TableHead>Importe</TableHead>
                                 <TableHead className="text-sidebar-accent text-right">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -412,7 +413,8 @@ export default function ComprarPage() {
                                     <TableCell>{producto.categoria}</TableCell>
                                     <TableCell>{producto.codigo}</TableCell>
                                     <TableCell>{producto.cantidad}</TableCell>
-                                    <TableCell>{producto.precio}</TableCell>
+                                    <TableCell>$ {producto.precio.toFixed(2)}</TableCell>
+                                    <TableCell>{(producto.cantidad * producto.precio).toFixed(2)}</TableCell>
                                     <TableCell className="text-right">
                                         {/* Btn Acciones */}
                                         <Button
@@ -440,7 +442,7 @@ export default function ComprarPage() {
                                 <TableCell className="bg-amber-800 text-amber-300">
                                     {producto.reduce((total, item) => total + item.cantidad, 0)} Unidades
                                 </TableCell>
-                                <TableCell className="bg-emerald-700 text-emerald-950">
+                                <TableCell colSpan={2} className="bg-emerald-700 text-center text-emerald-950">
                                     $ {producto.reduce((total, producto) => total + producto.precio * producto.cantidad, 0).toFixed(2)}
                                 </TableCell>
                                 <TableCell className="text-sidebar-accent text-right">Acciones</TableCell>

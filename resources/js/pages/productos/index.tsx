@@ -67,7 +67,8 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                             <TableHead>Modelo</TableHead>
                             <TableHead>Código</TableHead>
                             <TableHead>Unidades</TableHead>
-                            <TableHead className="text-right">Precio Invertido</TableHead>
+                            <TableHead>Precio Invertido</TableHead>
+                            <TableHead>Importe</TableHead>
                             <TableHead className="text-right text-blue-600 dark:text-amber-600">Opciones</TableHead>
                         </TableHeader>
                         <TableBody>
@@ -89,7 +90,8 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                                     <TableCell>{producto.marca_producto || 'Sin Marca'}</TableCell>
                                     <TableCell>{producto.codigo_producto || 'Sin Código'}</TableCell>
                                     <TableCell>{producto.cantidad_producto}</TableCell>
-                                    <TableCell className="text-right">$ {producto.precio_compra_producto.toFixed(2)}</TableCell>
+                                    <TableCell className="text-left">$ {producto.precio_compra_producto.toFixed(2)}</TableCell>
+                                    <TableCell>$ {(producto.cantidad_producto * producto.precio_compra_producto).toFixed(2)}</TableCell>
 
                                     {/* Opciones de los Productos */}
                                     <TableCell className="text-right">
@@ -144,7 +146,7 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                                 <TableCell className="bg-emerald-700 text-emerald-950">
                                     {productos.reduce((total, item) => total + item.cantidad_producto, 0)} Unidades
                                 </TableCell>
-                                <TableCell className="bg-amber-800 text-right text-amber-300">
+                                <TableCell colSpan={2} className="bg-amber-800 text-center text-amber-300">
                                     $
                                     {productos
                                         .reduce((total, producto) => total + producto.precio_compra_producto * producto.cantidad_producto, 0)
