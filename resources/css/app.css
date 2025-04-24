@@ -146,8 +146,8 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(0.269 0 0);
     --sidebar-ring: oklch(0.439 0 0);
-    --pucho-primario: oklch(0.60 0.13 163);
-    --pucho-secundario: oklch(0.48 0.10 62);
+    --pucho-primario: oklch(0.6 0.13 163);
+    --pucho-secundario: oklch(0.48 0.1 62);
     --pucho-error: oklch(0.51 0.19 28);
 }
 
@@ -165,4 +165,12 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* Imagen para Auth */
+.image-background {
+    background-image: url('/resources/imgs/auth.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
