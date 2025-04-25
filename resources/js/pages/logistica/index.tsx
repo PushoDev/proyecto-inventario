@@ -3,7 +3,17 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { LogisticaProps, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { ChartColumnBigIcon, Handshake, Package, PackageOpen, PlaneIcon, PlaneTakeoffIcon, SquareCheckBig, SquareCheckIcon } from 'lucide-react';
+import {
+    ChartColumnBigIcon,
+    Handshake,
+    Package,
+    PackageOpen,
+    PiggyBank,
+    PlaneIcon,
+    PlaneTakeoffIcon,
+    SquareCheckBig,
+    SquareCheckIcon,
+} from 'lucide-react';
 import * as React from 'react';
 
 // Section Card
@@ -24,7 +34,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function logisticaPage({
+export default function LogisticaPage({
     totalCategorias,
     categoriasActivas,
     totalClientes,
@@ -32,6 +42,9 @@ export default function logisticaPage({
     totalProductos,
     totalUnidades,
     inversionTotal,
+    totalCuentas,
+    saldoCuentas,
+    montoGeneralInvertido,
 }: LogisticaProps) {
     // Calendario
     const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -81,6 +94,27 @@ export default function logisticaPage({
 
                     <Separator className="my-2" />
                     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                        {/* Total Monto */}
+                        <Card className="@container/card">
+                            <CardHeader className="relative">
+                                <CardDescription>Monto General</CardDescription>
+                                <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">
+                                    $ {montoGeneralInvertido}.00
+                                </CardTitle>
+                                <div className="absolute top-4 right-4">
+                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+                                        <TrendingUpIcon className="size-3" />
+                                        +12.5%
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardFooter className="flex-col items-start gap-1 text-sm">
+                                <div className="line-clamp-1 flex gap-2 font-medium">
+                                    Monto en Productos <TrendingUpIcon className="size-4" />
+                                </div>
+                                <div className="text-muted-foreground">Visitors for the last 6 months</div>
+                            </CardFooter>
+                        </Card>
                         {/* Total Inversion */}
                         <Card className="@container/card">
                             <CardHeader className="relative">
@@ -91,7 +125,7 @@ export default function logisticaPage({
                                 <div className="absolute top-4 right-4">
                                     <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
                                         <TrendingUpIcon className="size-3" />
-                                        +12.5%
+                                        {totalProductos}
                                     </Badge>
                                 </div>
                             </CardHeader>
@@ -105,35 +139,14 @@ export default function logisticaPage({
                         {/* Total Cuentas */}
                         <Card className="@container/card">
                             <CardHeader className="relative">
-                                <CardDescription>Total Inversión</CardDescription>
+                                <CardDescription>Total Cuentas</CardDescription>
                                 <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">
-                                    $ {inversionTotal}
+                                    $ {saldoCuentas}.00
                                 </CardTitle>
                                 <div className="absolute top-4 right-4">
                                     <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingUpIcon className="size-3" />
-                                        +12.5%
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Monto en Productos <TrendingUpIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Visitors for the last 6 months</div>
-                            </CardFooter>
-                        </Card>
-                        {/* Total Deudas */}
-                        <Card className="@container/card">
-                            <CardHeader className="relative">
-                                <CardDescription>Total Inversión</CardDescription>
-                                <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">
-                                    $ {inversionTotal}
-                                </CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingUpIcon className="size-3" />
-                                        +12.5%
+                                        <PiggyBank className="size-3" />
+                                        {totalCuentas}
                                     </Badge>
                                 </div>
                             </CardHeader>

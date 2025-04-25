@@ -106,6 +106,9 @@ export interface LogisticaProps {
     totalProductos: number;
     totalUnidades: number;
     inversionTotal: number;
+    totalCuentas: number;
+    saldoCuentas: number;
+    montoGeneralInvertido: number;
 }
 
 // Interface para los Productos
@@ -138,6 +141,18 @@ export interface CuentaNegocioProps {
     saldo_cuenta: number | null;
     tipo_cuenta: 'permanentes' | 'temporales';
     notas_cuenta?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
+// Interface para las deudas con los Proveedores
+export interface DeudasProveedoresProps {
+    id: number;
+    proveedor_id: number;
+    monto_deuda: number;
+    fecha_generacion: string;
+    estado: 'pendiente' | 'pagado';
+    notas?: string;
     created_at?: string;
     updated_at?: string;
 }

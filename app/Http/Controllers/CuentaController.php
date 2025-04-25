@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuenta;
+use App\Models\DeudasProveedores;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,8 +15,12 @@ class CuentaController extends Controller
     public function index()
     {
         $cuentas = Cuenta::all();
+        // Obtener todas las deudas de los proveedores con sus relaciones
+        $deudasProveedores = DeudasProveedores::with('proveedor')->get();
+
         return Inertia::render('cuentas/index', [
             'cuentas' => $cuentas,
+            'deudasProveedores' => $deudasProveedores,
         ]);
     }
 

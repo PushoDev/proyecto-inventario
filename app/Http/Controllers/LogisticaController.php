@@ -39,6 +39,16 @@ class LogisticaController extends Controller
             ->select(DB::raw('SUM(precio_compra_producto * cantidad_producto) as total_inversion'))
             ->value('total_inversion'); // Obtiene el valor calculado
 
+        // Contar Cuentas Monetarias Registradas
+        $totalCuentas = DB::table('cuentas')->count();
+
+        // Calcular el Saldo de las Cuentas
+        $saldoCuentas = DB::table('cuentas')
+            ->sum('saldo_cuenta');
+
+        // Total de Monto del Negocio tanto invertido como en las cuentas
+        $montoGeneralInvertido = ($saldoCuentas ?? 0) + ($inversionTotal ?? 0);
+
         // Renderizar la vista con los datos
         return Inertia::render('logistica/index', [
             'totalCategorias' => $totalCategorias,
@@ -46,8 +56,11 @@ class LogisticaController extends Controller
             'totalProveedores' => $totalProveedores,
             'totalClientes' => $totalClientes,
             'totalProductos' => $totalProductos,
-            'totalUnidades' => $totalUnidades, // Total de unidades
-            'inversionTotal' => $inversionTotal, // Inversión total
+            'totalUnidades' => $totalUnidades, // Total de unidades por porductos
+            'inversionTotal' => $inversionTotal, // Inversión total de los productos
+            'totalCuentas' => $totalCuentas,  // Cuentasa de Inversion y Ganancias
+            'saldoCuentas' => $saldoCuentas,  // Saldo de las Cuentas Bancarias
+            'montoGeneralInvertido' => $montoGeneralInvertido, // Toda la plata limpia del negocio 💀
         ]);
     }
 }
