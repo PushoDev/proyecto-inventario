@@ -13,8 +13,9 @@ class CuentaController extends Controller
      */
     public function index()
     {
+        $cuentas = Cuenta::all();
         return Inertia::render('cuentas/index', [
-            'cuentas' => Cuenta::all(),
+            'cuentas' => $cuentas,
         ]);
     }
 
@@ -31,7 +32,19 @@ class CuentaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos recibidos del formulario
+        $validated = $request->validate([
+            'nombre_cuenta' => 'required|string|max:255|unique:cuentas',
+            'saldo_cuenta' => 'nullable|numeric',
+            'tipo_cuenta' => 'required|in:permanentes,temporales',
+            'notas_cuenta' => 'nullable|string',
+        ]);
+
+        // Crear una nueva cuenta en la base de datos
+        Cuenta::create($validated);
+
+        // Redireccionar al índice con un mensaje de éxito
+        return redirect()->route('cuentas.index')->with('success', 'Cuenta creada exitosamente.');
     }
 
     /**

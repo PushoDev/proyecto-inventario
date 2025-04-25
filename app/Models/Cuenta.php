@@ -14,6 +14,11 @@ class Cuenta extends Model
     protected $fillable = [
         'nombre_cuenta',
         'saldo_cuenta',
+        'tipo_cuenta',
         'notas_cuenta',
+    ];
+
+    protected $casts = [
+        'saldo_cuenta' => 'float',
     ];
 }

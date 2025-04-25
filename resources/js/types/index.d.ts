@@ -131,4 +131,15 @@ export interface ProductoComprarProps {
     precio: number;
 }
 
+// Interface para las cuentas del Negocio
+export interface CuentaNegocioProps {
+    id: number;
+    nombre_cuenta: string;
+    saldo_cuenta: number | null;
+    tipo_cuenta: 'permanentes' | 'temporales';
+    notas_cuenta?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
 

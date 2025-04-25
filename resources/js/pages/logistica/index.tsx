@@ -15,6 +15,10 @@ import { Calendar } from '@/components/ui/calendar';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
+        title: 'Reportes Generales',
+        href: '/reportes',
+    },
+    {
         title: 'Logistica del Negocio',
         href: '/logistica',
     },
