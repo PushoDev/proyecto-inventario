@@ -1,3 +1,5 @@
+# Creado por: Luis Alberto Guisado
+# Pushodev
 name: linter
 
 on:
@@ -22,12 +24,24 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: '8.2'
 
-      - name: Install Dependencies
-        run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install PHP Dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install Node.js Dependencies
+        run: npm install
+
+      - name: Debug Composer Dependencies
+        run: composer show
+
+      - name: Debug Node.js Dependencies
+        run: npm list --depth=0
 
       - name: Run Pint
         run: vendor/bin/pint
@@ -37,9 +51,3 @@ jobs:
 
       - name: Lint Frontend
         run: npm run lint
-
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
