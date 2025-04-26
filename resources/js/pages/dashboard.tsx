@@ -6,7 +6,7 @@ import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { CajaPrincipalProps, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ComputerIcon, LucideBaggageClaim, ShoppingBagIcon } from 'lucide-react';
 
@@ -21,7 +21,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function CajaGeneral() {
+export default function CajaGeneral({ montoGeneralInvertido }: CajaPrincipalProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Caja Principal" />
@@ -58,13 +58,13 @@ export default function CajaGeneral() {
                             </div>
                             {/* Textos alineados a la derecha */}
                             <div className="flex h-full flex-col items-end justify-center space-y-2">
-                                <h3 className="font-sans text-4xl font-bold text-white">Compra</h3>
-                                <span className="text-lg text-white">Adquirir Productos</span>
+                                <h3 className="font-sans text-4xl font-bold text-white">Comprar</h3>
+                                <span className="text-lg text-white">Adquirir Productos Nuevos</span>
                             </div>
                             {/* Link */}
                             <Link href={route('comprar.index')}>
                                 <button className="absolute right-4 bottom-4 ms-2 rounded-md bg-red-800 px-4 py-1 text-sm font-semibold text-white shadow-md transition duration-300 hover:animate-pulse hover:cursor-pointer hover:bg-white hover:text-red-800">
-                                    Comprar
+                                    Acceder a Compra
                                 </button>
                             </Link>
                         </div>
@@ -92,7 +92,7 @@ export default function CajaGeneral() {
                         <TableBody>
                             <TableRow>
                                 <TableCell className="bg-amber-700 font-bold text-white">CAPITAL</TableCell>
-                                <TableCell className="bg-amber-800 text-right text-white">1</TableCell>
+                                <TableCell className="bg-amber-800 text-right text-white">$ {montoGeneralInvertido}.00</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell className="bg-amber-700 font-bold text-white">MONEDA NACIONAL</TableCell>

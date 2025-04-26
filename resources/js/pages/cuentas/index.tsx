@@ -1,10 +1,12 @@
 import HeadingSmall from '@/components/heading-small';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { CuentaNegocioProps, DeudasProveedoresProps, type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import { HandCoins } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import { BookCheck, HandCoins } from 'lucide-react';
 
 // Tipado para las props recibidas desde el controlador
 interface CuentasProps {
@@ -35,20 +37,45 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
             <Head title="Cuentas Monetarias" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Encabezado */}
-                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-                    <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
-                        <HeadingSmall
-                            title="Cuentas Monetarias"
-                            description="Gestión de Cuentas fiscales, monetarias y deudas pendientes a Proveedores"
-                        />
-                        <HandCoins
-                            size={70}
-                            color="green"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
-                        />
-                    </div>
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    <header>
+                        <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
+                            <HeadingSmall
+                                title="Cuentas Monetarias"
+                                description="Gestión de Cuentas fiscales, monetarias y deudas pendientes a Proveedores"
+                            />
+                            <HandCoins
+                                size={70}
+                                color="green"
+                                className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                            />
+                        </div>
+                        <Separator className="col-span-full my-4" />
+                        <div className="flex h-5 items-center space-x-4 text-sm">
+                            <div>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Link href={route('categorias.create')}>
+                                                <Button className="cursor-pointer bg-blue-400 text-blue-950 hover:bg-blue-900 hover:text-white">
+                                                    <BookCheck />
+                                                    Agregar Cuenta
+                                                </Button>
+                                            </Link>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Agregar Categorías</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div className="text-emerald-600">Cuentas Monetarias: {cuentas.length} </div>
+                            <Separator orientation="vertical" />
+                            <div className="text-red-500">Deudas: {deudasProveedores.length} </div>
+                        </div>
+                    </header>
                 </div>
-                <Separator className="mt-2" />
 
                 {/* Tabla de Cuentas */}
                 <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -85,12 +112,8 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
                             </TableFooter>
                         </Table>
                     </div>
-                </div>
-
-                <Separator className="mt-2" />
-
-                {/* Tabla de Deudas a Proveedores */}
-                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    <Separator className="mt-2" />
+                    {/* Tabla de Deudas a Proveedores */}
                     <div className="mt-4 rounded-xl border-1 border-red-900">
                         <Table className="mt-4">
                             <TableCaption className="bg-destructive rounded-2xl text-white">Montos Pendientes a Pagar</TableCaption>

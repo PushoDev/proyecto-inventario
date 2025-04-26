@@ -15,7 +15,7 @@ export default function AuthSplitLayout({ children, title, description }: PropsW
         <div className="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
             <div className="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-r">
                 {/* Imagen del Auth */}
-                <div className="image-background absolute inset-0" />
+                <div className="image-background animate__animated animate__fadeInLeft absolute inset-0" />
                 <Link href={route('home')} className="animate__animated animate__fadeInDown relative z-20 flex items-center text-lg font-medium">
                     <AppLogoIcon />
                     {name}

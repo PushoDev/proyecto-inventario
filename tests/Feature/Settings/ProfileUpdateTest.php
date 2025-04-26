@@ -14,7 +14,7 @@ test('profile page is displayed', function () {
     $response->assertOk();
 });
 
-test('profile information can be updated', function () {
+test('Información del perfil actualizada', function () {
     $user = User::factory()->create();
 
     $response = $this

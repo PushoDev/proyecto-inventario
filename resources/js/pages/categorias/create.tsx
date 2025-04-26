@@ -17,6 +17,10 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Categorías',
         href: '/categorias',
     },
+    {
+        title: 'Nueva Categorías',
+        href: '#',
+    },
 ];
 
 export default function CrearCategoriasPage() {

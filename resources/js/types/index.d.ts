@@ -50,6 +50,11 @@ interface CalendarProps {
     className?: string;
 }
 
+// Interface para la Caja Principal
+export interface CajaPrincipalProps {
+    montoGeneralInvertido: number;
+}
+
 // Interface para Categorias
 export interface CategoriasProps {
     id: number;

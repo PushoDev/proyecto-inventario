@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     return Inertia::render('auth/login');
@@ -9,7 +10,20 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        // Calcular la inversión total (precio_compra_producto * cantidad_producto)
+        $inversionTotal = DB::table('productos')
+            ->select(DB::raw('SUM(precio_compra_producto * cantidad_producto) as total_inversion'))
+            ->value('total_inversion'); // Obtiene el valor calculado
+        // Calcular el Saldo de las Cuentas
+        $saldoCuentas = DB::table('cuentas')
+            ->sum('saldo_cuenta');
+
+        // Total de Monto del Negocio tanto invertido como en las cuentas
+        $montoGeneralInvertido = ($saldoCuentas ?? 0) + ($inversionTotal ?? 0);
+
+        return Inertia::render('dashboard', [
+            'montoGeneralInvertido' => $montoGeneralInvertido,
+        ]);
     })->name('dashboard');
 
     // Routes Projects
