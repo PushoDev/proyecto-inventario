@@ -15,13 +15,24 @@ import { cn } from '@/lib/utils';
 import { AlmacenProps, CategoriasProps, ProductoComprarProps, ProveedorProps, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { BookCheck, CalendarIcon, Edit2, PlusIcon, ShoppingBasket, Trash2Icon } from 'lucide-react';
+import { BookCheck, CalendarIcon, Edit2, PlusIcon, ShoppingBasket, ShoppingBasketIcon, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Caja Principal',
-        href: '/',
+        href: '/dashboard',
     },
     {
         title: 'Productos',
@@ -452,30 +463,67 @@ export default function ComprarPage() {
                 </div>
                 <Separator />
                 <div className="flex justify-center p-4">
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <Button
-                                    className="cursor-pointer bg-emerald-400 text-emerald-950 hover:bg-emerald-900 hover:text-white"
-                                    onClick={procederCompra}
-                                >
-                                    <BookCheck />
-                                    Proceder a la Compra
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>Continuar con la Compra de los Productos</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="default" className="cursor-pointer">
+                                <ShoppingBasketIcon />
+                                Proceder Compra
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className="text-sidebar-accent">Realizar nueva Compra</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Antes de realizar la compra, debe de realizar una acción, por favor escoja su métdo de Pago
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <div className="grid auto-rows-min gap-2 md:grid-cols-1">
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button
+                                                className="w-full cursor-pointer bg-emerald-400 text-emerald-950 hover:bg-emerald-900 hover:text-white"
+                                                onClick={procederCompra}
+                                            >
+                                                <BookCheck />
+                                                Pagar ahora mediante sus Cuentas Monetarias
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Continuar con la Compra de los Productos</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                                <Separator />
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button
+                                                variant="secondary"
+                                                className="hover:bg-destructive w-full cursor-pointer"
+                                                onClick={procederCompra}
+                                            >
+                                                <BookCheck />
+                                                Pagar luego, recuerde que se acomula una deuda
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Continuar con la Compra de los Productos</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <AlertDialogFooter className="sm:justify-center">
+                                <AlertDialogCancel className="cursor-pointer">Cancelar</AlertDialogCancel>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
                                 <Link href="/dashboard">
-                                    <Button
-                                        onClick={limpiarForm}
-                                        className="ms-2 cursor-pointer bg-red-400 text-red-950 hover:bg-red-900 hover:text-white"
-                                    >
+                                    <Button variant="secondary" onClick={limpiarForm} className="ms-2 cursor-pointer">
                                         <BookCheck />
                                         Cancelar Compra
                                     </Button>

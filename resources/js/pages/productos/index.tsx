@@ -13,10 +13,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { ProductosProps, type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Edit3, PackageOpen, Trash2 } from 'lucide-react';
+import { Download, Edit3, PackageOpen, ShoppingBasket, Trash2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -43,21 +44,78 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Productos en la Glorieta.Shop" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-2 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-                    <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
-                        {/* Contenido principal */}
-                        <HeadingSmall title="Productos Adquiridos" description="Gestión de los productos disponibles del negocio" />
-                        {/* Ícono semitransparente */}
-                        <PackageOpen
-                            size={70}
-                            color="#f59e0b"
-                            className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
-                        />
-                    </div>
-                    <Separator />
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    <header>
+                        <div className="relative col-span-4 space-y-1 overflow-hidden rounded-2xl border border-dashed border-gray-700 bg-gray-800 p-4">
+                            {/* Contenido principal */}
+                            <HeadingSmall title="Productos Adquiridos" description="Gestión de los productos disponibles del negocio" />
+                            {/* Ícono semitransparente */}
+                            <PackageOpen
+                                size={70}
+                                color="#f59e0b"
+                                className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                            />
+                        </div>
+                        <Separator className="col-span-full my-4" />
+                        {/* Separadors para ordenes */}
+                        <div className="flex h-5 items-center space-x-4 text-sm">
+                            <div>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Link href={route('comprar.index')}>
+                                                <Button className="cursor-pointer bg-blue-400 text-blue-950 hover:animate-pulse hover:bg-blue-900 hover:text-white">
+                                                    <ShoppingBasket />
+                                                    Nueva Compra
+                                                </Button>
+                                            </Link>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Realizar nueva compra</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Link href="#">
+                                                <Button className="cursor-pointer bg-emerald-700 text-white hover:bg-emerald-600">
+                                                    <Download />
+                                                </Button>
+                                            </Link>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Importar Productos</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Link href="#">
+                                                <Button className="cursor-pointer bg-rose-900 text-white hover:bg-rose-700">
+                                                    <Upload />
+                                                </Button>
+                                            </Link>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Exportar Productos</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <Separator orientation="vertical" />
+                        </div>
+                    </header>
                 </div>
 
-                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card mt-2 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
                     <Table>
                         <TableCaption className="rounded-2xl bg-amber-600 font-semibold text-amber-950">
                             Productos Disponibles en el Negocio
