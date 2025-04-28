@@ -29,7 +29,7 @@ class CuentaController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('cuentas/create');
     }
 
     /**
@@ -57,7 +57,10 @@ class CuentaController extends Controller
      */
     public function show(Cuenta $cuenta)
     {
-        //
+        // Renderizar la vista para mostrar los detalles de una cuenta específica
+        return Inertia::render('cuentas/show', [
+            'cuenta' => $cuenta,
+        ]);
     }
 
     /**
@@ -65,7 +68,10 @@ class CuentaController extends Controller
      */
     public function edit(Cuenta $cuenta)
     {
-        //
+        // Renderizar la vista para editar una cuenta específica
+        return Inertia::render('cuentas/edit', [
+            'cuenta' => $cuenta,
+        ]);
     }
 
     /**
@@ -73,7 +79,19 @@ class CuentaController extends Controller
      */
     public function update(Request $request, Cuenta $cuenta)
     {
-        //
+        // Validar los datos recibidos del formulario
+        $validated = $request->validate([
+            'nombre_cuenta' => 'required|string|max:255|unique:cuentas,nombre_cuenta,' . $cuenta->id,
+            'saldo_cuenta' => 'nullable|numeric',
+            'tipo_cuenta' => 'required|in:permanentes,temporales',
+            'notas_cuenta' => 'nullable|string',
+        ]);
+
+        // Actualizar la cuenta en la base de datos
+        $cuenta->update($validated);
+
+        // Redireccionar al índice con un mensaje de éxito
+        return redirect()->route('cuentas.index')->with('success', 'Cuenta actualizada exitosamente.');
     }
 
     /**
@@ -81,6 +99,10 @@ class CuentaController extends Controller
      */
     public function destroy(Cuenta $cuenta)
     {
-        //
+        // Eliminar la cuenta de la base de datos
+        $cuenta->delete();
+
+        // Redireccionar al índice con un mensaje de éxito
+        return redirect()->route('cuentas.index')->with('success', 'Cuenta eliminada exitosamente.');
     }
 }

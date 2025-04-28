@@ -1,12 +1,23 @@
 import HeadingSmall from '@/components/heading-small';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { CuentaNegocioProps, DeudasProveedoresProps, type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { BookCheck, HandCoins } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { BookCheck, HandCoins, Pencil, Trash2 } from 'lucide-react';
 
 // Tipado para las props recibidas desde el controlador
 interface CuentasProps {
@@ -32,6 +43,13 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
         .filter((deuda) => deuda.estado === 'pendiente') // Solo sumar deudas pendientes
         .reduce((total, deuda) => total + deuda.monto_deuda, 0);
 
+    // Función para eliminar una cuenta
+    const handleDelete = (id: number) => {
+        if (confirm('¿Estás seguro de que deseas eliminar esta cuenta?')) {
+            router.delete(route('cuentas.destroy', id));
+        }
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Cuentas Monetarias" />
@@ -56,7 +74,7 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger>
-                                            <Link href={route('categorias.create')}>
+                                            <Link href={route('cuentas.create')}>
                                                 <Button className="cursor-pointer bg-blue-400 text-blue-950 hover:bg-blue-900 hover:text-white">
                                                     <BookCheck />
                                                     Agregar Cuenta
@@ -98,8 +116,62 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
                                         <TableCell className="bg-emerald-900 text-center">${cuenta.saldo_cuenta?.toFixed(2) || '0.00'}</TableCell>
                                         <TableCell>{cuenta.tipo_cuenta}</TableCell>
                                         <TableCell>{cuenta.notas_cuenta || 'Sin notas'}</TableCell>
-                                        <TableCell className="text-center">
-                                            <button className="rounded bg-blue-500 px-2 py-1 text-white hover:bg-blue-600">Ver Detalles</button>
+                                        <TableCell className="flex justify-around text-center">
+                                            {/* Botón Editar */}
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Link href={route('cuentas.edit', cuenta.id)}>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                className="bg-yellow-500 text-black hover:bg-yellow-600"
+                                                            >
+                                                                <Pencil size={16} />
+                                                            </Button>
+                                                        </Link>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <p>Editar Cuenta</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+
+                                            {/* Botón Eliminar */}
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="sm"
+                                                                    className="bg-red-500 text-white hover:bg-red-600"
+                                                                >
+                                                                    <Trash2 size={16} />
+                                                                </Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                    <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                                                                    <AlertDialogDescription>
+                                                                        Esta acción no se puede deshacer. ¿Deseas eliminar esta cuenta?
+                                                                    </AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                                    <AlertDialogAction onClick={() => handleDelete(cuenta.id)}>
+                                                                        Eliminar
+                                                                    </AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <p>Eliminar Cuenta</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -113,6 +185,7 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
                         </Table>
                     </div>
                     <Separator className="mt-2" />
+
                     {/* Tabla de Deudas a Proveedores */}
                     <div className="mt-4 rounded-xl border-1 border-red-900">
                         <Table className="mt-4">
