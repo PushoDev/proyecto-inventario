@@ -36,7 +36,7 @@ class CompraController extends Controller
             'productos' => 'required|array',
             'productos.*.producto' => 'required|string|max:255',
             'productos.*.categoria' => 'required|string|max:255',
-            'productos.*.codigo' => 'required|string|max:255|unique:productos,codigo_producto',
+            'productos.*.codigo' => 'required|string|max:255|unique:productos,codigo_producto', // Código único
             'productos.*.cantidad' => 'required|integer|min:1',
             'productos.*.precio' => 'required|numeric|min:0',
         ]);
@@ -63,24 +63,14 @@ class CompraController extends Controller
             foreach ($request->productos as $item) {
                 $categoria = Categoria::firstOrCreate(['nombre_categoria' => $item['categoria']]);
 
-                // Buscar producto por código
-                $producto = Producto::firstOrNew(['codigo_producto' => $item['codigo']]);
-
-                // Si es nuevo, setear todos los datos
-                if (!$producto->exists) {
-                    $producto->fill([
-                        'nombre_producto' => $item['producto'],
-                        'categoria_id' => $categoria->id,
-                        'precio_compra_producto' => $item['precio'],
-                        'cantidad_producto' => $item['cantidad'],
-                    ]);
-                } else {
-                    // Si ya existe, solo actualizar cantidad
-                    $producto->cantidad_producto += $item['cantidad'];
-                    $producto->precio_compra_producto = $item['precio']; // Actualizar precio
-                }
-
-                $producto->save();
+                // Crear un nuevo producto siempre
+                $producto = Producto::create([
+                    'nombre_producto' => $item['producto'],
+                    'categoria_id' => $categoria->id,
+                    'codigo_producto' => $item['codigo'], // Código único
+                    'precio_compra_producto' => $item['precio'], // Precio de compra
+                    'cantidad_producto' => $item['cantidad'], // Cantidad comprada
+                ]);
 
                 // Adjuntar a la compra
                 $compra->productos()->attach($producto->id, [

@@ -115,7 +115,6 @@ export default function ComprarPage() {
             alert('Por favor, completa todos los campos del formulario.');
             return;
         }
-
         const nuevoProducto: ProductoComprarProps = {
             id: editingProductId || Date.now(), // Usar el ID existente o generar uno nuevo
             producto: formData.producto,
@@ -124,7 +123,6 @@ export default function ComprarPage() {
             cantidad: formData.cantidad,
             precio: formData.precio,
         };
-
         if (editingProductId) {
             // Actualizar el producto existente
             setProductos((prevProductos) => prevProductos.map((p) => (p.id === editingProductId ? nuevoProducto : p)));
@@ -133,7 +131,6 @@ export default function ComprarPage() {
             // Agregar un nuevo producto
             setProductos((prevProductos) => [...prevProductos, nuevoProducto]);
         }
-
         limpiarForm();
     };
 
