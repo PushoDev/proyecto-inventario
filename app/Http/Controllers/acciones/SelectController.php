@@ -5,6 +5,7 @@ namespace App\Http\Controllers\acciones;
 use App\Http\Controllers\Controller;
 use App\Models\Almacen;
 use App\Models\Categoria;
+use App\Models\Cuenta;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
@@ -28,5 +29,11 @@ class SelectController extends Controller
     public function getCategorias()
     {
         return response()->json(Categoria::select('id', 'nombre_categoria')->get());
+    }
+
+    // Obtener cuentas monetarias
+    public function getCuentas()
+    {
+        return response()->json(Cuenta::select('id', 'nombre_cuenta', 'saldo_cuenta')->get());
     }
 }

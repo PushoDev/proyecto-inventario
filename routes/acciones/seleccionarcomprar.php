@@ -13,6 +13,9 @@ Route::middleware(['auth', 'verified'])->group(
             Route::get('/proveedores', [SelectController::class, 'getProveedor']);
             Route::get('/categorias', [SelectController::class, 'getCategorias']);
 
+            // Ruta para obtener cuentas
+            Route::get('/cuentas', [SelectController::class, 'getCuentas']);
+
             // Rutas para cargar datos iniciales
             Route::get('/datos', [CompraController::class, 'cargarDatos'])->name('compras.datos');
             Route::post('/registrar', [CompraController::class, 'registrarCompra'])->name('compras.registrar');

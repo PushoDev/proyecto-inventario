@@ -12,7 +12,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
-import { AlmacenProps, CategoriasProps, ProductoComprarProps, ProveedorProps, type BreadcrumbItem } from '@/types';
+import { AlmacenProps, CategoriasProps, CuentaNegocioProps, ProductoComprarProps, ProveedorProps, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { BookCheck, CalendarIcon, Edit2, PlusIcon, ShoppingBasket, ShoppingBasketIcon, Trash2Icon } from 'lucide-react';
@@ -49,6 +49,8 @@ export default function ComprarPage() {
     const [almacens, setAlmacens] = useState<AlmacenProps[]>([]);
     const [proveedors, setProveedors] = useState<ProveedorProps[]>([]);
     const [categorias, setCategorias] = useState<CategoriasProps[]>([]);
+    // Select Cuentas Monetarias
+    const [cuentas, setCuentas] = useState<CuentaNegocioProps[]>([]);
     // Estado para el producto en la tabla
     const [producto, setProductos] = useState<ProductoComprarProps[]>([]);
     // Calendario select
@@ -91,6 +93,14 @@ export default function ComprarPage() {
                 return response.json();
             })
             .then((data) => setCategorias(data))
+            .catch((error) => console.error(error));
+        // Cargar Cuentas Monetarias - Permanentes
+        fetch('/compras/cuentas')
+            .then((response) => {
+                if (!response.ok) throw new Error('Error al cargar las cuentas');
+                return response.json();
+            })
+            .then((data) => setCuentas(data))
             .catch((error) => console.error(error));
     }, []);
 
@@ -303,6 +313,22 @@ export default function ComprarPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
+                                {/* Prueba */}
+                                <Select name="cuenta">
+                                    <SelectTrigger className="mt-2 w-full">
+                                        <SelectValue placeholder="Seleccione Cuenta" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {cuentas.map((cuenta) => (
+                                            <SelectItem key={cuenta.id} value={cuenta.nombre_cuenta}>
+                                                {''}
+                                                Cuenta:<span className="text-amber-600"> {cuenta.nombre_cuenta}</span> - Saldo:
+                                                <span className="text-emerald-400"> ${cuenta.saldo_cuenta}.00</span>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                             {/* Form Config Destino End */}
                         </CardContent>
