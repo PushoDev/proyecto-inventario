@@ -13,12 +13,14 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
+    ArrowUpToLine,
     BookOpenText,
     BoxesIcon,
     ChartNoAxesCombinedIcon,
     CheckCircleIcon,
+    CirclePlus,
     Computer,
     Github,
     IdCardIcon,
@@ -28,20 +30,24 @@ import {
     Repeat,
     StoreIcon,
 } from 'lucide-react';
+import { useState } from 'react';
 import AppLogo from './app-logo';
 import { SearchForm } from './extras/search-form';
 
-// Definición de las agrupaciones de SidebarContent
 const navGroups = [
     {
+        id: 'general',
         title: 'General',
+        collapsible: false,
         items: [
             { title: 'Caja Principal', href: '/dashboard', icon: Computer },
             { title: 'Logística General', href: '/logistica', icon: ChartNoAxesCombinedIcon },
         ],
     },
     {
+        id: 'inventario',
         title: 'Inventario',
+        collapsible: true,
         items: [
             { title: 'Categorías', href: '/categorias', icon: CheckCircleIcon },
             { title: 'Productos Disponibles', href: '/productos', icon: BoxesIcon },
@@ -49,7 +55,9 @@ const navGroups = [
         ],
     },
     {
+        id: 'operaciones',
         title: 'Operaciones',
+        collapsible: true,
         items: [
             { title: 'Movimientos', href: '/movimientos', icon: Repeat },
             { title: 'Proveedores', href: '/proveedores', icon: LucideShoppingCart },
@@ -57,7 +65,9 @@ const navGroups = [
         ],
     },
     {
+        id: 'finanzas',
         title: 'Finanzas',
+        collapsible: true,
         items: [
             { title: 'Cuentas Monetarias', href: '/cuentas', icon: Landmark },
             { title: 'Reportes', href: '/reportes', icon: NotebookText },
@@ -79,6 +89,23 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const [openGroups, setOpenGroups] = useState<Set<string>>(
+        () => new Set(navGroups.filter((group) => !group.collapsible).map((group) => group.id)),
+    );
+    const { url } = usePage<{ url: string }>().props;
+
+    const toggleGroup = (groupId: string) => {
+        setOpenGroups((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has(groupId)) {
+                newSet.delete(groupId);
+            } else {
+                newSet.add(groupId);
+            }
+            return newSet;
+        });
+    };
+
     return (
         <Sidebar collapsible="icon" variant="floating">
             <SidebarHeader>
@@ -94,28 +121,48 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            {/* Contenido con agrupaciones */}
-            <SidebarContent>
-                {navGroups.map((group, groupIndex) => (
-                    <SidebarGroup key={groupIndex}>
-                        {/* Título del grupo */}
-                        <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
-
-                        {/* Contenido del grupo */}
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                {group.items.map((item, itemIndex) => (
-                                    <SidebarMenuItem key={itemIndex}>
-                                        <SidebarMenuButton asChild>
-                                            <Link href={item.href} prefetch>
-                                                {item.icon && <item.icon className="mr-2 h-4 w-4" />}
-                                                <span>{item.title}</span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
+            <SidebarContent className="pt-4">
+                {navGroups.map((group) => (
+                    <SidebarGroup key={group.id}>
+                        <SidebarGroupLabel
+                            onClick={group.collapsible ? () => toggleGroup(group.id) : undefined}
+                            className={`flex w-full items-center justify-between ${group.collapsible ? 'hover:bg-muted cursor-pointer' : ''} px-3 py-2 transition-colors`}
+                        >
+                            <span className="truncate">{group.title}</span>
+                            {group.collapsible &&
+                                (openGroups.has(group.id) ? (
+                                    <ArrowUpToLine className="h-4 w-4 transition-transform" />
+                                ) : (
+                                    <CirclePlus className="h-4 w-4 transition-transform" />
                                 ))}
-                            </SidebarMenu>
-                        </SidebarGroupContent>
+                        </SidebarGroupLabel>
+
+                        <div className={`overflow-hidden transition-all ${group.collapsible ? 'duration-300' : ''}`}>
+                            {(!group.collapsible || openGroups.has(group.id)) && (
+                                <SidebarGroupContent>
+                                    <SidebarMenu>
+                                        {group.items.map((item, itemIndex) => {
+                                            const isActive = url === item.href;
+                                            return (
+                                                <SidebarMenuItem key={itemIndex}>
+                                                    <SidebarMenuButton asChild>
+                                                        <Link
+                                                            href={item.href}
+                                                            prefetch
+                                                            className={`flex w-full items-center px-3 py-2 ${isActive ? 'bg-primary rounded-md text-white' : ''} hover:bg-muted transition-colors`}
+                                                            aria-current={isActive ? 'page' : undefined}
+                                                        >
+                                                            {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                                                            <span className="truncate">{item.title}</span>
+                                                        </Link>
+                                                    </SidebarMenuButton>
+                                                </SidebarMenuItem>
+                                            );
+                                        })}
+                                    </SidebarMenu>
+                                </SidebarGroupContent>
+                            )}
+                        </div>
                     </SidebarGroup>
                 ))}
             </SidebarContent>

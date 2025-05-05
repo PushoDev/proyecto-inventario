@@ -174,3 +174,11 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+/* Propiedades para el sidebar */
+.sidebar-group-label {
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-group-label:hover {
+    background-color: var(--color-sidebar-hover);
+}

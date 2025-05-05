@@ -10,8 +10,11 @@ export interface BreadcrumbItem {
     href: string;
 }
 
+// Grupo en el SideBar
 export interface NavGroup {
+    id: string;
     title: string;
+    collapsible?: boolean;
     items: NavItem[];
 }
 
