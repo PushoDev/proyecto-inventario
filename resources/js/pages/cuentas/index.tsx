@@ -36,12 +36,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
+export default function Cuentas({ cuentas }: CuentasProps) {
     // Calcular totales
     const totalCuentas = cuentas.reduce((total, cuenta) => total + (cuenta.saldo_cuenta || 0), 0);
-    const totalDeudas = deudasProveedores
-        .filter((deuda) => deuda.estado === 'pendiente') // Solo sumar deudas pendientes
-        .reduce((total, deuda) => total + deuda.monto_deuda, 0);
 
     // Función para eliminar una cuenta
     const handleDelete = (id: number) => {
@@ -90,7 +87,6 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
                             <Separator orientation="vertical" />
                             <div className="text-emerald-600">Cuentas Monetarias: {cuentas.length} </div>
                             <Separator orientation="vertical" />
-                            <div className="text-red-500">Deudas: {deudasProveedores.length} </div>
                         </div>
                     </header>
                 </div>
@@ -180,50 +176,6 @@ export default function Cuentas({ cuentas, deudasProveedores }: CuentasProps) {
                                 <TableRow>
                                     <TableCell>TOTAL FINANCIERO</TableCell>
                                     <TableCell className="cursor-none bg-emerald-950 text-center">${totalCuentas.toFixed(2)}</TableCell>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </div>
-                    <Separator className="mt-2" />
-
-                    {/* Tabla de Deudas a Proveedores */}
-                    <div className="mt-4 rounded-xl border-1 border-red-900">
-                        <Table className="mt-4">
-                            <TableCaption className="bg-destructive rounded-2xl text-white">Montos Pendientes a Pagar</TableCaption>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="bg-red-950 text-center font-bold text-white">PROVEEDOR</TableHead>
-                                    <TableHead className="bg-red-950 text-center font-bold text-white">MONTO</TableHead>
-                                    <TableHead className="bg-red-950 text-center font-bold text-white">FECHA GENERACIÓN</TableHead>
-                                    <TableHead className="bg-red-950 text-center font-bold text-white">ESTADO</TableHead>
-                                    <TableHead className="bg-red-950 text-center font-bold text-white">DETALLES</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {deudasProveedores
-                                    .filter((deuda) => deuda.estado === 'pendiente') // Filtrar solo deudas pendientes
-                                    .map((deuda) => (
-                                        <TableRow key={deuda.id}>
-                                            <TableCell className="bg-red-700 font-bold text-white">
-                                                {deuda.proveedor_id} {/* Aquí deberías usar el nombre del proveedor si está disponible */}
-                                            </TableCell>
-                                            <TableCell className="bg-red-800 text-center text-white">${deuda.monto_deuda.toFixed(2)}</TableCell>
-                                            <TableCell className="bg-red-800 text-center text-white">
-                                                {new Date(deuda.fecha_generacion).toLocaleDateString()}
-                                            </TableCell>
-                                            <TableCell className="bg-red-800 text-center text-white">
-                                                {deuda.estado.charAt(0).toUpperCase() + deuda.estado.slice(1)}
-                                            </TableCell>
-                                            <TableCell className="bg-red-800 text-center text-white">
-                                                <button className="rounded bg-blue-500 px-2 py-1 text-white hover:bg-blue-600">Ver Detalles</button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell>TOTALES</TableCell>
-                                    <TableCell className="bg-destructive cursor-none text-center">${totalDeudas.toFixed(2)}</TableCell>
                                 </TableRow>
                             </TableFooter>
                         </Table>
