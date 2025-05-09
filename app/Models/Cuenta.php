@@ -14,11 +14,19 @@ class Cuenta extends Model
     protected $fillable = [
         'nombre_cuenta',
         'saldo_cuenta',
+        'deuda',
         'tipo_cuenta',
         'notas_cuenta',
     ];
 
     protected $casts = [
         'saldo_cuenta' => 'float',
+        'deuda' => 'float',
     ];
+
+    // Relación con compras (opcional)
+    public function compras()
+    {
+        return $this->hasMany(Compra::class);
+    }
 }

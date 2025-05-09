@@ -13,21 +13,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { AlmacenProps, CategoriasProps, CuentaNegocioProps, ProductoComprarProps, ProveedorProps, type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { BookCheck, CalendarIcon, Edit2, PlusIcon, ShoppingBasket, ShoppingBasketIcon, Trash2Icon } from 'lucide-react';
+import { BookCheck, CalendarIcon, Edit2, PlusIcon, ShoppingBasket, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-import {
-    AlertDialog,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -45,183 +34,114 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ComprarPage() {
-    // Estados para almacenar los datos
+    const { props } = usePage();
+    const { errors } = props;
     const [almacens, setAlmacens] = useState<AlmacenProps[]>([]);
     const [proveedors, setProveedors] = useState<ProveedorProps[]>([]);
     const [categorias, setCategorias] = useState<CategoriasProps[]>([]);
-    // Select Cuentas Monetarias
     const [cuentas, setCuentas] = useState<CuentaNegocioProps[]>([]);
-    // Estado para el producto en la tabla
-    const [producto, setProductos] = useState<ProductoComprarProps[]>([]);
-    // Calendario select
-    const [date, setDate] = useState<Date | undefined>(undefined);
-    // Estados para el formulario
-    const [formData, setFormData] = useState({
-        almacen: '',
-        proveedor: '',
+    const [date, setDate] = useState<Date | undefined>(new Date());
+    const [editingProductId, setEditingProductId] = useState<number | null>(null);
+
+    // Estado temporal para campos del producto
+    const [tempFormData, setTempFormData] = useState<Omit<ProductoComprarProps, 'id'>>({
         producto: '',
-        categorias: '',
+        categoria: '',
         codigo: '',
         cantidad: 0,
         precio: 0,
     });
 
-    // Cargar datos al inicializar el componente
+    // Estado para productos en la tabla
+    const [productos, setProductos] = useState<ProductoComprarProps[]>([]);
+
+    // Datos del formulario principal
+    const { data, setData, post, processing } = useForm({
+        compra: 'deuda_proveedor',
+        cuenta_id: 1,
+        almacen: '',
+        proveedor: '',
+        fecha: date ? date.toISOString().split('T')[0] : '',
+    });
+
+    // Cargar datos iniciales
     useEffect(() => {
-        // Cargar almacenes
         fetch('/compras/almacenes')
-            .then((response) => {
-                if (!response.ok) throw new Error('Error al cargar almacenes');
-                return response.json();
-            })
+            .then((res) => res.json())
             .then((data) => setAlmacens(data))
-            .catch((error) => console.error(error));
+            .catch((err) => console.error(err));
 
-        // Cargar proveedores
         fetch('/compras/proveedores')
-            .then((response) => {
-                if (!response.ok) throw new Error('Error al cargar proveedores');
-                return response.json();
-            })
+            .then((res) => res.json())
             .then((data) => setProveedors(data))
-            .catch((error) => console.error(error));
+            .catch((err) => console.error(err));
 
-        // Cargar Categorias
         fetch('/compras/categorias')
-            .then((response) => {
-                if (!response.ok) throw new Error('Error al cargar las categorias');
-                return response.json();
-            })
+            .then((res) => res.json())
             .then((data) => setCategorias(data))
-            .catch((error) => console.error(error));
-        // Cargar Cuentas Monetarias - Permanentes
+            .catch((err) => console.error(err));
+
         fetch('/compras/cuentas')
-            .then((response) => {
-                if (!response.ok) throw new Error('Error al cargar las cuentas');
-                return response.json();
-            })
+            .then((res) => res.json())
             .then((data) => setCuentas(data))
-            .catch((error) => console.error(error));
+            .catch((err) => console.error(err));
     }, []);
 
-    // Manejar cambios en el formulario
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    // Manejar cambios en los campos temporales
+    const handleTempInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
+        setTempFormData((prev) => ({
+            ...prev,
+            [name]: name === 'cantidad' || name === 'precio' ? parseFloat(value) || 0 : value,
         }));
     };
 
-    // Agregar un producto a la tabla
+    // Agregar/Editar producto
     const agregarProducto = () => {
-        if (
-            formData.producto.trim() === '' ||
-            formData.categorias.trim() === '' ||
-            formData.codigo.trim() === '' ||
-            formData.cantidad <= 0 ||
-            formData.precio <= 0
-        ) {
+        if (!tempFormData.producto || !tempFormData.categoria || !tempFormData.codigo || tempFormData.cantidad <= 0 || tempFormData.precio <= 0) {
             alert('Por favor, completa todos los campos del formulario.');
             return;
         }
+
         const nuevoProducto: ProductoComprarProps = {
-            id: editingProductId || Date.now(), // Usar el ID existente o generar uno nuevo
-            producto: formData.producto,
-            categoria: formData.categorias,
-            codigo: formData.codigo,
-            cantidad: formData.cantidad,
-            precio: formData.precio,
+            id: editingProductId || Date.now(),
+            ...tempFormData,
         };
+
         if (editingProductId) {
-            // Actualizar el producto existente
-            setProductos((prevProductos) => prevProductos.map((p) => (p.id === editingProductId ? nuevoProducto : p)));
-            setEditingProductId(null); // Limpiar el estado de edición
+            setProductos((prev) => prev.map((p) => (p.id === editingProductId ? nuevoProducto : p)));
+            setEditingProductId(null);
         } else {
-            // Agregar un nuevo producto
-            setProductos((prevProductos) => [...prevProductos, nuevoProducto]);
+            setProductos((prev) => [...prev, nuevoProducto]);
         }
-        limpiarForm();
+
+        // Limpiar campos temporales
+        setTempFormData({ producto: '', categoria: '', codigo: '', cantidad: 0, precio: 0 });
     };
 
-    // Eliminar un producto de la tabla
+    // Eliminar producto
     const eliminarProducto = (id: number) => {
-        setProductos((prevProductos) => prevProductos.filter((p) => p.id !== id));
+        setProductos((prev) => prev.filter((p) => p.id !== id));
     };
 
-    const [editingProductId, setEditingProductId] = useState<number | null>(null);
-    // Editar un producto existente
+    // Editar producto
     const editarProducto = (id: number) => {
-        const productoParaEditar = producto.find((p) => p.id === id);
+        const productoParaEditar = productos.find((p) => p.id === id);
         if (productoParaEditar) {
-            setFormData({
-                almacen: '', // Estos campos no se usan en la edición
-                proveedor: '', // Estos campos no se usan en la edición
+            setTempFormData({
                 producto: productoParaEditar.producto,
-                categorias: productoParaEditar.categoria,
+                categoria: productoParaEditar.categoria,
                 codigo: productoParaEditar.codigo,
                 cantidad: productoParaEditar.cantidad,
                 precio: productoParaEditar.precio,
             });
-            setEditingProductId(id); // Establecer el ID del producto en edición
+            setEditingProductId(id);
         }
     };
 
-    // Limpiar Formulario
-    const limpiarForm = () => {
-        setFormData({
-            almacen: '',
-            proveedor: '',
-            producto: '',
-            categorias: '',
-            codigo: '',
-            cantidad: 0,
-            precio: 0,
-        });
-        setEditingProductId(null);
-    };
-
-    // Proceder Compra
-    const procederCompra = async () => {
-        try {
-            // Obtener el token CSRF
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            if (!csrfToken) {
-                throw new Error('CSRF token no encontrado');
-            }
-
-            // Validar la fecha
-            if (!date) {
-                alert('Por favor, selecciona una fecha.');
-                return;
-            }
-
-            const formattedDate = date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-
-            // Realizar la solicitud POST
-            const response = await fetch('/comprar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({
-                    almacen: formData.almacen,
-                    proveedor: formData.proveedor,
-                    fecha: formattedDate,
-                    productos: producto, // Array de productos
-                }),
-            });
-
-            if (!response.ok) throw new Error('Error al registrar la compra');
-
-            const data = await response.json();
-            console.log(data); // Manejar la respuesta
-            alert('Compra registrada correctamente');
-        } catch (error) {
-            console.error(error);
-            alert('Ocurrió un error al registrar la compra');
-        }
+    // Calcular total de la compra
+    const calcularTotal = () => {
+        return productos.reduce((total, p) => total + p.cantidad * p.precio, 0).toFixed(2);
     };
 
     return (
@@ -234,24 +154,22 @@ export default function ComprarPage() {
                     <ShoppingBasket
                         size={70}
                         color="#f59e0b"
-                        className="pointer-events-none absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform animate-pulse opacity-40"
+                        className="absolute right-2 bottom-0 translate-x-0 translate-y-[-5] transform opacity-40"
                     />
                 </div>
-
                 <Separator className="col-span-4" />
 
-                {/* Formulario */}
-                <div className="col-span-4">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-sidebar-accent text-center">Nuevos Productos</CardTitle>
-                            <CardDescription className="text-center">
-                                A continuación usted va a realizar una compra de Productos, recuerde debe asignar: fecha de compra, almacén destino y
-                                proveedor.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            {/* Formulario */}
+                {/* Formulario principal */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-sidebar-accent text-center">Nuevos Productos</CardTitle>
+                        <CardDescription className="text-center">
+                            A continuación usted va a realizar una compra de Productos, recuerde debe asignar: fecha de compra, almacén destino y
+                            proveedor.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <div className="grid grid-cols-3 gap-4">
                                 {/* Fecha de la Compra */}
                                 <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -270,16 +188,54 @@ export default function ComprarPage() {
                                             <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
                                         </PopoverContent>
                                     </Popover>
+                                    {errors.fecha && <InputError message={errors.fecha[0]} />}
+                                </div>
+
+                                {/* Tipo de Compra */}
+                                <div className="grid w-full max-w-sm items-center gap-1.5">
+                                    <Label htmlFor="tipo_compra">Tipo de Compra</Label>
+                                    <Select
+                                        name="compra"
+                                        value={data.compra}
+                                        onValueChange={(value) => setData('compra', value as 'deuda_proveedor' | 'pago_cash')}
+                                    >
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Seleccione tipo de compra" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="deuda_proveedor">Deuda con Proveedor</SelectItem>
+                                            <SelectItem value="pago_cash">Pago en Efectivo</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.compra && <InputError message={errors.compra[0]} />}
+                                </div>
+
+                                {/* Cuenta */}
+                                <div className="grid w-full max-w-sm items-center gap-1.5">
+                                    <Label htmlFor="cuenta">Cuenta</Label>
+                                    <Select
+                                        name="cuenta_id"
+                                        value={data.cuenta_id.toString()}
+                                        onValueChange={(value) => setData('cuenta_id', parseInt(value))}
+                                    >
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Seleccione Cuenta" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {cuentas.map((cuenta) => (
+                                                <SelectItem key={cuenta.id} value={cuenta.id.toString()}>
+                                                    {cuenta.nombre_cuenta}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.cuenta_id && <InputError message={errors.cuenta_id[0]} />}
                                 </div>
 
                                 {/* Almacén Destino */}
                                 <div className="grid w-full max-w-sm items-center gap-1.5">
-                                    <Label htmlFor="almacenDestino">Almacén Destino</Label>
-                                    <Select
-                                        name="almacen"
-                                        value={formData.almacen}
-                                        onValueChange={(value) => setFormData({ ...formData, almacen: value })}
-                                    >
+                                    <Label htmlFor="almacen">Almacén</Label>
+                                    <Select name="almacen" value={data.almacen} onValueChange={(value) => setData('almacen', value)}>
                                         <SelectTrigger className="mt-2 w-full">
                                             <SelectValue placeholder="Seleccione Almacén" />
                                         </SelectTrigger>
@@ -291,16 +247,13 @@ export default function ComprarPage() {
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                    {errors.almacen && <InputError message={errors.almacen[0]} />}
                                 </div>
 
                                 {/* Proveedor */}
                                 <div className="grid w-full max-w-sm items-center gap-1.5">
                                     <Label htmlFor="proveedor">Proveedor</Label>
-                                    <Select
-                                        name="proveedor"
-                                        value={formData.proveedor}
-                                        onValueChange={(value) => setFormData({ ...formData, proveedor: value })}
-                                    >
+                                    <Select name="proveedor" value={data.proveedor} onValueChange={(value) => setData('proveedor', value)}>
                                         <SelectTrigger className="mt-2 w-full">
                                             <SelectValue placeholder="Seleccione Proveedor" />
                                         </SelectTrigger>
@@ -312,241 +265,185 @@ export default function ComprarPage() {
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                    {errors.proveedor && <InputError message={errors.proveedor[0]} />}
                                 </div>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
 
-                                {/* Prueba */}
-                                <Select name="cuenta">
-                                    <SelectTrigger className="mt-2 w-full">
-                                        <SelectValue placeholder="Seleccione Cuenta" />
+                {/* Formulario de productos */}
+                <Card>
+                    <CardHeader>
+                        <CardDescription className="text-center dark:text-emerald-400">Ingrese Datos del Producto a Comprar</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-3 gap-4">
+                            {/* Nombre del Producto */}
+                            <div className="grid w-full max-w-sm items-center gap-1">
+                                <Label htmlFor="nombre_producto">Nombre del Producto</Label>
+                                <Input
+                                    className="mt-2"
+                                    type="text"
+                                    name="producto"
+                                    placeholder="Producto"
+                                    value={tempFormData.producto}
+                                    onChange={handleTempInputChange}
+                                />
+                                {errors.producto && <InputError message={errors.producto[0]} />}
+                            </div>
+
+                            {/* Código del Producto */}
+                            <div className="grid w-full max-w-sm items-center gap-1">
+                                <Label htmlFor="codigo_producto">Código del Producto</Label>
+                                <Input
+                                    className="mt-2"
+                                    type="text"
+                                    name="codigo"
+                                    placeholder="Código Producto"
+                                    value={tempFormData.codigo}
+                                    onChange={handleTempInputChange}
+                                />
+                                {errors.codigo && <InputError message={errors.codigo[0]} />}
+                            </div>
+
+                            {/* Categoría del Producto */}
+                            <div className="grid w-full max-w-sm items-center gap-1">
+                                <Label htmlFor="categorias">Categoría</Label>
+                                <Select
+                                    name="categoria"
+                                    value={tempFormData.categoria}
+                                    onValueChange={(value) => setTempFormData({ ...tempFormData, categoria: value })}
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Seleccione Categoría" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {cuentas.map((cuenta) => (
-                                            <SelectItem key={cuenta.id} value={cuenta.nombre_cuenta}>
-                                                {''}
-                                                Cuenta:<span className="text-amber-600"> {cuenta.nombre_cuenta}</span> - Saldo:
-                                                <span className="text-emerald-400"> ${cuenta.saldo_cuenta}.00</span>
+                                        {categorias.map((categoria) => (
+                                            <SelectItem key={categoria.id} value={categoria.nombre_categoria}>
+                                                {categoria.nombre_categoria}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
+                                {errors.categorias && <InputError message={errors.categorias[0]} />}
                             </div>
-                            {/* Form Config Destino End */}
-                        </CardContent>
-                    </Card>
-                    <div className="mt-2">
-                        <Card>
-                            <CardHeader>
-                                <CardDescription className="text-center dark:text-emerald-400">Ingrese Datos del Producto a Comprar</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid grid-cols-3 gap-4">
-                                    {/* Nombre del Producto */}
-                                    <div className="grid w-full max-w-sm items-center gap-1">
-                                        <Label htmlFor="nombre_producto">Nombre del Producto</Label>
-                                        <Input
-                                            className="mt-2"
-                                            type="text"
-                                            name="producto"
-                                            placeholder="Producto"
-                                            value={formData.producto}
-                                            onChange={handleInputChange}
-                                        />
-                                        <InputError />
-                                    </div>
-                                    {/* Categoria del Producto */}
-                                    <div className="grid w-full max-w-sm items-center gap-1">
-                                        <Label htmlFor="nombre_producto">Categoria del Producto</Label>
-                                        <Select
-                                            name="categorias"
-                                            value={formData.categorias}
-                                            onValueChange={(value) => setFormData({ ...formData, categorias: value })}
-                                        >
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Seleccione Categoría" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {categorias.map((categoria: CategoriasProps) => (
-                                                    <SelectItem key={categoria.id} value={categoria.nombre_categoria}>
-                                                        {categoria.nombre_categoria}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <InputError />
-                                    </div>
-                                    {/* Codigo de Compra */}
-                                    <div className="grid w-full max-w-sm items-center gap-1">
-                                        <Label htmlFor="codigo_producto">Código del Producto</Label>
-                                        <Input
-                                            className="mt-2"
-                                            type="text"
-                                            name="codigo"
-                                            placeholder="Código Producto"
-                                            value={formData.codigo}
-                                            onChange={handleInputChange}
-                                        />
-                                        <InputError />
-                                    </div>
-                                    {/* Precio de Compra */}
-                                    <div className="grid w-full max-w-sm items-center gap-1">
-                                        <Label htmlFor="precio_producto">Precio del Producto</Label>
-                                        <Input
-                                            type="number"
-                                            name="precio"
-                                            placeholder="Precio de compra del producto"
-                                            value={formData.precio}
-                                            onChange={(e) => setFormData({ ...formData, precio: parseFloat(e.target.value || '0') })}
-                                        />
-                                        <InputError />
-                                    </div>
-                                    {/* Cantidad de Productos */}
-                                    <div className="grid w-full max-w-sm items-center gap-1">
-                                        <Label htmlFor="cantidad_producto">Cantidad Comprada</Label>
-                                        <Input
-                                            type="number"
-                                            name="cantidad"
-                                            placeholder="Cantidad de los productos"
-                                            value={formData.cantidad}
-                                            onChange={(e) => setFormData({ ...formData, cantidad: parseInt(e.target.value || '0', 10) })}
-                                        />
-                                        <InputError />
-                                    </div>
-                                    {/* Btn Agregar */}
-                                    <div className="mt-6 grid w-full max-w-sm items-center gap-1">
-                                        <Button
-                                            variant="secondary"
-                                            className="cursor-pointer hover:animate-pulse hover:bg-blue-400"
-                                            onClick={agregarProducto}
-                                        >
-                                            <PlusIcon />
-                                            Agregar Producto
-                                        </Button>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-                    <Separator className="mt-3" />
-                    <Table>
-                        <TableCaption className="text-sidebar-accent">Lista de los Productos a Comprar.</TableCaption>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Producto</TableHead>
-                                <TableHead>Categoria</TableHead>
-                                <TableHead>Código</TableHead>
-                                <TableHead>Cantidad</TableHead>
-                                <TableHead>Precio</TableHead>
-                                <TableHead>Importe</TableHead>
-                                <TableHead className="text-sidebar-accent text-right">Acciones</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {producto.map((producto) => (
-                                <TableRow key={producto.id}>
-                                    <TableCell className="font-medium">{producto.producto}</TableCell>
-                                    <TableCell>{producto.categoria}</TableCell>
-                                    <TableCell>{producto.codigo}</TableCell>
-                                    <TableCell>{producto.cantidad}</TableCell>
-                                    <TableCell>$ {producto.precio.toFixed(2)}</TableCell>
-                                    <TableCell>{(producto.cantidad * producto.precio).toFixed(2)}</TableCell>
-                                    <TableCell className="text-right">
-                                        {/* Btn Acciones */}
-                                        <Button
-                                            variant="link"
-                                            onClick={() => editarProducto(producto.id)}
-                                            className="cursor-pointer text-blue-600 hover:bg-blue-600 hover:text-white"
-                                        >
-                                            <Edit2 />
-                                        </Button>
-                                        <Button
-                                            variant="link"
-                                            onClick={() => eliminarProducto(producto.id)}
-                                            className="hover:bg-destructive text-destructive ms-2 cursor-pointer hover:text-white"
-                                        >
-                                            <Trash2Icon />
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                                <TableCell colSpan={2}>Total de la Compra</TableCell>
-                                <TableCell className="bg-amber-300 text-amber-950">{producto.length} Productos</TableCell>
-                                <TableCell className="bg-amber-800 text-amber-300">
-                                    {producto.reduce((total, item) => total + item.cantidad, 0)} Unidades
-                                </TableCell>
-                                <TableCell colSpan={2} className="bg-emerald-700 text-center text-emerald-950">
-                                    $ {producto.reduce((total, producto) => total + producto.precio * producto.cantidad, 0).toFixed(2)}
-                                </TableCell>
-                                <TableCell className="text-sidebar-accent text-right">Acciones</TableCell>
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
-                </div>
-                <Separator />
-                <div className="flex justify-center p-4">
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="default" className="cursor-pointer">
-                                <ShoppingBasketIcon />
-                                Proceder Compra
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle className="text-sidebar-accent">Realizar nueva Compra</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Antes de realizar la compra, debe de realizar una acción, por favor escoja su métdo de Pago
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <div className="grid auto-rows-min gap-2 md:grid-cols-1">
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                className="w-full cursor-pointer bg-emerald-400 text-emerald-950 hover:bg-emerald-900 hover:text-white"
-                                                onClick={procederCompra}
-                                            >
-                                                <BookCheck />
-                                                Pagar ahora mediante sus Cuentas Monetarias
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>Continuar con la Compra de los Productos</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                                <Separator />
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                variant="secondary"
-                                                className="hover:bg-destructive w-full cursor-pointer"
-                                                onClick={procederCompra}
-                                            >
-                                                <BookCheck />
-                                                Pagar luego, recuerde que se acomula una deuda
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>Continuar con la Compra de los Productos</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                            <AlertDialogFooter className="sm:justify-center">
-                                <AlertDialogCancel className="cursor-pointer">Cancelar</AlertDialogCancel>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
 
+                            {/* Precio de Compra */}
+                            <div className="grid w-full max-w-sm items-center gap-1">
+                                <Label htmlFor="precio_producto">Precio</Label>
+                                <Input
+                                    type="number"
+                                    name="precio"
+                                    placeholder="Precio"
+                                    value={tempFormData.precio}
+                                    onChange={handleTempInputChange}
+                                />
+                                {errors.precio && <InputError message={errors.precio[0]} />}
+                            </div>
+
+                            {/* Cantidad de Productos */}
+                            <div className="grid w-full max-w-sm items-center gap-1">
+                                <Label htmlFor="cantidad_producto">Cantidad</Label>
+                                <Input
+                                    type="number"
+                                    name="cantidad"
+                                    placeholder="Cantidad"
+                                    value={tempFormData.cantidad}
+                                    onChange={handleTempInputChange}
+                                />
+                                {errors.cantidad && <InputError message={errors.cantidad[0]} />}
+                            </div>
+
+                            {/* Botón Agregar */}
+                            <div className="mt-6 grid w-full max-w-sm items-center gap-1">
+                                <Button
+                                    variant="secondary"
+                                    className="cursor-pointer hover:animate-pulse hover:bg-blue-400"
+                                    onClick={agregarProducto}
+                                >
+                                    <PlusIcon />
+                                    Agregar Producto
+                                </Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Tabla de productos */}
+                <Table>
+                    <TableCaption className="text-sidebar-accent">Lista de los Productos a Comprar.</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Producto</TableHead>
+                            <TableHead>Categoria</TableHead>
+                            <TableHead>Código</TableHead>
+                            <TableHead>Cantidad</TableHead>
+                            <TableHead>Precio</TableHead>
+                            <TableHead>Importe</TableHead>
+                            <TableHead className="text-sidebar-accent text-right">Acciones</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {productos.map((p) => (
+                            <TableRow key={p.id}>
+                                <TableCell className="font-medium">{p.producto}</TableCell>
+                                <TableCell>{p.categoria}</TableCell>
+                                <TableCell>{p.codigo}</TableCell>
+                                <TableCell>{p.cantidad}</TableCell>
+                                <TableCell>${p.precio.toFixed(2)}</TableCell>
+                                <TableCell>${(p.cantidad * p.precio).toFixed(2)}</TableCell>
+                                <TableCell className="text-right">
+                                    <Button variant="link" onClick={() => editarProducto(p.id)} className="text-blue-600 hover:text-blue-800">
+                                        <Edit2 />
+                                    </Button>
+                                    <Button variant="link" onClick={() => eliminarProducto(p.id)} className="ms-2 text-red-600 hover:text-red-800">
+                                        <Trash2Icon />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={2} className="font-bold">
+                                Total de la Compra
+                            </TableCell>
+                            <TableCell className="bg-amber-300 text-amber-950">{productos.length} Productos</TableCell>
+                            <TableCell className="bg-amber-800 text-amber-300">{productos.reduce((t, p) => t + p.cantidad, 0)} Unidades</TableCell>
+                            <TableCell colSpan={2} className="bg-emerald-700 text-center text-xl font-bold text-emerald-950">
+                                ${calcularTotal()}
+                            </TableCell>
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+
+                {/* Botones de acción */}
+                <div className="flex justify-center p-4">
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            // Mapear productos al formato esperado por el backend
+                            setData('productos', productos);
+
+                            post('/comprar', {
+                                preserveScroll: true,
+                                onSuccess: () => {
+                                    setProductos([]);
+                                    setTempFormData({ producto: '', categoria: '', codigo: '', cantidad: 0, precio: 0 });
+                                },
+                            });
+                        }}
+                        disabled={processing}
+                        className="bg-green-600 hover:bg-green-700"
+                    >
+                        {processing ? 'Registrando...' : 'Proceder Compra'}
+                    </Button>
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger>
-                                <Link href="/dashboard">
-                                    <Button variant="secondary" onClick={limpiarForm} className="ms-2 cursor-pointer">
+                            <TooltipTrigger asChild>
+                                <Link href="/dashboard" className="ms-2">
+                                    <Button variant="secondary">
                                         <BookCheck />
                                         Cancelar Compra
                                     </Button>

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_cuenta')->unique();
             $table->double('saldo_cuenta', 15, 8)->nullable()->default(123.4567);
+            // Para deudas de proveedores
+            $table->double('deuda', 15, 8)->default(0);
             $table->enum('tipo_cuenta', ['permanentes', 'temporales']);
             $table->text('notas_cuenta')->nullable();
             $table->timestamps();

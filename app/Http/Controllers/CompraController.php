@@ -5,96 +5,95 @@ namespace App\Http\Controllers;
 use App\Models\Almacen;
 use App\Models\Categoria;
 use App\Models\Compra;
-use Illuminate\Http\Request;
+use App\Models\Cuenta;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-
 use Inertia\Inertia;
 
 class CompraController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return Inertia::render('comprar/index');
+        $cuentas = Cuenta::all();
+        $almacenes = Almacen::all();
+        $proveedores = Proveedor::all();
+        $categorias = Categoria::all();
+
+        return Inertia::render('comprar/index', compact('cuentas', 'almacenes', 'proveedores', 'categorias'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // Validar los datos recibidos
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
+            'compra' => 'required|in:deuda_proveedor,pago_cash',
+            'cuenta_id' => 'required|exists:cuentas,id',
             'almacen' => 'required|string|max:255',
             'proveedor' => 'required|string|max:255',
             'fecha' => 'required|date',
-            'productos' => 'required|array',
+            'productos' => 'required|array|min:1',
             'productos.*.producto' => 'required|string|max:255',
             'productos.*.categoria' => 'required|string|max:255',
-            'productos.*.codigo' => 'required|string|max:255|unique:productos,codigo_producto', // Código único
+            'productos.*.codigo' => 'required|string|max:255|unique:productos,codigo_producto',
             'productos.*.cantidad' => 'required|integer|min:1',
             'productos.*.precio' => 'required|numeric|min:0',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        DB::beginTransaction();
 
         try {
-            DB::beginTransaction();
+            // Crear/obtener almacén y proveedor
+            $almacen = Almacen::firstOrCreate(['nombre_almacen' => $validated['almacen']]);
+            $proveedor = Proveedor::firstOrCreate(['nombre_proveedor' => $validated['proveedor']]);
 
-            // Buscar o crear almacén y proveedor
-            $almacen = Almacen::firstOrCreate(['nombre_almacen' => $request->almacen]);
-            $proveedor = Proveedor::firstOrCreate(['nombre_proveedor' => $request->proveedor]);
-
-            // Crear compra
+            // Calcular total y crear compra
+            $total = collect($validated['productos'])->sum(fn($p) => $p['cantidad'] * $p['precio']);
             $compra = Compra::create([
                 'almacen_id' => $almacen->id,
                 'proveedor_id' => $proveedor->id,
-                'fecha_compra' => $request->fecha,
-                'total_compra' => collect($request->productos)->sum(fn($p) => $p['cantidad'] * $p['precio']),
+                'cuenta_id' => $validated['cuenta_id'],
+                'fecha_compra' => $validated['fecha'],
+                'total_compra' => $total,
+                'tipo_compra' => $validated['compra'],
             ]);
 
-            foreach ($request->productos as $item) {
+            // Procesar productos
+            foreach ($validated['productos'] as $item) {
                 $categoria = Categoria::firstOrCreate(['nombre_categoria' => $item['categoria']]);
 
-                // Crear un nuevo producto siempre
                 $producto = Producto::create([
                     'nombre_producto' => $item['producto'],
                     'categoria_id' => $categoria->id,
-                    'codigo_producto' => $item['codigo'], // Código único
-                    'precio_compra_producto' => $item['precio'], // Precio de compra
-                    'cantidad_producto' => $item['cantidad'], // Cantidad comprada
+                    'codigo_producto' => $item['codigo'],
+                    'precio_compra_producto' => $item['precio'],
+                    'cantidad_producto' => $item['cantidad'],
                 ]);
 
-                // Adjuntar a la compra
                 $compra->productos()->attach($producto->id, [
                     'cantidad' => $item['cantidad'],
                     'precio' => $item['precio'],
                 ]);
             }
 
+            // Actualizar cuenta según tipo de compra
+            $cuenta = Cuenta::findOrFail($validated['cuenta_id']);
+            if ($validated['compra'] === 'deuda_proveedor') {
+                $cuenta->deuda += $total;
+            } else {
+                $cuenta->saldo_cuenta -= $total;
+            }
+            $cuenta->save();
+
             DB::commit();
 
-            return response()->json([
-                'message' => 'Compra registrada correctamente',
-                'data' => [
-                    'id' => $compra->id,
-                    'almacen' => $almacen->nombre_almacen,
-                    'proveedor' => $proveedor->nombre_proveedor,
-                    'fecha' => $compra->fecha_compra,
-                    'total' => $compra->total_compra,
-                    'productos' => $request->productos,
-                ],
-            ], 201);
+            // Redirigir con mensaje de éxito
+            return Inertia::location(route('dashboard'));
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Error al registrar la compra'], 500);
+            return Inertia::render('comprar/index', [
+                'errors' => ['_error' => 'Error al procesar la compra: ' . $e->getMessage()]
+            ])->withStatusCode(500);
         }
     }
 }

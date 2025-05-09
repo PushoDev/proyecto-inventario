@@ -25,14 +25,15 @@ import {
     Github,
     IdCardIcon,
     Landmark,
+    LandPlot,
     LucideShoppingCart,
     NotebookText,
+    NotepadTextDashedIcon,
     Repeat,
     StoreIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import AppLogo from './app-logo';
-import { SearchForm } from './extras/search-form';
 
 const navGroups = [
     {
@@ -67,10 +68,35 @@ const navGroups = [
     {
         id: 'finanzas',
         title: 'Finanzas',
+        collapsible: false,
+        items: [
+            {
+                title: 'Cuentas Monetarias',
+                href: '/cuentas',
+                icon: Landmark,
+            },
+            {
+                title: 'Deudas Pendientes',
+                href: '/deudas',
+                icon: LandPlot,
+            },
+        ],
+    },
+    {
+        id: 'reportes',
+        title: 'Reportes',
         collapsible: true,
         items: [
-            { title: 'Cuentas Monetarias', href: '/cuentas', icon: Landmark },
-            { title: 'Reportes', href: '/reportes', icon: NotebookText },
+            {
+                title: 'Reportes',
+                href: '/reportes',
+                icon: NotebookText,
+            },
+            {
+                title: 'Historial de Operaciones',
+                href: '/historial',
+                icon: NotepadTextDashedIcon,
+            },
         ],
     },
 ];
@@ -116,7 +142,6 @@ export function AppSidebar() {
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
-                        <SearchForm />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>

@@ -146,7 +146,8 @@ export interface ProductoComprarProps {
 export interface CuentaNegocioProps {
     id: number;
     nombre_cuenta: string;
-    saldo_cuenta: number | null;
+    saldo_cuenta: number;
+    deuda: number;
     tipo_cuenta: 'permanentes' | 'temporales';
     notas_cuenta?: string;
     created_at?: string;
@@ -165,4 +166,28 @@ export interface DeudasProveedoresProps {
     updated_at?: string;
 }
 
+// Interface para la solicitud de compra
+export interface CompraRequest {
+    compra: 'deuda_proveedor' | 'pago_cash';
+    cuenta_id: number;
+    almacen: string;
+    proveedor: string;
+    fecha: string;
+    productos: ProductoComprarProps[];
+}
 
+// Interface para respuesta de compra (si es necesario)
+export interface CompraResponse {
+    id: number;
+    tipo_compra: 'deuda_proveedor' | 'pago_cash';
+    cuenta: {
+        id: number;
+        saldo: number;
+        deuda: number;
+    };
+    almacen: string;
+    proveedor: string;
+    fecha: string;
+    total: number;
+    productos: ProductoComprarProps[];
+}
