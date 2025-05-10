@@ -1,6 +1,7 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
+
 export interface Auth {
     user: User;
 }
@@ -190,4 +191,21 @@ export interface CompraResponse {
     fecha: string;
     total: number;
     productos: ProductoComprarProps[];
+}
+
+// Interface Productos mas comprados
+export interface ProductosMasCompradosRef {
+    nombre_producto: string;
+    total_cantidad: number;
+    veces_comprado: number;
+}
+export type ProductosMasCompradosList = ProductosMasCompradosRef[];
+
+// Interface de Compras por periodos
+export interface CompraPorPeriodoRef {
+    id: number;
+    fecha_compra: string;
+    total_compra: number;
+    nombre_proveedor: string;
+    tipo_compra: 'deuda_proveedor' | 'pago_cash';
 }

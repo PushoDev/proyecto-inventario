@@ -5,35 +5,78 @@ namespace App\Http\Controllers;
 use App\Models\Compra;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+
 class ReportesController extends Controller
 {
     /**
-     * Obtener todas las compras con sus detalles.
+     * Inicio de los Reportes
+     *
+     * @return void
      */
-    public function getCompras()
+    public function index()
     {
-        $compras = Compra::with(['almacen', 'proveedor', 'productos'])->get();
+        return Inertia::render('reportes/index');
+    }
+    /**
+     * Obtener los productos mas comprados.
+     */
+    public function productosMasComprados()
+    {
+        $productos = DB::table('compra_producto')
+            ->join('productos', 'compra_producto.producto_id', '=', 'productos.id')
+            ->select(
+                'productos.nombre_producto',
+                DB::raw('SUM(compra_producto.cantidad) as total_cantidad'),
+                DB::raw('COUNT(compra_producto.compra_id) as veces_comprado')
+            )
+            ->groupBy('productos.id', 'productos.nombre_producto')
+            ->orderByDesc('total_cantidad')
+            ->take(10)
+            ->get();
 
-        return response()->json([
-            'data' => $compras->map(function ($compra) {
-                return [
-                    'id' => $compra->id,
-                    'fecha' => $compra->fecha_compra,
-                    'almacen' => $compra->almacen->nombre_almacen,
-                    'proveedor' => $compra->proveedor->nombre_proveedor,
-                    'total' => $compra->total_compra,
-                    'productos' => $compra->productos->map(function ($producto) {
-                        return [
-                            'nombre' => $producto->nombre_producto,
-                            'categoria' => $producto->categoria->nombre_categoria,
-                            'codigo' => $producto->codigo_producto,
-                            'cantidad' => $producto->pivot->cantidad,
-                            'precio' => $producto->pivot->precio,
-                            'subtotal' => $producto->pivot->cantidad * $producto->pivot->precio,
-                        ];
-                    }),
-                ];
-            }),
+        return Inertia::render('reportes/ProductosMasComprados', [
+            'productos' => $productos,
+        ]);
+    }
+    /**
+     * Compras por Periodo
+     */
+    public function comprasPorPeriodo(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'proveedor_id' => 'nullable|exists:proveedors,id',
+        ]);
+
+        $query = DB::table('compras')
+            ->join('proveedors', 'compras.proveedor_id', '=', 'proveedors.id')
+            ->select(
+                'compras.id',
+                'compras.fecha_compra',
+                'compras.total_compra',
+                'proveedors.nombre_proveedor',
+                'compras.tipo_compra'
+            );
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('compras.fecha_compra', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('compras.fecha_compra', '<=', $request->end_date);
+        }
+
+        if ($request->filled('proveedor_id')) {
+            $query->where('compras.proveedor_id', $request->proveedor_id);
+        }
+
+        $compras = $query->orderByDesc('compras.fecha_compra')->get();
+
+        return Inertia::render('reportes/CompraPorPeriodo', [
+            'compras' => $compras,
         ]);
     }
 }

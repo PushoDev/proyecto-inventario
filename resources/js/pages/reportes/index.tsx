@@ -1,8 +1,9 @@
 import HeadingSmall from '@/components/heading-small';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ScrollText } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -46,11 +47,22 @@ export default function ReposrtesPage() {
                         </div>
                         <Separator className="col-span-full my-4" />
                         <div className="flex h-5 items-center space-x-4 text-sm">
-                            <div>Compras</div>
+                            <div>
+                                <Link href={route('reportes.productos_mas_comprados')}>
+                                    <Button variant="link" className="cursor-pointer">
+                                        Productos Mas Comprados
+                                    </Button>
+                                </Link>
+                            </div>
                             <Separator orientation="vertical" />
-                            <div>Docs</div>
+                            <div>
+                                <Link href={route('reportes.compras_por_periodo')}>
+                                    <Button variant="link" className="cursor-pointer">
+                                        Compras por Periodo
+                                    </Button>
+                                </Link>
+                            </div>
                             <Separator orientation="vertical" />
-                            <div>Source</div>
                         </div>
                     </div>
                 </div>
