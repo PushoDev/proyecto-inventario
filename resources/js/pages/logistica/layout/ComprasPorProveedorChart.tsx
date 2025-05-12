@@ -19,7 +19,7 @@ export interface ComprasPorProveedorPieProps {
 }
 
 // Colores HEX definidos manualmente para evitar conflictos con CSS
-const chartColors = ['#fff', '#5ddad3', '#3b82f6', '#facc15', '#f97316'];
+const chartColors = ['#5d9ce5', '#5ddad3', '#3b82f6', '#facc15', '#f97316'];
 
 const chartConfig = {
     visitors: {
@@ -33,7 +33,7 @@ export function ComprasPorProveedorPie({ data }: ComprasPorProveedorPieProps) {
 
     const chartData = data.map((item, index) => ({
         browser: item.nombre_proveedor,
-        visitors: item.total_gastado,
+        visitors: parseFloat(item.total_gastado), // ✅ Convertido a número
         fill: chartColors[index % chartColors.length],
     }));
 

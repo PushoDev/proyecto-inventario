@@ -27,11 +27,17 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function ProductosMasCompradosPie({ data }: ProductosMasCompradosPieProps) {
+    // ✅ Verifica que los datos lleguen correctamente
+    console.log('Datos recibidos en ProductosMasComprados:', data);
+
     const chartData = data.map((item, index) => ({
         browser: item.nombre_producto,
-        visitors: item.total_cantidad,
+        visitors: parseFloat(item.total_cantidad),
         fill: chartColors[index % chartColors.length],
     }));
+
+    // ✅ Verifica que chartData se genere correctamente
+    console.log('chartData transformado:', chartData);
 
     return (
         <Card className="flex flex-col">
