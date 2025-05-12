@@ -79,4 +79,53 @@ class ReportesController extends Controller
             'compras' => $compras,
         ]);
     }
+
+    /**
+     * Balance Mensual
+     */
+    public function balanceGastosMensuales()
+    {
+        $gastos = DB::table('compras')
+            ->select(
+                DB::raw("DATE_FORMAT(compras.fecha_compra, '%Y-%m') as mes_anio"),
+                DB::raw('SUM(compras.total_compra) as total'),
+                DB::raw('COUNT(compras.id) as cantidad_compras')
+            )
+            ->groupBy('mes_anio')
+            ->orderByDesc('mes_anio')
+            ->get();
+
+        return Inertia::render('reportes/BalanceGastosMensauales', [
+            'gastos' => $gastos,
+        ]);
+    }
+
+    /**
+     * Compras por Proveedor
+     */
+    public function comprasPorProveedor($proveedorId = null)
+    {
+        $query = DB::table('compras')
+            ->join('proveedors', 'compras.proveedor_id', '=', 'proveedors.id')
+            ->select(
+                'compras.id',
+                'compras.fecha_compra',
+                'compras.total_compra',
+                'compras.tipo_compra'
+            );
+
+        if ($proveedorId) {
+            $query->where('compras.proveedor_id', $proveedorId);
+        }
+
+        $compras = $query->orderByDesc('compras.fecha_compra')->get();
+        $proveedor = $proveedorId
+            ? DB::table('proveedors')->find($proveedorId)
+            : null;
+
+        return Inertia::render('reportes/ComprasPorProveedor', [
+            'compras' => $compras,
+            'proveedor' => $proveedor,
+        ]);
+    }
 }

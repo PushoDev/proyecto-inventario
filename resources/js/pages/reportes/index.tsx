@@ -63,6 +63,22 @@ export default function ReposrtesPage() {
                                 </Link>
                             </div>
                             <Separator orientation="vertical" />
+                            <div>
+                                <Link href={route('reportes.balance_gastos_mensuales')}>
+                                    <Button variant="link" className="cursor-pointer">
+                                        Balance de Gastos Mensuales
+                                    </Button>
+                                </Link>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div>
+                                <Link href={route('reportes.compras_por_proveedor')}>
+                                    <Button variant="link" className="cursor-pointer">
+                                        Compras por Proveedor
+                                    </Button>
+                                </Link>
+                            </div>
+                            <Separator orientation="vertical" />
                         </div>
                     </div>
                 </div>

@@ -16,5 +16,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Reporte: Compras por Período
         Route::get('/compras-por-periodo', [ReportesController::class, 'comprasPorPeriodo'])
             ->name('compras_por_periodo');
+
+        // Reporte: Balance Mensual
+        Route::get('/balance-gastos-mensuales', [ReportesController::class, 'balanceGastosMensuales'])
+            ->name('balance_gastos_mensuales');
+
+        // Reporte: Compras por Proveedor
+        Route::get('/compras-por-proveedor/{proveedorId?}', [ReportesController::class, 'comprasPorProveedor'])
+            ->name('compras_por_proveedor');
     });
 });

@@ -209,3 +209,18 @@ export interface CompraPorPeriodoRef {
     nombre_proveedor: string;
     tipo_compra: 'deuda_proveedor' | 'pago_cash';
 }
+
+// Interface de Gastos Mensuales
+export interface GastoMensualRef {
+    mes_anio: string;
+    total: number;
+    cantidad_compras: number;
+}
+
+// Interface de Compras por Proveedor
+export interface CompraPorProveedorRef {
+    id: number;
+    fecha_compra: string;
+    total_compra: number;
+    tipo_compra: 'deuda_proveedor' | 'pago_cash';
+}
