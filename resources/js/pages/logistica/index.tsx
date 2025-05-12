@@ -19,14 +19,18 @@ import * as React from 'react';
 // Section Card
 import { Badge } from '@/components/ui/badge';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
+import { TrendingUpIcon } from 'lucide-react';
 // Calendario
 import { Calendar } from '@/components/ui/calendar';
+import { ComprasPorProveedorPie } from './layout/ComprasPorProveedorChart';
+import { ComprasVentasCharts } from './layout/ComprasVentas';
+import { GastosMensualesChart } from './layout/GastosMensualesChart';
+import { ProductosMasCompradosPie } from './layout/ProductosMasCompradosPie';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Reportes Generales',
-        href: '/reportes',
+        href: route('reportes.index'),
     },
     {
         title: 'Logistica del Negocio',
@@ -45,6 +49,10 @@ export default function LogisticaPage({
     totalCuentas,
     saldoCuentas,
     montoGeneralInvertido,
+    deudaPendientes,
+    gastosMensuales,
+    productosTop,
+    comprasPorProveedor,
 }: LogisticaProps) {
     // Calendario
     const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -73,24 +81,7 @@ export default function LogisticaPage({
                     </div>
 
                     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-                        <Card className="@container/card col-span-3">
-                            <CardHeader className="relative">
-                                <CardDescription>New Customers</CardDescription>
-                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">1,234</CardTitle>
-                                <div className="absolute top-4 right-4">
-                                    <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                        <TrendingDownIcon className="size-3" />
-                                        -20%
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardFooter className="flex-col items-start gap-1 text-sm">
-                                <div className="line-clamp-1 flex gap-2 font-medium">
-                                    Down 20% this period <TrendingDownIcon className="size-4" />
-                                </div>
-                                <div className="text-muted-foreground">Acquisition needs attention</div>
-                            </CardFooter>
-                        </Card>
+                        <ComprasVentasCharts />
                         <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow" />
                     </div>
                     <Separator className="col-span-full my-4" />
@@ -164,7 +155,7 @@ export default function LogisticaPage({
                             <CardHeader className="relative">
                                 <CardDescription>Total Deudas</CardDescription>
                                 <CardTitle className="text-2xl font-semibold text-red-400 tabular-nums @[250px]/card:text-3xl">
-                                    $ {inversionTotal}
+                                    $ {deudaPendientes}
                                 </CardTitle>
                                 <div className="absolute top-4 right-4">
                                     <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
@@ -262,6 +253,16 @@ export default function LogisticaPage({
                         </Card>
                     </div>
                     <Separator className="col-span-full my-4" />
+
+                    {/* Graficos */}
+                    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                        {/* Gastos Mensuales */}
+                        <GastosMensualesChart data={gastosMensuales} />
+                        {/* Productos Mas Comprados */}
+                        <ProductosMasCompradosPie data={productosTop} />
+                        {/* Compras por Proveedor */}
+                        <ComprasPorProveedorPie data={comprasPorProveedor} />
+                    </div>
                 </div>
             </div>
         </AppLayout>

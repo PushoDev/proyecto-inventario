@@ -49,6 +49,46 @@ class LogisticaController extends Controller
         // Total de Monto del Negocio tanto invertido como en las cuentas
         $montoGeneralInvertido = ($saldoCuentas ?? 0) + ($inversionTotal ?? 0);
 
+        // Total de Deudas a Proveedores
+        $deudaPendientes = DB::table('cuentas')
+            ->sum('deuda');
+
+        // Datos Charts
+        // Reporte: Gastos Mensuales
+        $gastosMensuales = DB::table('compras')
+            ->select(
+                DB::raw("DATE_FORMAT(compras.fecha_compra, '%Y-%m') as mes_anio"),
+                DB::raw('SUM(compras.total_compra) as total'),
+                DB::raw('COUNT(compras.id) as cantidad_compras')
+            )
+            ->groupBy('mes_anio')
+            ->orderByDesc('mes_anio')
+            ->get();
+        // Reporte: Productos mas Comprados
+        $productosTop = DB::table('compra_producto')
+            ->join('productos', 'compra_producto.producto_id', '=', 'productos.id')
+            ->select(
+                'productos.nombre_producto',
+                DB::raw('SUM(compra_producto.cantidad) as total_cantidad'),
+                DB::raw('COUNT(compra_producto.compra_id) as veces_comprado')
+            )
+            ->groupBy('productos.id', 'productos.nombre_producto')
+            ->orderByDesc('total_cantidad')
+            ->take(10)
+            ->get();
+        // Reporte: Compras por Proveedor
+        $comprasPorProveedor = DB::table('compras')
+            ->join('proveedors', 'compras.proveedor_id', '=', 'proveedors.id')
+            ->select(
+                'proveedors.nombre_proveedor',
+                DB::raw('COUNT(compras.id) as cantidad_compras'),
+                DB::raw('SUM(compras.total_compra) as total_gastado')
+            )
+            ->groupBy('proveedors.id', 'proveedors.nombre_proveedor')
+            ->orderByDesc('total_gastado')
+            ->get();
+
+
         // Renderizar la vista con los datos
         return Inertia::render('logistica/index', [
             'totalCategorias' => $totalCategorias,
@@ -60,7 +100,13 @@ class LogisticaController extends Controller
             'inversionTotal' => $inversionTotal, // Inversión total de los productos
             'totalCuentas' => $totalCuentas,  // Cuentasa de Inversion y Ganancias
             'saldoCuentas' => $saldoCuentas,  // Saldo de las Cuentas Bancarias
+            'deudaPendientes' => $deudaPendientes, // Deudas a Proveedores
             'montoGeneralInvertido' => $montoGeneralInvertido, // Toda la plata limpia del negocio 💀
+
+            // Charts
+            'gastosMensuales' => $gastosMensuales,
+            'productosTop' => $productosTop,
+            'comprasPorProveedor' => $comprasPorProveedor,
         ]);
     }
 }

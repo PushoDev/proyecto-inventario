@@ -105,21 +105,6 @@ export interface AlmacenProps {
     updated_at: string;
 }
 
-// Interface para la Logistica
-export interface LogisticaProps {
-    totalCategorias: number;
-    categoriasActivas: number;
-    totalProveedores: number;
-    totalClientes: number;
-    totalAlmacenes: number;
-    totalProductos: number;
-    totalUnidades: number;
-    inversionTotal: number;
-    totalCuentas: number;
-    saldoCuentas: number;
-    montoGeneralInvertido: number;
-}
-
 // Interface para los Productos
 export interface ProductosProps {
     id: number;
@@ -223,4 +208,32 @@ export interface CompraPorProveedorRef {
     fecha_compra: string;
     total_compra: number;
     tipo_compra: 'deuda_proveedor' | 'pago_cash';
+}
+
+
+// Para los Charts
+// Interface para gráficos - Compras por Proveedor
+export interface CompraPorProveedorChartRef {
+    nombre_proveedor: string;
+    cantidad_compras: number;
+    total_gastado: number;
+}
+
+// Interface para la Logistica
+export interface LogisticaProps {
+    totalCategorias: number;
+    categoriasActivas: number;
+    totalProveedores: number;
+    totalClientes: number;
+    totalAlmacenes: number;
+    totalProductos: number;
+    totalUnidades: number;
+    inversionTotal: number;
+    totalCuentas: number;
+    saldoCuentas: number;
+    montoGeneralInvertido: number;
+    deudaPendientes: number;
+    gastosMensuales: GastoMensualRef[];
+    productosTop: ProductosMasCompradosRef[];
+    comprasPorProveedor: CompraPorProveedorChartRef[];
 }
