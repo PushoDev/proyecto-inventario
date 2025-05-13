@@ -21,7 +21,7 @@ export default function EditProductoPage({ producto, categorias }: { producto: P
         nombre_producto: producto.nombre_producto,
         marca_producto: producto.marca_producto || '',
         codigo_producto: producto.codigo_producto || '',
-        categoria_id: '', // Inicializamos como cadena vacía
+        categoria_id: producto.categoria_id?.toString() || '',
         precio_compra_producto: producto.precio_compra_producto.toString(),
         cantidad_producto: producto.cantidad_producto.toString(),
         imagen_producto: null as File | null,
@@ -48,6 +48,7 @@ export default function EditProductoPage({ producto, categorias }: { producto: P
             },
             onError: () => {
                 toast.error('Error al actualizar el producto');
+                console.log(errors);
             },
         });
     };
