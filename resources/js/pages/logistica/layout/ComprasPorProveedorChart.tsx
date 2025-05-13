@@ -29,16 +29,16 @@ const chartConfig = {
 
 export function ComprasPorProveedorPie({ data }: ComprasPorProveedorPieProps) {
     // ✅ Verifica que los datos lleguen correctamente
-    console.log('Datos recibidos en ComprasPorProveedorPie:', data);
+    // console.log('Datos recibidos en ComprasPorProveedorPie:', data);
 
     const chartData = data.map((item, index) => ({
         browser: item.nombre_proveedor,
-        visitors: parseFloat(item.total_gastado), // ✅ Convertido a número
+        visitors: parseFloat(item.total_gastado.toString()),
         fill: chartColors[index % chartColors.length],
     }));
 
-    // ✅ Verifica que chartData se genere correctamente
-    console.log('chartData transformado:', chartData);
+    // ✅ Verificar chartData se genere correctamente
+    // console.log('chartData transformado:', chartData);
 
     return (
         <Card className="flex flex-col">

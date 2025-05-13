@@ -32,7 +32,7 @@ export function ProductosMasCompradosPie({ data }: ProductosMasCompradosPieProps
 
     const chartData = data.map((item, index) => ({
         browser: item.nombre_producto,
-        visitors: parseFloat(item.total_cantidad),
+        visitors: parseFloat(item.total_cantidad.toString()),
         fill: chartColors[index % chartColors.length],
     }));
 
