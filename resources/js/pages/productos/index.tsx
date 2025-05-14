@@ -79,6 +79,27 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                         <CardHeader className="relative">
                             <CardDescription>Total de Productos</CardDescription>
                             <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">
+                                {productos.reduce((total, item) => total + item.cantidad_producto, 0)}
+                            </CardTitle>
+                            <div className="absolute top-4 right-4">
+                                <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+                                    <TrendingUpIcon className="size-3" />
+                                    Unidades
+                                </Badge>
+                            </div>
+                        </CardHeader>
+                        <CardFooter className="flex-col items-start gap-1 text-sm">
+                            <div className="line-clamp-1 flex gap-2 font-medium">
+                                Monto en Productos <TrendingUpIcon className="size-4" />
+                            </div>
+                            <div className="text-muted-foreground">Visitors for the last 6 months</div>
+                        </CardFooter>
+                    </Card>
+                    {/* Total de Others */}
+                    <Card className="@container/card">
+                        <CardHeader className="relative">
+                            <CardDescription>Monto General</CardDescription>
+                            <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">
                                 {productos.length}
                             </CardTitle>
                             <div className="absolute top-4 right-4">
@@ -100,31 +121,15 @@ export default function ProductosPage({ productos }: { productos: ProductosProps
                         <CardHeader className="relative">
                             <CardDescription>Monto General</CardDescription>
                             <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">
-                                Importe Gral
+                                $
+                                {productos
+                                    .reduce((total, producto) => total + producto.precio_compra_producto * producto.cantidad_producto, 0)
+                                    .toFixed(2)}
                             </CardTitle>
                             <div className="absolute top-4 right-4">
                                 <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
                                     <TrendingUpIcon className="size-3" />
-                                    +12.5%
-                                </Badge>
-                            </div>
-                        </CardHeader>
-                        <CardFooter className="flex-col items-start gap-1 text-sm">
-                            <div className="line-clamp-1 flex gap-2 font-medium">
-                                Monto en Productos <TrendingUpIcon className="size-4" />
-                            </div>
-                            <div className="text-muted-foreground">Visitors for the last 6 months</div>
-                        </CardFooter>
-                    </Card>
-                    {/* Total de Others */}
-                    <Card className="@container/card">
-                        <CardHeader className="relative">
-                            <CardDescription>Monto General</CardDescription>
-                            <CardTitle className="text-2xl font-semibold text-emerald-500 tabular-nums @[250px]/card:text-3xl">$ .00</CardTitle>
-                            <div className="absolute top-4 right-4">
-                                <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-                                    <TrendingUpIcon className="size-3" />
-                                    +12.5%
+                                    Importe
                                 </Badge>
                             </div>
                         </CardHeader>
