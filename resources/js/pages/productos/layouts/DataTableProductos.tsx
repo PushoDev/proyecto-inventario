@@ -66,7 +66,7 @@ export function DataTableProductos<TData, TValue>({ columns, data }: DataTablePr
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="sm" className="ml-auto">
-                            Columnas <ChevronDown className="ml-2 h-4 w-4" />
+                            Columnas Disponibles <ChevronDown className="ml-2 h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
