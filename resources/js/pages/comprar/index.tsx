@@ -1,5 +1,15 @@
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -191,45 +201,22 @@ export default function ComprarPage() {
                                     {errors.fecha && <InputError message={errors.fecha[0]} />}
                                 </div>
 
-                                {/* Tipo de Compra */}
+                                {/* Proveedor */}
                                 <div className="grid w-full max-w-sm items-center gap-1.5">
-                                    <Label htmlFor="tipo_compra">Tipo de Compra</Label>
-                                    <Select
-                                        name="compra"
-                                        value={data.compra}
-                                        onValueChange={(value) => setData('compra', value as 'deuda_proveedor' | 'pago_cash')}
-                                    >
+                                    <Label htmlFor="proveedor">Proveedor</Label>
+                                    <Select name="proveedor" value={data.proveedor} onValueChange={(value) => setData('proveedor', value)}>
                                         <SelectTrigger className="mt-2 w-full">
-                                            <SelectValue placeholder="Seleccione tipo de compra" />
+                                            <SelectValue placeholder="Seleccione Proveedor" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="deuda_proveedor">Deuda con Proveedor</SelectItem>
-                                            <SelectItem value="pago_cash">Pago en Efectivo</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.compra && <InputError message={errors.compra[0]} />}
-                                </div>
-
-                                {/* Cuenta */}
-                                <div className="grid w-full max-w-sm items-center gap-1.5">
-                                    <Label htmlFor="cuenta">Cuenta</Label>
-                                    <Select
-                                        name="cuenta_id"
-                                        value={data.cuenta_id.toString()}
-                                        onValueChange={(value) => setData('cuenta_id', parseInt(value))}
-                                    >
-                                        <SelectTrigger className="mt-2 w-full">
-                                            <SelectValue placeholder="Seleccione Cuenta" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {cuentas.map((cuenta) => (
-                                                <SelectItem key={cuenta.id} value={cuenta.id.toString()}>
-                                                    {cuenta.nombre_cuenta}
+                                            {proveedors.map((proveedor) => (
+                                                <SelectItem key={proveedor.id} value={proveedor.nombre_proveedor}>
+                                                    {proveedor.nombre_proveedor}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.cuenta_id && <InputError message={errors.cuenta_id[0]} />}
+                                    {errors.proveedor && <InputError message={errors.proveedor[0]} />}
                                 </div>
 
                                 {/* Almacén Destino */}
@@ -248,24 +235,6 @@ export default function ComprarPage() {
                                         </SelectContent>
                                     </Select>
                                     {errors.almacen && <InputError message={errors.almacen[0]} />}
-                                </div>
-
-                                {/* Proveedor */}
-                                <div className="grid w-full max-w-sm items-center gap-1.5">
-                                    <Label htmlFor="proveedor">Proveedor</Label>
-                                    <Select name="proveedor" value={data.proveedor} onValueChange={(value) => setData('proveedor', value)}>
-                                        <SelectTrigger className="mt-2 w-full">
-                                            <SelectValue placeholder="Seleccione Proveedor" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {proveedors.map((proveedor) => (
-                                                <SelectItem key={proveedor.id} value={proveedor.nombre_proveedor}>
-                                                    {proveedor.nombre_proveedor}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.proveedor && <InputError message={errors.proveedor[0]} />}
                                 </div>
                             </div>
                         </form>
@@ -420,25 +389,84 @@ export default function ComprarPage() {
 
                 {/* Botones de acción */}
                 <div className="flex justify-center p-4">
-                    <Button
-                        type="button"
-                        onClick={() => {
-                            // Mapear productos al formato esperado por el backend
-                            setData('productos', productos);
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="outline">Realizar Compra</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Tipo de Compra</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Antes de realizar la compra, seleccione si desea pagar ahora o comprar y pagar luego
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            {/* Opciones de Compra */}
+                            <div>
+                                {/* Tipo de Compra */}
+                                <div className="grid w-full max-w-sm items-center gap-1.5">
+                                    <Label htmlFor="tipo_compra">Tipo de Compra</Label>
+                                    <Select
+                                        name="compra"
+                                        value={data.compra}
+                                        onValueChange={(value) => setData('compra', value as 'deuda_proveedor' | 'pago_cash')}
+                                    >
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Seleccione tipo de compra" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="deuda_proveedor">Deuda con Proveedor</SelectItem>
+                                            <SelectItem value="pago_cash">Pago en Efectivo</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.compra && <InputError message={errors.compra[0]} />}
+                                </div>
 
-                            post('/comprar', {
-                                preserveScroll: true,
-                                onSuccess: () => {
-                                    setProductos([]);
-                                    setTempFormData({ producto: '', categoria: '', codigo: '', cantidad: 0, precio: 0 });
-                                },
-                            });
-                        }}
-                        disabled={processing}
-                        className="bg-green-600 hover:bg-green-700"
-                    >
-                        {processing ? 'Registrando...' : 'Proceder Compra'}
-                    </Button>
+                                {/* Cuenta */}
+                                <div className="grid w-full max-w-sm items-center gap-1.5">
+                                    <Label htmlFor="cuenta">Cuenta</Label>
+                                    <Select
+                                        name="cuenta_id"
+                                        value={data.cuenta_id.toString()}
+                                        onValueChange={(value) => setData('cuenta_id', parseInt(value))}
+                                    >
+                                        <SelectTrigger className="mt-2 w-full">
+                                            <SelectValue placeholder="Seleccione Cuenta" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {cuentas.map((cuenta) => (
+                                                <SelectItem key={cuenta.id} value={cuenta.id.toString()}>
+                                                    {cuenta.nombre_cuenta}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.cuenta_id && <InputError message={errors.cuenta_id[0]} />}
+                                </div>
+                            </div>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        // Mapear productos al formato esperado por el backend
+                                        setData('productos', productos);
+
+                                        post('/comprar', {
+                                            preserveScroll: true,
+                                            onSuccess: () => {
+                                                setProductos([]);
+                                                setTempFormData({ producto: '', categoria: '', codigo: '', cantidad: 0, precio: 0 });
+                                            },
+                                        });
+                                    }}
+                                    disabled={processing}
+                                    className="bg-green-600 hover:bg-green-700"
+                                >
+                                    {processing ? 'Registrando...' : 'Proceder Compra'}
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
