@@ -50,8 +50,13 @@ class LogisticaController extends Controller
         $montoGeneralInvertido = ($saldoCuentas ?? 0) + ($inversionTotal ?? 0);
 
         // Total de Deudas a Proveedores
-        $deudaPendientes = DB::table('cuentas')
+        $deudaPendietesSaldo = DB::table('cuentas')
             ->sum('deuda');
+
+        // Contar deudas Pendietes
+        $deudaPendientes = DB::table('compras')
+            ->where('tipo_compra', 'deuda_proveedor')
+            ->count();
 
         // Datos Charts
         // Reporte: Gastos Mensuales
@@ -101,6 +106,7 @@ class LogisticaController extends Controller
             'totalCuentas' => $totalCuentas,  // Cuentasa de Inversion y Ganancias
             'saldoCuentas' => $saldoCuentas,  // Saldo de las Cuentas Bancarias
             'deudaPendientes' => $deudaPendientes, // Deudas a Proveedores
+            'deudaPendietesSaldo' => $deudaPendietesSaldo,
             'montoGeneralInvertido' => $montoGeneralInvertido, // Toda la plata limpia del negocio 💀
 
             // Charts

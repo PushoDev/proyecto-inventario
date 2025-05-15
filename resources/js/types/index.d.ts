@@ -233,6 +233,7 @@ export interface LogisticaProps {
     saldoCuentas: number;
     montoGeneralInvertido: number;
     deudaPendientes: number;
+    deudaPendietesSaldo: number;
     gastosMensuales: GastoMensualRef[];
     productosTop: ProductosMasCompradosRef[];
     comprasPorProveedor: CompraPorProveedorChartRef[];
