@@ -238,3 +238,34 @@ export interface LogisticaProps {
     productosTop: ProductosMasCompradosRef[];
     comprasPorProveedor: CompraPorProveedorChartRef[];
 }
+
+export interface ProductoCompra {
+    id: number;
+    nombre_producto: string;
+    marca_producto: string | null;
+    pivot: {
+        compra_id: number;
+        producto_id: number;
+        cantidad: number;
+        precio: string;
+    };
+}
+
+export interface CompraConProductos {
+    id: number;
+    fecha_compra: string;
+    productos?: ProductoCompra[];
+}
+
+export interface AlmacenConCompras {
+    id: number;
+    nombre_almacen: string;
+    telefono_almacen: string;
+    correo_almacen: string | null;
+    provincia_almacen: string | null;
+    ciudad_almacen: string | null;
+    notas_almacen: string | null;
+    created_at: string;
+    updated_at: string;
+    compras?: CompraConProductos[];
+}

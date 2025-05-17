@@ -57,10 +57,16 @@ class AlmacenController extends Controller
 
     /**
      * Display the specified resource.
+     * Ruta para mostrar el contenido y el listado de los productos
      */
     public function show(Almacen $almacen)
     {
-        //
+
+        $almacen->load('compras.productos');
+
+        return Inertia::render('almacenes/show', [
+            'almacen' => $almacen,
+        ]);
     }
 
     /**

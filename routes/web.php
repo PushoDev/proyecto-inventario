@@ -36,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Almacenes
     require __DIR__ . '/routes-project/almacenes.php';
     // Movimientos
-    require __DIR__ . '/api/movimientos.php';
+    require __DIR__ . '/routes-project/movimientos.php';
     // Logistica
     require __DIR__ . '/routes-project/logistica.php';
     // cuentas

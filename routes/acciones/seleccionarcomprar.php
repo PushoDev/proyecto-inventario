@@ -19,6 +19,9 @@ Route::middleware(['auth', 'verified'])->group(
             // Rutas para cargar datos iniciales
             Route::get('/datos', [CompraController::class, 'cargarDatos'])->name('compras.datos');
             Route::post('/registrar', [CompraController::class, 'registrarCompra'])->name('compras.registrar');
+
+            // Api: Ruta para obtener productos por almacén
+            Route::get('/almacenes/{id}/productos', [SelectController::class, 'getProductos']);
         });
     }
 );

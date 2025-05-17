@@ -27,7 +27,7 @@ const driverObj = driver({
     showProgress: false,
     popoverClass: 'driverjs-theme',
     overlayColor: '#fda4af',
-    showButtons: ['next', 'previous'],
+    showButtons: ['next', 'previous', 'close'],
     nextBtnText: 'Siguiente',
     prevBtnText: 'Anterior',
     steps: [

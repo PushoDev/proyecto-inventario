@@ -17,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import AppLayout from '@/layouts/app-layout';
 import { AlmacenProps, type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { BookCheck, Edit3, LucideWarehouse, Trash2 } from 'lucide-react';
+import { BookCheck, Edit3, EyeIcon, LucideWarehouse, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -101,6 +101,12 @@ export default function AlmacenesPage({ almacenes }: { almacenes: AlmacenProps[]
                                 <TableCell>{almacen.provincia_almacen || 'N/A'}</TableCell>
                                 <TableCell>{almacen.ciudad_almacen || 'N/A'}</TableCell>
                                 <TableCell className="text-right">
+                                    {/* Boton Ver */}
+                                    <Link href={route('almacenes.show', { almacene: almacen.id })}>
+                                        <Button variant="outline" className="cursor-pointer">
+                                            <EyeIcon />
+                                        </Button>
+                                    </Link>
                                     {/* Botón Editar */}
                                     <Link href={route('almacenes.edit', { almacene: almacen.id })}>
                                         <Button

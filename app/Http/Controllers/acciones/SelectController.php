@@ -36,4 +36,42 @@ class SelectController extends Controller
     {
         return response()->json(Cuenta::select('id', 'nombre_cuenta', 'saldo_cuenta')->get());
     }
+
+
+    /**
+     * Mostrar los productos de un almacén.
+     */
+    public function getProductos($id)
+    {
+        // Cargar el almacén con sus compras y los productos asociados
+        $almacen = Almacen::with('compras.productos')->find($id);
+
+        if (!$almacen) {
+            return response()->json([
+                'message' => 'Almacén no encontrado'
+            ], 404);
+        }
+
+        // Coleccionar todos los productos con su cantidad y precio por compra
+        $productos = [];
+
+        foreach ($almacen->compras as $compra) {
+            foreach ($compra->productos as $producto) {
+                $productos[] = [
+                    'compra_id' => $compra->id,
+                    'producto_id' => $producto->id,
+                    'nombre_producto' => $producto->nombre_producto,
+                    'marca_producto' => $producto->marca_producto,
+                    'cantidad' => $producto->pivot->cantidad,
+                    'precio' => $producto->pivot->precio,
+                    'fecha_compra' => $compra->fecha_compra
+                ];
+            }
+        }
+
+        return response()->json([
+            'almacen' => $almacen,
+            'productos' => $productos
+        ]);
+    }
 }
