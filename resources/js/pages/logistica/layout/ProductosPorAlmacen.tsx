@@ -1,11 +1,12 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
 import * as React from 'react';
-import { Label, Pie, PieChart } from 'recharts';
+import { ChartProps, Label, Pie, PieChart, Sector } from 'recharts';
+import { PieSectorDataItem } from 'recharts/types/polar/Pie';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartContainer, ChartStyle, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface AlmacenData {
     nombre_almacen: string;
@@ -16,51 +17,93 @@ export interface ProductosPorAlmacenChartProps {
     data: AlmacenData[];
 }
 
-// Colores HEX definidos manualmente
-const chartColors = ['#5d9ce5', '#5ddad3', '#3b82f6', '#facc15', '#f97316'];
-
-const chartConfig = {
-    visitors: {
-        label: 'Productos Totales',
-    },
-} satisfies ChartConfig;
+// Colores:
+const chartColors = ['#ef4444', '#14b8a6', '#6366f1', '#d946ef', '#f43f5e'];
 
 export function ProductosPorAlmacenCharts({ data }: ProductosPorAlmacenChartProps) {
-    // Calcula el total de productos almacenados
-    const totalProductos = React.useMemo(() => {
-        return data.reduce((acc, item) => acc + item.total_productos, 0);
-    }, [data]);
-
-    // Mapea los datos al formato requerido por Recharts
     const chartData = data.map((item, index) => ({
-        browser: item.nombre_almacen,
-        visitors: item.total_productos,
+        month: item.nombre_almacen.toLowerCase().replace(/\s+/g, '_'),
+        visitors: Number(item.total_productos),
         fill: chartColors[index % chartColors.length],
     }));
 
-    {
-        console.log('Datos recibidos:', data);
-    }
-    {
-        console.log('chartData:', chartData);
-    }
-    {
-        console.log('Total de productos:', totalProductos);
-    }
+    const chartConfig = React.useMemo(() => {
+        return {
+            visitors: {
+                label: 'Productos Totales',
+            },
+            ...data.reduce(
+                (acc, item, index) => {
+                    const key = item.nombre_almacen.toLowerCase().replace(/\s+/g, '_');
+                    acc[key] = {
+                        label: item.nombre_almacen,
+                        color: chartColors[index % chartColors.length],
+                    };
+                    return acc;
+                },
+                {} as Record<string, { label: string; color: string }>,
+            ),
+        };
+    }, [data]);
+
+    const [activeMonth, setActiveMonth] = React.useState(chartData[0]?.month || '');
+    const activeIndex = React.useMemo(() => chartData.findIndex((item) => item.month === activeMonth), [chartData, activeMonth]);
+
+    const months = React.useMemo(() => chartData.map((item) => item.month), [chartData]);
+
+    const totalProductos = React.useMemo(() => {
+        return chartData.reduce((acc, item) => acc + item.visitors, 0);
+    }, [chartData]); // ✅ Ahora tiene todas las dependencias
 
     return (
-        <Card className="flex flex-col">
-            <CardHeader className="items-center pb-0">
-                <CardTitle>Productos por Almacén</CardTitle>
-                <CardDescription>Total de unidades almacenadas</CardDescription>
+        <Card data-chart="productos-por-almacen" className="flex flex-col">
+            <ChartStyle id="productos-por-almacen" config={chartConfig} />
+            <CardHeader className="flex-row items-start space-y-0 pb-0">
+                <div className="grid gap-1">
+                    <CardTitle>Productos por Almacén</CardTitle>
+                    <CardDescription>Distribución de productos entre almacenes</CardDescription>
+                </div>
+                <Select value={activeMonth} onValueChange={setActiveMonth}>
+                    <SelectTrigger className="ml-auto h-7 w-[130px] rounded-lg pl-2.5" aria-label="Selecciona un almacén">
+                        <SelectValue placeholder="Selecciona un almacén" />
+                    </SelectTrigger>
+                    <SelectContent align="end" className="rounded-xl">
+                        {months.map((key) => {
+                            const config = chartConfig[key as keyof typeof chartConfig];
+                            if (!config || key === 'visitors') return null;
+                            return (
+                                <SelectItem key={key} value={key} className="rounded-lg [&_span]:flex">
+                                    <div className="flex items-center gap-2 text-xs">
+                                        <span className="flex h-3 w-3 shrink-0 rounded-sm" style={{ backgroundColor: config.color }} />
+                                        {config.label}
+                                    </div>
+                                </SelectItem>
+                            );
+                        })}
+                    </SelectContent>
+                </Select>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
-                <ChartContainer config={chartConfig} className="mx-auto aspect-square h-[250px] max-h-[250px]">
+                <ChartContainer id="productos-por-almacen" config={chartConfig} className="mx-auto aspect-square w-full max-w-[300px]">
                     <PieChart>
-                        <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                        <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={60} strokeWidth={5}>
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                        <Pie
+                            data={chartData}
+                            dataKey="visitors"
+                            nameKey="month"
+                            innerRadius={60}
+                            strokeWidth={5}
+                            activeIndex={activeIndex}
+                            activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
+                                <g>
+                                    <Sector {...props} outerRadius={outerRadius + 10} />
+                                    <Sector {...props} outerRadius={outerRadius + 25} innerRadius={outerRadius + 12} />
+                                </g>
+                            )}
+                        >
+                            {/* Corrección del Label */}
                             <Label
-                                content={({ viewBox }) => {
+                                content={({ viewBox }: { viewBox?: ChartProps['viewBox'] }) => {
                                     if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                                         return (
                                             <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
@@ -73,19 +116,13 @@ export function ProductosPorAlmacenCharts({ data }: ProductosPorAlmacenChartProp
                                             </text>
                                         );
                                     }
-                                    return null; // ✅ Retorno seguro
+                                    return null;
                                 }}
                             />
                         </Pie>
                     </PieChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col gap-2 text-sm">
-                <div className="flex items-center gap-2 leading-none font-medium">
-                    Total distribuido entre almacenes <TrendingUp className="h-4 w-4" />
-                </div>
-                <div className="text-muted-foreground leading-none">Unidades totales por producto</div>
-            </CardFooter>
         </Card>
     );
 }
