@@ -88,6 +88,18 @@ export default function ReposrtesPage() {
                             </div>
                             <Separator orientation="vertical" />
                         </div>
+                        <br />
+                        <div className="flex h-5 items-center space-x-4 text-sm">
+                            <div>
+                                <Link href={route('reportes.productos_por_almacen_detalle')}>
+                                    <Button variant="link" className="cursor-pointer">
+                                        Detalles por Almacen
+                                    </Button>
+                                </Link>
+                            </div>
+
+                            <Separator orientation="vertical" />
+                        </div>
                     </div>
                 </div>
             </div>

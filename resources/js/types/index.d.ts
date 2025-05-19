@@ -218,6 +218,15 @@ export interface ProductoPorAlmacenRef {
     productos_unicos: number;
 }
 
+// Interface Productos por Almacen detalles
+export interface ProductoPorAlmacenDetalleRef {
+    almacen_id: number;
+    nombre_almacen: string;
+    producto_id: number;
+    nombre_producto: string;
+    cantidad_total: number;
+}
+
 
 // Para los Charts
 // Interface para gráficos - Compras por Proveedor

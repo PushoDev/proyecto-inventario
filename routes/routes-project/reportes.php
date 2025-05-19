@@ -28,5 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Cantidad de Productos por Almacén
         Route::get('/productos-por-almacen', [ReportesController::class, 'productosPorAlmacen'])
             ->name('productos_por_almacen');
+
+        // Lista detallada de productos por almacén
+        Route::get('/productos-por-almacen-detalle', [ReportesController::class, 'productosPorAlmacenDetalle'])
+            ->name('productos_por_almacen_detalle');
     });
 });
