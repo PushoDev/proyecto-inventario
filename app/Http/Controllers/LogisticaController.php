@@ -92,6 +92,19 @@ class LogisticaController extends Controller
             ->groupBy('proveedors.id', 'proveedors.nombre_proveedor')
             ->orderByDesc('total_gastado')
             ->get();
+        // Reporte: Productos por Almacén
+        $productosPorAlmacen = DB::table('compra_producto')
+            ->join('compras', 'compra_producto.compra_id', '=', 'compras.id')
+            ->join('almacens', 'compras.almacen_id', '=', 'almacens.id')
+            ->join('productos', 'compra_producto.producto_id', '=', 'productos.id')
+            ->select(
+                'almacens.nombre_almacen',
+                DB::raw('SUM(compra_producto.cantidad) as total_productos'),
+                DB::raw('COUNT(DISTINCT productos.id) as productos_unicos')
+            )
+            ->groupBy('almacens.id', 'almacens.nombre_almacen')
+            ->orderByDesc('total_productos')
+            ->get();
 
 
         // Renderizar la vista con los datos
@@ -113,6 +126,7 @@ class LogisticaController extends Controller
             'gastosMensuales' => $gastosMensuales,
             'productosTop' => $productosTop,
             'comprasPorProveedor' => $comprasPorProveedor,
+            'productosPorAlmacen' => $productosPorAlmacen,
         ]);
     }
 }

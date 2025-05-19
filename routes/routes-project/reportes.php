@@ -24,5 +24,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Reporte: Compras por Proveedor
         Route::get('/compras-por-proveedor/{proveedorId?}', [ReportesController::class, 'comprasPorProveedor'])
             ->name('compras_por_proveedor');
+
+        // Cantidad de Productos por Almacén
+        Route::get('/productos-por-almacen', [ReportesController::class, 'productosPorAlmacen'])
+            ->name('productos_por_almacen');
     });
 });

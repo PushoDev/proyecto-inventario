@@ -27,6 +27,7 @@ import { ComprasPorProveedorPie } from './layout/ComprasPorProveedorChart';
 import { ComprasVentasCharts } from './layout/ComprasVentas';
 import { GastosMensualesChart } from './layout/GastosMensualesChart';
 import { ProductosMasCompradosPie } from './layout/ProductosMasCompradosPie';
+import { ProductosPorAlmacenCharts } from './layout/ProductosPorAlmacen';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -55,6 +56,7 @@ export default function LogisticaPage({
     gastosMensuales,
     productosTop,
     comprasPorProveedor,
+    productosPorAlmacen,
 }: LogisticaProps) {
     // Calendario
     const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -264,6 +266,8 @@ export default function LogisticaPage({
                         <ProductosMasCompradosPie data={productosTop} />
                         {/* Compras por Proveedor */}
                         <ComprasPorProveedorPie data={comprasPorProveedor} />
+                        {/* Productos por Almacen */}
+                        <ProductosPorAlmacenCharts data={productosPorAlmacen} />
                     </div>
                 </div>
             </div>

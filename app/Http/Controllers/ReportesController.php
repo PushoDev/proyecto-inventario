@@ -128,4 +128,28 @@ class ReportesController extends Controller
             'proveedor' => $proveedor,
         ]);
     }
+
+    /**
+     * Productos por Almacen
+     */
+    public function productosPorAlmacen()
+    {
+        $almacenes = DB::table('compra_producto')
+            ->join('compras', 'compra_producto.compra_id', '=', 'compras.id')
+            ->join('almacens', 'compras.almacen_id', '=', 'almacens.id')
+            ->join('productos', 'compra_producto.producto_id', '=', 'productos.id')
+            ->select(
+                'almacens.id as almacen_id',
+                'almacens.nombre_almacen',
+                DB::raw('SUM(compra_producto.cantidad) as total_productos'),
+                DB::raw('COUNT(DISTINCT productos.id) as productos_unicos')
+            )
+            ->groupBy('almacens.id', 'almacens.nombre_almacen')
+            ->orderByDesc('total_productos')
+            ->get();
+
+        return Inertia::render('reportes/ProductosPorAlmacen', [
+            'almacenes' => $almacenes,
+        ]);
+    }
 }

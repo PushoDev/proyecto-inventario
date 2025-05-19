@@ -79,6 +79,14 @@ export default function ReposrtesPage() {
                                 </Link>
                             </div>
                             <Separator orientation="vertical" />
+                            <div>
+                                <Link href={route('reportes.productos_por_almacen')}>
+                                    <Button variant="link" className="cursor-pointer">
+                                        Productos por Almacen
+                                    </Button>
+                                </Link>
+                            </div>
+                            <Separator orientation="vertical" />
                         </div>
                     </div>
                 </div>

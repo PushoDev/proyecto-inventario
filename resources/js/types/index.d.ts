@@ -210,6 +210,14 @@ export interface CompraPorProveedorRef {
     tipo_compra: 'deuda_proveedor' | 'pago_cash';
 }
 
+// Inteface de Productos por Almacen
+export interface ProductoPorAlmacenRef {
+    almacen_id: number;
+    nombre_almacen: string;
+    total_productos: number;
+    productos_unicos: number;
+}
+
 
 // Para los Charts
 // Interface para gráficos - Compras por Proveedor
@@ -217,6 +225,12 @@ export interface CompraPorProveedorChartRef {
     nombre_proveedor: string;
     cantidad_compras: number;
     total_gastado: number;
+}
+
+export interface ProductoPorAlmacenRefCharts {
+    nombre_almacen: string;
+    total_productos: number;
+    productos_unicos: number;
 }
 
 // Interface para la Logistica
@@ -237,35 +251,6 @@ export interface LogisticaProps {
     gastosMensuales: GastoMensualRef[];
     productosTop: ProductosMasCompradosRef[];
     comprasPorProveedor: CompraPorProveedorChartRef[];
+    productosPorAlmacen: ProductoPorAlmacenRefCharts[];
 }
 
-export interface ProductoCompra {
-    id: number;
-    nombre_producto: string;
-    marca_producto: string | null;
-    pivot: {
-        compra_id: number;
-        producto_id: number;
-        cantidad: number;
-        precio: string;
-    };
-}
-
-export interface CompraConProductos {
-    id: number;
-    fecha_compra: string;
-    productos?: ProductoCompra[];
-}
-
-export interface AlmacenConCompras {
-    id: number;
-    nombre_almacen: string;
-    telefono_almacen: string;
-    correo_almacen: string | null;
-    provincia_almacen: string | null;
-    ciudad_almacen: string | null;
-    notas_almacen: string | null;
-    created_at: string;
-    updated_at: string;
-    compras?: CompraConProductos[];
-}
