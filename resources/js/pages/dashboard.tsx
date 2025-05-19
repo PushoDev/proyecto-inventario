@@ -9,8 +9,9 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, CajaPrincipalProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ComputerIcon, LucideBaggageClaim, ShoppingBagIcon } from 'lucide-react';
+import { ComprasVentasCharts } from './logistica/layout/ComprasVentas';
 
-import { driver } from 'driver.js';
+// import { driver } from 'driver.js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,26 +24,26 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const driverObj = driver({
-    showProgress: false,
-    popoverClass: 'driverjs-theme',
-    overlayColor: '#fda4af',
-    showButtons: ['next', 'previous', 'close'],
-    nextBtnText: 'Siguiente',
-    prevBtnText: 'Anterior',
-    steps: [
-        { element: '#opciones-generales', popover: { title: 'Opciones Generales', description: 'Description' } },
-        { element: '#compra-producto', popover: { title: 'Compras', description: 'Description' } },
-        { element: '#venta-producto', popover: { title: 'Venta', description: 'Description' } },
-        { element: '#transacciones-producto', popover: { title: 'Transacciones', description: 'Description' } },
-        { element: '#inventario-producto', popover: { title: 'Iventarios', description: 'Description' } },
-        { element: '#tablas-resumenes', popover: { title: 'Tablas', description: 'Description' } },
-        { element: '#tablas-capitales', popover: { title: 'Tabla Capitales', description: 'Description' } },
-        { element: '#tablas-movimientos', popover: { title: 'Tabla Movimientos', description: 'Description' } },
-    ],
-});
+// const driverObj = driver({
+//     showProgress: false,
+//     popoverClass: 'driverjs-theme',
+//     overlayColor: '#fda4af',
+//     showButtons: ['next', 'previous', 'close'],
+//     nextBtnText: 'Siguiente',
+//     prevBtnText: 'Anterior',
+//     steps: [
+//         { element: '#opciones-generales', popover: { title: 'Opciones Generales', description: 'Description' } },
+//         { element: '#compra-producto', popover: { title: 'Compras', description: 'Description' } },
+//         { element: '#venta-producto', popover: { title: 'Venta', description: 'Description' } },
+//         { element: '#transacciones-producto', popover: { title: 'Transacciones', description: 'Description' } },
+//         { element: '#inventario-producto', popover: { title: 'Iventarios', description: 'Description' } },
+//         { element: '#tablas-resumenes', popover: { title: 'Tablas', description: 'Description' } },
+//         { element: '#tablas-capitales', popover: { title: 'Tabla Capitales', description: 'Description' } },
+//         { element: '#tablas-movimientos', popover: { title: 'Tabla Movimientos', description: 'Description' } },
+//     ],
+// });
 
-driverObj.drive();
+// driverObj.drive();
 
 export default function CajaGeneral({ montoGeneralInvertido }: CajaPrincipalProps) {
     return (
@@ -66,7 +67,10 @@ export default function CajaGeneral({ montoGeneralInvertido }: CajaPrincipalProp
                 </div>
 
                 {/* Opciones */}
-                <div id="opciones-generales" className="animate__animated animate__backInUp grid auto-rows-min gap-4 md:grid-cols-4">
+                <div
+                    id="opciones-generales"
+                    className="animate__animated animate__backInUp *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4"
+                >
                     {/* Comprar Nuevos Productos */}
                     <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border bg-gradient-to-br from-red-800 to-red-400">
                         {/* Ícono de fondo transparente */}
@@ -179,6 +183,12 @@ export default function CajaGeneral({ montoGeneralInvertido }: CajaPrincipalProp
                     </Table>
                 </div>
                 <Separator className="mt-4" />
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+                    {/* Chart-Compra y Ventas Admin */}
+                    <div className="animate__fadeInDown animate__animated">
+                        <ComprasVentasCharts />
+                    </div>
+                </div>
             </div>
         </AppLayout>
     );

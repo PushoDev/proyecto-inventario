@@ -173,64 +173,112 @@
     background-color: var(--color-sidebar-hover);
 }
 
-/* Drivers - Excursion Proyecto */
+/* ==========================================================================
+   Theme: Driver.js - Diseño Moderno y Profesional
+   Descripción: Estilo refinado para guías interactivas usando Driver.js
+   Creado por: Luis A. Guisado - Pucho.dev
+   ========================================================================== */
+
+:root {
+    --primary-color: #3b82f6; /* Azul brillante */
+    --secondary-color: #1e40af; /* Azul oscuro */
+    --text-color: #ffffff; /* Blanco para texto */
+    --button-bg: #1d4ed8; /* Fondo botón */
+    --button-hover: #2563eb; /* Hover del botón */
+    --arrow-color: #3b82f6; /* Color de las flechas */
+    --border-radius: 8px; /* Bordes redondeados */
+    --font-family: 'Segoe UI', sans-serif;
+}
+
+/* Popover principal */
 .driver-popover.driverjs-theme {
-    background-color: #207ca7;
-    color: #000;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    font-family: var(--font-family);
+    padding: 16px;
+    max-width: 320px;
 }
 
+/* Título */
 .driver-popover.driverjs-theme .driver-popover-title {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.3;
 }
 
-.driver-popover.driverjs-theme .driver-popover-title,
+/* Descripción y progreso */
 .driver-popover.driverjs-theme .driver-popover-description,
 .driver-popover.driverjs-theme .driver-popover-progress-text {
-    color: #000;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
 }
 
+/* Contenedor de botones */
+.driver-popover.driverjs-theme .driver-popover-navigation-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+/* Botones */
 .driver-popover.driverjs-theme button {
     flex: 1;
     text-align: center;
-    background-color: #000;
-    color: #ba2323;
-    border: 2px solid #000;
-    text-shadow: none;
-    font-size: 10px;
-    padding: 5px 5px;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    font-size: 12px;
+    padding: 6px 10px;
     border-radius: 6px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Hover en botones */
 .driver-popover.driverjs-theme button:hover {
-    background-color: #000;
-    color: #cf4848;
+    background-color: var(--button-hover);
+    transform: translateY(-1px);
 }
 
-.driver-popover.driverjs-theme .driver-popover-navigation-btns {
-    justify-content: space-between;
-    gap: 3px;
-}
-
+/* Botón "Skip" o "Cerrar" */
 .driver-popover.driverjs-theme .driver-popover-close-btn {
-    color: #9b9b9b;
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
+/* Hover en botón cerrar */
 .driver-popover.driverjs-theme .driver-popover-close-btn:hover {
-    color: #000;
+    color: var(--text-color);
 }
 
+/* Flechas según posición */
 .driver-popover.driverjs-theme .driver-popover-arrow-side-left.driver-popover-arrow {
-    border-left-color: #fde047;
+    border-left-color: var(--arrow-color);
 }
 
 .driver-popover.driverjs-theme .driver-popover-arrow-side-right.driver-popover-arrow {
-    border-right-color: #fde047;
+    border-right-color: var(--arrow-color);
 }
 
 .driver-popover.driverjs-theme .driver-popover-arrow-side-top.driver-popover-arrow {
-    border-top-color: #fde047;
+    border-top-color: var(--arrow-color);
 }
 
 .driver-popover.driverjs-theme .driver-popover-arrow-side-bottom.driver-popover-arrow {
-    border-bottom-color: #fde047;
+    border-bottom-color: var(--arrow-color);
 }
