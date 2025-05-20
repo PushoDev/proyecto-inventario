@@ -8,6 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * Estructura de la tabla de los Almacenes
      */
     public function up(): void
     {

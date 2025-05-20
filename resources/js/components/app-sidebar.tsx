@@ -16,19 +16,16 @@ import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
     ArrowUpToLine,
-    BookOpenText,
     BoxesIcon,
     ChartNoAxesCombinedIcon,
     CheckCircleIcon,
     CirclePlus,
     Computer,
-    Github,
     IdCardIcon,
     Landmark,
     LandPlot,
     LucideShoppingCart,
     NotebookText,
-    NotepadTextDashedIcon,
     Repeat,
     StoreIcon,
 } from 'lucide-react';
@@ -82,35 +79,14 @@ const navGroups = [
             },
         ],
     },
-    {
-        id: 'reportes',
-        title: 'Reportes',
-        collapsible: true,
-        items: [
-            {
-                title: 'Reportes',
-                href: '/reportes',
-                icon: NotebookText,
-            },
-            {
-                title: 'Historial de Operaciones',
-                href: '/historial',
-                icon: NotepadTextDashedIcon,
-            },
-        ],
-    },
+    // Para historiales
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repositorio (Privado)',
-        href: 'https://github.com/PushoDev',
-        icon: Github,
-    },
-    {
-        title: 'Documentación',
-        href: '#',
-        icon: BookOpenText,
+        title: 'Reportes',
+        href: '/reportes',
+        icon: NotebookText,
     },
 ];
 

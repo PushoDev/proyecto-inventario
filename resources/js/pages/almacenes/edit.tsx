@@ -23,18 +23,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-// export interface AlmacenProps {
-//     id: number;
-//     nombre_almacen: string;
-//     telefono_almacen: string;
-//     correo_almacen: string | null;
-//     provincia_almacen: string | null;
-//     ciudad_almacen: string | null;
-//     notas_almacen: string | null;
-//     created_at: string;
-//     updated_at: string;
-// }
-
 export default function EditarAlmacenesPage({ almacen }: { almacen: AlmacenProps }) {
     // Manejo del formulario con useForm
     const { data, setData, put, errors, processing } = useForm({
@@ -49,7 +37,7 @@ export default function EditarAlmacenesPage({ almacen }: { almacen: AlmacenProps
     // Función para enviar el formulario
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(route('almacenes.update', { almacen: almacen.id }), {
+        put(route('almacenes.update', { almacene: almacen.id }), {
             onSuccess: () => {
                 toast.success('Almacén actualizado correctamente');
             },
@@ -97,97 +85,88 @@ export default function EditarAlmacenesPage({ almacen }: { almacen: AlmacenProps
                 </div>
 
                 {/* Formulario para Editar Almacén */}
-                <form onSubmit={submit} className="space-y-6 px-4 pb-6">
-                    {/* Campo Nombre del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="nombre_almacen">Nombre del Almacén:</Label>
+                <form onSubmit={submit} className="bg-card mx-auto mt-6 max-w-2xl space-y-6 rounded-xl p-6 shadow-md">
+                    {/* Nombre del Almacén */}
+                    <div className="space-y-2">
+                        <Label htmlFor="nombre_almacen">Nombre del Almacén</Label>
                         <Input
                             id="nombre_almacen"
-                            className="mt-1 block w-1/3"
                             value={data.nombre_almacen}
-                            onChange={(e) => setData('nombre_almacen', e.target.value)}
-                            autoComplete="nombre_almacen"
-                            placeholder="Nombre del Almacén"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('nombre_almacen', e.target.value)}
+                            placeholder="Ej: Almacén Principal"
                         />
-                        <InputError className="mt-2" message={errors.nombre_almacen} />
+                        <InputError message={errors.nombre_almacen} />
                     </div>
 
-                    {/* Campo Teléfono del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="telefono_almacen">Teléfono del Almacén:</Label>
-                        <Input
-                            id="telefono_almacen"
-                            type="tel"
-                            className="mt-1 block w-1/3"
-                            value={data.telefono_almacen}
-                            onChange={(e) => setData('telefono_almacen', e.target.value)}
-                            autoComplete="telefono_almacen"
-                            placeholder="Teléfono del Almacén"
-                        />
-                        <InputError className="mt-2" message={errors.telefono_almacen} />
+                    {/* Teléfono + Correo */}
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div className="space-y-2">
+                            <Label htmlFor="telefono_almacen">Teléfono del Almacén</Label>
+                            <Input
+                                id="telefono_almacen"
+                                type="tel"
+                                value={data.telefono_almacen}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('telefono_almacen', e.target.value)}
+                                placeholder="Ej: +53 5 123 4567"
+                            />
+                            <InputError message={errors.telefono_almacen} />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="correo_almacen">Correo del Almacén</Label>
+                            <Input
+                                id="correo_almacen"
+                                type="email"
+                                value={data.correo_almacen}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('correo_almacen', e.target.value)}
+                                placeholder="ejemplo@dominio.com"
+                            />
+                            <InputError message={errors.correo_almacen} />
+                        </div>
                     </div>
 
-                    {/* Campo Correo del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="correo_almacen">Correo del Almacén:</Label>
-                        <Input
-                            id="correo_almacen"
-                            type="email"
-                            className="mt-1 block w-1/3"
-                            value={data.correo_almacen}
-                            onChange={(e) => setData('correo_almacen', e.target.value)}
-                            autoComplete="correo_almacen"
-                            placeholder="Correo del Almacén"
-                        />
-                        <InputError className="mt-2" message={errors.correo_almacen} />
+                    {/* Provincia y Ciudad */}
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div className="space-y-2">
+                            <Label htmlFor="provincia_almacen">Provincia del Almacén</Label>
+                            <Input
+                                id="provincia_almacen"
+                                value={data.provincia_almacen}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('provincia_almacen', e.target.value)}
+                                placeholder="Ej: Mayabeque"
+                            />
+                            <InputError message={errors.provincia_almacen} />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="ciudad_almacen">Ciudad del Almacén</Label>
+                            <Input
+                                id="ciudad_almacen"
+                                value={data.ciudad_almacen}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('ciudad_almacen', e.target.value)}
+                                placeholder="Ej: Quivicán"
+                            />
+                            <InputError message={errors.ciudad_almacen} />
+                        </div>
                     </div>
 
-                    {/* Campo Provincia del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="provincia_almacen">Provincia del Almacén:</Label>
-                        <Input
-                            id="provincia_almacen"
-                            className="mt-1 block w-1/3"
-                            value={data.provincia_almacen}
-                            onChange={(e) => setData('provincia_almacen', e.target.value)}
-                            autoComplete="provincia_almacen"
-                            placeholder="Provincia del Almacén"
-                        />
-                        <InputError className="mt-2" message={errors.provincia_almacen} />
-                    </div>
-
-                    {/* Campo Ciudad del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="ciudad_almacen">Ciudad del Almacén:</Label>
-                        <Input
-                            id="ciudad_almacen"
-                            className="mt-1 block w-1/3"
-                            value={data.ciudad_almacen}
-                            onChange={(e) => setData('ciudad_almacen', e.target.value)}
-                            autoComplete="ciudad_almacen"
-                            placeholder="Ciudad del Almacén"
-                        />
-                        <InputError className="mt-2" message={errors.ciudad_almacen} />
-                    </div>
-
-                    {/* Campo Notas del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="notas_almacen">Notas del Almacén:</Label>
+                    {/* Notas del Almacen */}
+                    <div className="space-y-2">
+                        <Label htmlFor="notas_almacen">Notas del Almacén</Label>
                         <Textarea
                             id="notas_almacen"
-                            className="mt-2 block w-1/3"
                             value={data.notas_almacen}
-                            onChange={(e) => setData('notas_almacen', e.target.value)}
-                            autoComplete="notas_almacen"
-                            placeholder="Notas del Almacén"
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setData('notas_almacen', e.target.value)}
+                            rows={4}
+                            placeholder="Información adicional..."
                         />
-                        <InputError className="mt-2" message={errors.notas_almacen} />
+                        <InputError message={errors.notas_almacen} />
                     </div>
 
-                    {/* Botón Actualizar */}
-                    <div>
-                        <Button type="submit" disabled={processing}>
-                            Actualizar Almacén
+                    {/* Submit Button */}
+                    <div className="pt-2">
+                        <Button type="submit" className="w-full" disabled={processing}>
+                            {processing ? 'Guardando cambios...' : 'Guardar Cambios'}
                         </Button>
                     </div>
                 </form>

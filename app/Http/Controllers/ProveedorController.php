@@ -65,11 +65,11 @@ class ProveedorController extends Controller
      * Show the form for editing the specified resource.
      * Editar Proveedor
      */
-    public function edit(Proveedor $proveedor)
+    public function edit($id)
     {
-        return Inertia::render('proveedores/edit', [
-            'proveedor' => $proveedor,
-        ]);
+        $proveedor = Proveedor::findOrFail($id);
+
+        return Inertia::render('proveedores/edit', compact('proveedor'));
     }
 
     /**

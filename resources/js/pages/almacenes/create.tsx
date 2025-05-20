@@ -14,6 +14,10 @@ import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
+        title: 'Resumen General',
+        href: '/dashboard',
+    },
+    {
         title: 'Almacenes',
         href: '/almacenes',
     },
@@ -86,97 +90,92 @@ export default function CrearAlmacenesPage() {
                 </div>
 
                 {/* Formulario */}
-                <form onSubmit={submit} className="space-y-6 px-4 pb-6">
+
+                <form onSubmit={submit} className="grid grid-cols-1 gap-6 px-4 pb-6 md:grid-cols-2">
                     {/* Nombre del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="nombre_almacen">Nombre del Almacén:</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="nombre_almacen">Nombre del Almacén</Label>
                         <Input
                             id="nombre_almacen"
                             value={data.nombre_almacen}
                             onChange={(e) => setData('nombre_almacen', e.target.value)}
-                            autoComplete="nombre_almacen"
                             placeholder="Nombre del Almacén"
-                            className="max-w-md"
+                            autoComplete="nombre_almacen"
                         />
                         <InputError message={errors.nombre_almacen} />
                     </div>
 
                     {/* Teléfono del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="telefono_almacen">Teléfono del Almacén:</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="telefono_almacen">Teléfono del Almacén</Label>
                         <Input
                             id="telefono_almacen"
                             type="tel"
                             value={data.telefono_almacen}
                             onChange={(e) => setData('telefono_almacen', e.target.value)}
-                            autoComplete="telefono_almacen"
                             placeholder="Teléfono del Almacén"
-                            className="max-w-md"
+                            autoComplete="telefono_almacen"
                         />
                         <InputError message={errors.telefono_almacen} />
                     </div>
 
                     {/* Correo del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="correo_almacen">Correo del Almacén:</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="correo_almacen">Correo del Almacén</Label>
                         <Input
                             id="correo_almacen"
                             type="email"
                             value={data.correo_almacen}
                             onChange={(e) => setData('correo_almacen', e.target.value)}
-                            autoComplete="correo_almacen"
                             placeholder="Correo del Almacén"
-                            className="max-w-md"
+                            autoComplete="correo_almacen"
                         />
                         <InputError message={errors.correo_almacen} />
                     </div>
 
                     {/* Provincia del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="provincia_almacen">Provincia del Almacén:</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="provincia_almacen">Provincia del Almacén</Label>
                         <Input
                             id="provincia_almacen"
                             value={data.provincia_almacen}
                             onChange={(e) => setData('provincia_almacen', e.target.value)}
-                            autoComplete="provincia_almacen"
                             placeholder="Provincia del Almacén"
-                            className="max-w-md"
+                            autoComplete="provincia_almacen"
                         />
                         <InputError message={errors.provincia_almacen} />
                     </div>
 
                     {/* Ciudad del Almacén */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="ciudad_almacen">Ciudad del Almacén:</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="ciudad_almacen">Ciudad del Almacén</Label>
                         <Input
                             id="ciudad_almacen"
                             value={data.ciudad_almacen}
                             onChange={(e) => setData('ciudad_almacen', e.target.value)}
-                            autoComplete="ciudad_almacen"
                             placeholder="Ciudad del Almacén"
-                            className="max-w-md"
+                            autoComplete="ciudad_almacen"
                         />
                         <InputError message={errors.ciudad_almacen} />
                     </div>
 
-                    {/* Notas del Almacen */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="notas_almacen">Notas del Almacén:</Label>
+                    {/* Notas del Almacen (Ocupa las dos columnas) */}
+                    <div className="col-span-1 space-y-2 md:col-span-2">
+                        <Label htmlFor="notas_almacen">Notas del Almacén</Label>
                         <Textarea
                             id="notas_almacen"
                             value={data.notas_almacen}
                             onChange={(e) => setData('notas_almacen', e.target.value)}
-                            autoComplete="notas_almacen"
                             placeholder="Notas del Almacén"
-                            className="max-w-md"
+                            rows={4}
                         />
                         <InputError message={errors.notas_almacen} />
                     </div>
 
-                    {/* Botón Enviar */}
-                    <div>
-                        <Button type="submit" disabled={processing}>
-                            Crear Almacén
+                    {/* Botón Enviar (Ocupa las dos columnas) */}
+                    <div className="col-span-1 flex justify-end md:col-span-2">
+                        <Button type="submit" disabled={processing} className="w-full md:w-auto">
+                            {processing ? 'Guardando...' : 'Crear Almacén'}
                         </Button>
                     </div>
                 </form>
