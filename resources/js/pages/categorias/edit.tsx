@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
-import { CategoriasProps, type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, CategoriasProps } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { BookCheck, SquareCheckIcon } from 'lucide-react';
 import { toast } from 'sonner';
@@ -22,6 +22,15 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '#',
     },
 ];
+
+// export interface CategoriasProps {
+//     id: number;
+//     nombre_categoria: string;
+//     descripcion_categoria: string;
+//     activar_categoria: boolean;
+//     created_at: string;
+//     updated_at: string;
+// }
 
 export default function EditarCategoriasPage({ categoria }: { categoria: CategoriasProps }) {
     // Manejo del formulario con useForm

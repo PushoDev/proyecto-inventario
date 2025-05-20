@@ -1,7 +1,6 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
-
 export interface Auth {
     user: User;
 }
@@ -97,10 +96,10 @@ export interface AlmacenProps {
     id: number;
     nombre_almacen: string;
     telefono_almacen: string;
-    correo_almacen: string;
-    provincia_almacen: string;
-    ciudad_almacen: string;
-    notas_almacen: string;
+    correo_almacen: string | null;
+    provincia_almacen: string | null;
+    ciudad_almacen: string | null;
+    notas_almacen: string | null;
     created_at: string;
     updated_at: string;
 }
@@ -227,7 +226,6 @@ export interface ProductoPorAlmacenDetalleRef {
     cantidad_total: number;
 }
 
-
 // Para los Charts
 // Interface para gráficos - Compras por Proveedor
 export interface CompraPorProveedorChartRef {
@@ -262,4 +260,3 @@ export interface LogisticaProps {
     comprasPorProveedor: CompraPorProveedorChartRef[];
     productosPorAlmacen: ProductoPorAlmacenRefCharts[];
 }
-
