@@ -1,6 +1,6 @@
 # 🚀 Sistema de Gestión de Inventario
 
-[![GitHub Stars](https://img.shields.io/github/stars/tu-usuario/sistema-gestion-inventario?style=social )](https://github.com/tu-usuario/sistema-gestion-inventario )  
+[![GitHub Stars](https://img.shields.io/github/stars/PushoDev/sistema-gestion-inventario?style=social )](https://github.com/PushoDev/sistema-gestion-inventario )  
 [![Licencia](https://img.shields.io/badge/Licencia-MIT-blue.svg )](https://opensource.org/licenses/MIT )
 
 ---
