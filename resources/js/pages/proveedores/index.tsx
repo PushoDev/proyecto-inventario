@@ -133,7 +133,7 @@ export default function ProveedoresPage({ proveedores }: { proveedores: Proveedo
                                 <TableCell className="text-right">
                                     {/* Botón Editar */}
                                     {/* {route('proveedores.edit', { proveedor: proveedor.id })} */}
-                                    <Link href={route('proveedores.edit', { proveedore: proveedor.id })}>
+                                    <Link href={route('proveedores.edit', { proveedor: proveedor.id })}>
                                         <Button
                                             variant="outline"
                                             className="cursor-pointer hover:bg-blue-700 hover:text-white dark:hover:bg-blue-900"

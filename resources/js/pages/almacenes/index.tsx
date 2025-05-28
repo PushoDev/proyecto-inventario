@@ -104,13 +104,13 @@ export default function AlmacenesPage({ almacenes }: { almacenes: AlmacenProps[]
                                 <TableCell>{almacen.ciudad_almacen || 'N/A'}</TableCell>
                                 <TableCell className="text-right">
                                     {/* Boton Ver */}
-                                    <Link href={route('almacenes.show', { almacene: almacen.id })}>
+                                    <Link href={route('almacenes.show', { almacen: almacen.id })}>
                                         <Button variant="outline" className="mr-2 cursor-pointer">
                                             <EyeIcon />
                                         </Button>
                                     </Link>
                                     {/* Botón Editar */}
-                                    <Link href={route('almacenes.edit', { almacene: almacen.id })}>
+                                    <Link href={route('almacenes.edit', { almacen: almacen.id })}>
                                         <Button
                                             variant="outline"
                                             className="mr-2 cursor-pointer hover:bg-blue-900 hover:text-white dark:hover:bg-blue-700"
